@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {TranslocoService} from "@ngneat/transloco";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,10 @@ import {TranslocoService} from "@ngneat/transloco";
   styleUrl: 'app.component.sass'
 })
 export class AppComponent {
-  constructor(private translocoService: TranslocoService) {
-    console.log('Active lang: ' + translocoService.getActiveLang());
+  constructor(
+    private i18nService: TranslocoService,
+    private logger: NGXLogger
+  ) {
+    this.logger.info('Active lang: ' + this.i18nService.getActiveLang());
   }
 }

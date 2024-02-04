@@ -19,6 +19,7 @@
     "@ngneat/transloco": "^6.0.4",
     "@types/leaflet": "^1.9.8",
     "leaflet": "^1.9.4",
+    "ngx-logger": "^5.0.12",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

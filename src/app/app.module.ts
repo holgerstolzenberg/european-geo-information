@@ -4,6 +4,7 @@ import {HeaderComponent} from "./header/header.component";
 import {BrowserModule, provideClientHydration} from "@angular/platform-browser";
 import {I18nModule} from "./i18n.module";
 import {ToolbarComponent} from "./toolbar/toolbar.component";
+import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
 
 @NgModule({
   declarations: [
@@ -13,6 +14,9 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
   ],
   imports: [
     I18nModule,
+    LoggerModule.forRoot({
+      level: NgxLoggerLevel.DEBUG
+    }),
     BrowserModule,
   ],
   providers: [provideClientHydration()],

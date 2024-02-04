@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {TranslocoService} from "@ngneat/transloco";
+import {NGXLogger} from "ngx-logger";
 
 @Component({
   selector: 'app-header',
@@ -7,7 +8,7 @@ import {TranslocoService} from "@ngneat/transloco";
   styleUrl: 'header.component.sass'
 })
 export class HeaderComponent {
-  constructor(private i18nService: TranslocoService) {
+  constructor(private i18nService: TranslocoService, private logger: NGXLogger) {
   }
 
   switchLanguageTo(languageCode: string) {
@@ -15,8 +16,8 @@ export class HeaderComponent {
       return;
     }
 
-    console.log('Language selected: ' + languageCode);
     this.i18nService.setActiveLang(languageCode);
+    this.logger.log('Language set: ' + languageCode);
   }
 
   isActive(lang: string): boolean {
