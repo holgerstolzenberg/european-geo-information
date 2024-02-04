@@ -11,6 +11,7 @@ import {provideHttpClient} from "@angular/common/http";
       config: {
         availableLangs: ['en', 'de'],
         defaultLang: 'en',
+        reRenderOnLangChange: true,
         prodMode: !isDevMode(),
       },
       loader: TranslocoHttpLoader

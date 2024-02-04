@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {TranslocoService} from "@ngneat/transloco";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,7 @@ import {Component} from '@angular/core';
   styleUrl: 'app.component.sass'
 })
 export class AppComponent {
-  // nothing here so far
+  constructor(private translocoService: TranslocoService) {
+    console.log('Active lang: ' + translocoService.getActiveLang());
+  }
 }

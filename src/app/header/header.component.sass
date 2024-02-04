@@ -4,17 +4,50 @@
 @import "global/layout"
 
 div#header
+  @include typography.prevent-select
   position: absolute
-  display: block
+  display: inline-flex
+  justify-content: space-between
   top: 0
   left: 0
   right: 0
   height: $header-height
   background-color: $primary
+  cursor: default
 
   h1
     @include typography.default
     color: $tertiary
     line-height: $header-height
     height: $header-height
-    font-size: 4vh
+    font-size: calc($header-height / 3)
+    display: inline-block
+
+  div.lang-switch
+    @include typography.default
+    display: inline-block
+    right: 5pt
+    background-color: $primary
+    color: $secondary
+    height: $header-height
+
+    span
+      display: inline-block
+      height: $header-height
+      line-height: $header-height
+      margin: 0
+
+    span.switch-button
+      padding: 0 10pt 0 10pt
+      cursor: pointer
+
+    span.switch-button:hover
+      color: $tertiary
+
+    span.switch-button:active
+      color: $tertiary
+      background-color: $secondary
+
+    span.switch-button.activeLang
+      color: white
+      cursor: default
