@@ -20,8 +20,9 @@ div#header
     color: $tertiary
     line-height: $header-height
     height: $header-height
-    font-size: calc($header-height / 3)
+    font-size: calc($header-height / 4)
     display: inline-block
+    text-transform: uppercase
 
   div.lang-switch
     @include typography.default
@@ -46,8 +47,8 @@ div#header
 
     span.switch-button:active
       color: $tertiary
-      background-color: $secondary
+      background-color: $accent
 
     span.switch-button.activeLang
-      color: white
+      color: $tertiary
       cursor: default
