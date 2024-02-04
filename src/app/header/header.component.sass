@@ -1,19 +1,20 @@
+@use "mixins/typography"
+
+@import "global/colors"
+@import "global/layout"
+
 div#header
   position: absolute
   display: block
   top: 0
   left: 0
   right: 0
-  height: 10vh
+  height: $header-height
   background-color: black
 
   h1
-    color: #fff
-    line-height: 10vh
-    height: 10vh
-    display: block
-    font-size: 5vh
-    border: 0
-    margin: 0
-    padding: 0 0 0 5vh
-    font-family: "Arial", sans-serif
+    @include typography.default
+    color: $secondary
+    line-height: $header-height
+    height: $header-height
+    font-size: 4vh
