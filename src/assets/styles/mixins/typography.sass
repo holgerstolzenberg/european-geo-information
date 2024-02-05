@@ -1,0 +1,13 @@
+@import "global/colors"
+
+@mixin default
+  color: $primary
+  border: 0
+  margin: 0
+  padding: 0 0 0 10pt
+  font-family: "Arial", sans-serif
+
+@mixin prevent-select
+  -webkit-user-select: none
+  -ms-user-select: none
+  user-select: none
