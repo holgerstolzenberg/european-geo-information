@@ -2,6 +2,7 @@ import {provideTransloco, TranslocoModule} from '@ngneat/transloco';
 import {isDevMode, NgModule} from '@angular/core';
 import {TranslocoHttpLoader} from "./utils/TranslocoHttpLoader";
 import {provideHttpClient} from "@angular/common/http";
+import {provideTranslocoPreloadLangs} from "@ngneat/transloco-preload-langs";
 
 @NgModule({
   exports: [TranslocoModule],
@@ -16,6 +17,7 @@ import {provideHttpClient} from "@angular/common/http";
       },
       loader: TranslocoHttpLoader
     }),
+    provideTranslocoPreloadLangs(['en', 'de'])
   ],
 })
 export class I18nModule {

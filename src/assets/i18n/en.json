@@ -1,3 +1,5 @@
 {
-  "header.title": "Cities of Europe"
+  "header": {
+    "title": "Cities of Europe"
+  }
 }
