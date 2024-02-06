@@ -1,0 +1,8 @@
+.idea/
+node_modules/
+.gitignore
+README.*
+tsconfig.*
+package*
+LICENSE
+angular.json
