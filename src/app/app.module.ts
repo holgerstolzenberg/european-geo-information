@@ -5,6 +5,7 @@ import {BrowserModule, provideClientHydration} from "@angular/platform-browser";
 import {I18nModule} from "./i18n.module";
 import {ToolbarComponent} from "./toolbar/toolbar.component";
 import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,10 @@ import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
     }),
     BrowserModule,
   ],
-  providers: [provideClientHydration()],
+  providers: [
+    provideClientHydration(),
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
