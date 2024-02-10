@@ -1,3 +1,8 @@
+@import "@angular/material/prebuilt-themes/indigo-pink.css"
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap')
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons')
+
 $header-height: 50pt
 $toolbar-height: 25pt
 
@@ -5,3 +10,22 @@ $primary: #000
 $secondary: #2626b9
 $tertiary: #fff
 $accent: #222
+
+// TODO find a way to put that to map.component.sass
+a.leaflet-control-zoom-in
+  color: $secondary
+  border-bottom: 2pt solid $accent
+
+a.leaflet-control-zoom-out
+  border-bottom: 0
+
+a.leaflet-control-zoom-in,
+a.leaflet-control-zoom-out
+  font-family: Roboto, Arial, sans-serif
+  background-color: black
+  color: $secondary
+
+a.leaflet-control-zoom-in:hover,
+a.leaflet-control-zoom-out:hover
+  background-color: $secondary
+  color: $tertiary
