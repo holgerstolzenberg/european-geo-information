@@ -6,11 +6,14 @@ import {I18nModule} from "./i18n.module";
 import {ToolbarComponent} from "./toolbar/toolbar.component";
 import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {LeafletModule} from "@asymmetrik/ngx-leaflet";
+import {MapComponent} from "./map/map.component";
 
 @NgModule({
   declarations: [
     HeaderComponent,
     ToolbarComponent,
+    MapComponent,
     AppComponent
   ],
   imports: [
@@ -18,7 +21,8 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
     LoggerModule.forRoot({
       level: NgxLoggerLevel.DEBUG
     }),
-    BrowserModule,
+    LeafletModule,
+    BrowserModule
   ],
   providers: [
     provideClientHydration(),
