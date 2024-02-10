@@ -1,13 +1,14 @@
 import {NgModule} from '@angular/core';
 import {AppComponent} from "./app.component";
 import {HeaderComponent} from "./header/header.component";
-import {BrowserModule, provideClientHydration} from "@angular/platform-browser";
+import {BrowserModule} from "@angular/platform-browser";
 import {I18nModule} from "./i18n.module";
 import {ToolbarComponent} from "./toolbar/toolbar.component";
 import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {LeafletModule} from "@asymmetrik/ngx-leaflet";
 import {MapComponent} from "./map/map.component";
+import {MapService} from "./map/map.service";
 
 @NgModule({
   declarations: [
@@ -25,8 +26,8 @@ import {MapComponent} from "./map/map.component";
     BrowserModule
   ],
   providers: [
-    provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    MapService
   ],
   bootstrap: [AppComponent]
 })

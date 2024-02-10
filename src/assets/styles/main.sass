@@ -5,8 +5,12 @@ $primary: #000
 $secondary: #2626b9
 $tertiary: #fff
 $accent: #222
+$accent-bright: rgba(255, 255, 0, 0.75)
 
 // TODO find a way to put that to map.component.sass
+*.leaflet-container
+  font-family: Roboto, Arial, sans-serif
+
 a.leaflet-control-zoom-in
   color: $secondary
   border-bottom: 2pt solid $accent
@@ -14,13 +18,33 @@ a.leaflet-control-zoom-in
 a.leaflet-control-zoom-out
   border-bottom: 0
 
+a.leaflet-control-zoom-in.leaflet-disabled,
+a.leaflet-control-zoom-in.leaflet-disabled:hover,
+a.leaflet-control-zoom-out.leaflet-disabled,
+a.leaflet-control-zoom-out.leaflet-disabled:hover
+  background-color: $primary
+  color: $accent
+
 a.leaflet-control-zoom-in,
 a.leaflet-control-zoom-out
   font-family: Roboto, Arial, sans-serif
-  background-color: black
+  background-color: $primary
   color: $secondary
 
 a.leaflet-control-zoom-in:hover,
 a.leaflet-control-zoom-out:hover
   background-color: $secondary
   color: $tertiary
+
+div.leaflet-popup-content-wrapper
+  border-radius: 3pt
+
+div.leaflet-popup-content-wrapper,
+div.leaflet-popup-tip
+  background-color: $accent-bright
+  color: $primary
+  text-transform: uppercase
+
+div.leaflet-popup-content
+  text-align: center
+  margin: 5pt
