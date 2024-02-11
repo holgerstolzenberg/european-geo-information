@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
+import { MapService } from '../map/map.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -7,11 +7,9 @@ import { NGXLogger } from 'ngx-logger';
   styleUrl: 'toolbar.component.sass'
 })
 export class ToolbarComponent {
-  constructor(private log: NGXLogger) {}
+  constructor(private mapService: MapService) {}
 
-  updatePosition() {
-    this.log.info('Rest map to your position');
-
-    // TODO impl
+  resetMap() {
+    this.mapService.resetMap();
   }
 }
