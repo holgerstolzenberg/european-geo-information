@@ -1,4 +1,5 @@
 .idea/
+.angular/
 node_modules/
 .gitignore
 README.*
