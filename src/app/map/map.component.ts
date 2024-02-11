@@ -9,7 +9,7 @@ import {MapService} from "./map.service";
 })
 export class MapComponent implements OnInit {
   options: MapOptions = {
-    zoom: 4,
+    zoom: 5,
     minZoom: 4,
     maxZoom: 20,
     center: this.mapService.getCenterOfEurope()
