@@ -12,7 +12,10 @@ export class MapComponent implements OnInit {
     zoom: 5,
     minZoom: 4,
     maxZoom: 20,
-    center: this.mapService.getCenterOfEurope()
+    center: this.mapService.getCenterOfEurope(),
+    fadeAnimation: false,
+    zoomAnimation: true,
+    markerZoomAnimation: false
   };
 
   layers: Layer[] = [];
