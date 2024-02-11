@@ -3,6 +3,7 @@ import { Layer, LeafletEvent, Map as LeafletMap, MapOptions } from 'leaflet';
 import { MapService } from './map.service';
 import { NGXLogger } from 'ngx-logger';
 import { centerOfEurope, defaultZoom } from './map.constants';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -22,9 +23,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
   layers: Layer[] = [];
 
-  private map: any;
-  private theZoom: any;
-  private onReset$: any;
+  private map?: LeafletMap;
+  private theZoom?: number;
+  private onReset?: Subscription;
 
   constructor(
     private log: NGXLogger,
@@ -32,21 +33,18 @@ export class MapComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.onReset$ = this.mapService.onResetMap.subscribe(() => {
+    this.onReset = this.mapService.resetMap.subscribe(() => {
       this.resetMap();
     });
   }
 
   ngOnDestroy(): void {
-    this.onReset$.unsubscribe;
-
-    if (this.map == null) {
-      return;
-    }
+    this.onReset!.unsubscribe();
 
     this.log.info('Disposing map');
-    this.map.clearAllEventListeners;
-    this.map.remove();
+
+    this.map!.clearAllEventListeners();
+    this.map!.remove();
   }
 
   onMapReady(map: LeafletMap) {
@@ -64,10 +62,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   resetMap() {
-    if (this.map == null) {
-      return;
-    }
-
-    this.map.flyTo(centerOfEurope, defaultZoom);
+    this.map!.flyTo(centerOfEurope, defaultZoom);
   }
 }

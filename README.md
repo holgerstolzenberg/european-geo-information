@@ -1,3 +1,5 @@
+[![main](https://github.com/holgerstolzenberg/cities-of-europe/actions/workflows/build.yml/badge.svg)](https://github.com/holgerstolzenberg/cities-of-europe/actions/workflows/build.yml)
+
 # Cities of Europe
 
 ## 🚀 Introduction
