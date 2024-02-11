@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { circleMarker, geoJson, latLng, Layer, layerGroup, tileLayer } from 'leaflet';
 import { HttpClient } from '@angular/common/http';
-import { NGXLogger } from 'ngx-logger'; // TODO find a way to configure color
+import { NGXLogger } from 'ngx-logger';
+import { GeoJsonObject } from 'geojson'; // TODO find a way to configure color
 
 // TODO find a way to configure color
 const euBorderStyle = {
@@ -46,7 +47,7 @@ export class MapService {
   }
 
   load(layers: Layer[]) {
-    this.http.get('assets/geo-data/european-borders.json').subscribe((json: any) => {
+    this.http.get<GeoJsonObject>('assets/geo-data/european-borders.json').subscribe((json: GeoJsonObject) => {
       this.log.info('Loaded borders json', json);
 
       layers.push(geoJson(json, { style: euBorderStyle }));
