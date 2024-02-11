@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Layer, MapOptions} from 'leaflet'
-import {MapService} from "./map.service";
+import { Component, OnInit } from '@angular/core';
+import { Layer, MapOptions } from 'leaflet';
+import { MapService } from './map.service';
 
 @Component({
   selector: 'app-map',
@@ -13,12 +13,11 @@ export class MapComponent implements OnInit {
     minZoom: 4,
     maxZoom: 20,
     center: this.mapService.getCenterOfEurope()
-  }
+  };
 
   layers: Layer[] = [];
 
-  constructor(private mapService: MapService) {
-  }
+  constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
     this.layers.push(this.mapService.getBaseLayer());
