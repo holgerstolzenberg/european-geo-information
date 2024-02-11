@@ -9,16 +9,20 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MapComponent } from './map/map.component';
 import { MapService } from './map/map.service';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 
 @NgModule({
   declarations: [HeaderComponent, ToolbarComponent, MapComponent, AppComponent],
   imports: [
     I18nModule,
     LoggerModule.forRoot({
-      level: NgxLoggerLevel.DEBUG
+      level: NgxLoggerLevel.INFO
     }),
     LeafletModule,
-    BrowserModule
+    BrowserModule,
+    MatIcon,
+    MatIconButton
   ],
   providers: [provideAnimationsAsync(), MapService],
   bootstrap: [AppComponent]

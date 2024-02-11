@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Layer, MapOptions } from 'leaflet';
 import { MapService } from './map.service';
 
@@ -8,7 +8,7 @@ import { MapService } from './map.service';
   styleUrl: './map.component.sass'
 })
 export class MapComponent implements OnInit {
-  options: MapOptions = {
+  @Input() options: MapOptions = {
     zoom: 5,
     minZoom: 4,
     maxZoom: 20,

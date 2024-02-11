@@ -1,11 +1,28 @@
 @import "main"
 
 div.toolbar
+  tab-index: -1
   position: absolute
-  display: block
+  display: flex
+  align-items: center
+  justify-content: center
   top: $header-height
   left: 0
   right: 0
   height: $toolbar-height
   background-color: $secondary
-  tab-index: -1
+
+  button.mdc-icon-button
+    border: 0
+    padding: 0
+    padding-top: 3pt
+    border-radius: 0
+    height: $toolbar-height
+    width: $toolbar-height
+
+    &:hover, active
+      color: $tertiary
+      background-color: $primary
+
+  .mat-icon
+    font-size: 20pt
