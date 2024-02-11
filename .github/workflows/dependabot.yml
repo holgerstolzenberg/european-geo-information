@@ -1,6 +1,17 @@
 version: 2
+
+name: Dependabot
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
 updates:
   - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+
+jobs: []
