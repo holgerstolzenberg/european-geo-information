@@ -27,9 +27,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Clear npm cache
-        run: npm cache clear --force && npm install --no-shrinkwrap --update-binary
-
       - name: Install dependencies
         run: npm install
 
