@@ -1,3 +1,5 @@
+[![.github/workflows/dependabot.yml](https://github.com/holgerstolzenberg/cities-of-europe/actions/workflows/dependabot.yml/badge.svg?branch=main)](https://github.com/holgerstolzenberg/cities-of-europe/actions/workflows/dependabot.yml)
+
 # Cities of Europe
 
 ## 🚀 Introduction
