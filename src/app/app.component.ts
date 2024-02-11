@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {TranslocoService} from "@ngneat/transloco";
-import {NGXLogger} from "ngx-logger";
-import {Title} from "@angular/platform-browser";
+import { Component, OnInit } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
+import { NGXLogger } from 'ngx-logger';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +18,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.i18nService
-      .selectTranslate('header.title')
-      .subscribe(value => this.title.setTitle(value));
+    this.i18nService.selectTranslate('header.title').subscribe(value => this.title.setTitle(value));
   }
 }

@@ -1,6 +1,6 @@
-import {ApplicationConfig} from '@angular/core';
-import {AppModule} from "./app.module";
+import { ApplicationConfig } from '@angular/core';
+import { AppModule } from './app.module';
 
 export const appConfig: ApplicationConfig = {
-  providers: [AppModule],
+  providers: [AppModule]
 };

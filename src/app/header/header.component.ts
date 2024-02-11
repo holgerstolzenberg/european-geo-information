@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {TranslocoService} from "@ngneat/transloco";
-import {NGXLogger} from "ngx-logger";
+import { Component } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-header',
@@ -8,8 +8,10 @@ import {NGXLogger} from "ngx-logger";
   styleUrl: 'header.component.sass'
 })
 export class HeaderComponent {
-  constructor(private i18nService: TranslocoService, private logger: NGXLogger) {
-  }
+  constructor(
+    private i18nService: TranslocoService,
+    private logger: NGXLogger
+  ) {}
 
   switchLanguageTo(languageCode: string) {
     if (!languageCode) {
