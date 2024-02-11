@@ -10,6 +10,6 @@ export class ToolbarComponent {
   constructor(private mapService: MapService) {}
 
   resetMap() {
-    this.mapService.resetMap();
+    this.mapService.onResetMap();
   }
 }
