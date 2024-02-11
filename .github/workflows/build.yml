@@ -19,7 +19,7 @@ jobs:
 
       - uses: jessehouwing/actions-semver-checker@v1
         with:
-          warn-minor-version: true
+          check-minor-version: true
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
