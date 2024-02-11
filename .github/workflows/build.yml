@@ -6,13 +6,6 @@ on:
   pull_request:
     branches: ["main"]
 
-updates:
-  - package-ecosystem: "github-actions"
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "weekly"
-
-
 jobs:
   build:
     runs-on: ubuntu-latest
