@@ -1,12 +1,12 @@
 <div class="header">
-    <h1>{{ 'header.title' | transloco }}</h1>
-    <div class="lang-switch">
+  <h1>{{ 'header.title' | transloco }}</h1>
+  <div class="lang-switch">
         <span class="switch-button"
               (click)="switchLanguageTo('en')"
               [ngClass]="{'activeLang': isActive('en')}">en</span>
-        <span>|</span>
-        <span class="switch-button"
-              (click)="switchLanguageTo('de')"
-              [ngClass]="{'activeLang': isActive('de')}">de</span>
-    </div>
+    <span>|</span>
+    <span class="switch-button"
+          (click)="switchLanguageTo('de')"
+          [ngClass]="{'activeLang': isActive('de')}">de</span>
+  </div>
 </div>
