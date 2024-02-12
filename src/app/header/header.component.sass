@@ -5,8 +5,10 @@
 div.header
   @include typography.prevent-select
   position: absolute
-  display: inline-flex
+  display: flex
   justify-content: space-between
+  align-content: center
+  vertical-align: center
   top: 0
   left: 0
   right: 0
@@ -22,33 +24,36 @@ div.header
     font-size: calc($header-height / 4)
     display: inline-block
     text-transform: uppercase
+    padding-left: 10pt
 
   div.lang-switch
     @include typography.default
     display: inline-block
-    right: 5pt
     background-color: $primary
     color: $secondary
-    height: $header-height
 
-    span
+    // TODO find better way for vertical align
+    a.switch-button
+      @include typography.default
       display: inline-block
-      height: $header-height
-      line-height: $header-height
-      margin: 0
-
-    span.switch-button
-      padding: 0 5pt 0 5pt
+      color: $secondary
+      padding: 5pt
+      margin: 11pt 5pt 0 0
       cursor: pointer
+      border: 1px solid $primary
 
-    span.switch-button:hover
-      color: $tertiary
-      text-decoration: underline
+      &.double-right-margin
+        margin-right: 10pt
 
-    span.switch-button:active
-      color: $tertiary
-      background-color: $accent
+      &:hover
+        color: $tertiary
+        border: 1px solid $secondary
 
-    span.switch-button.activeLang
-      color: $tertiary
-      cursor: default
+      &:active
+        color: $tertiary
+
+      &.activeLang
+        color: $tertiary
+        cursor: default
+        background-color: $secondary
+        border: 1px solid $secondary
