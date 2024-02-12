@@ -42,7 +42,7 @@ docker run [-it] -p8080:8080 holgerstolzenberg/cities-of-europe
 
 ## Packaging
 
-- Make Docker image configurable at runtime
+- Make Docker image configurable at runtime -> let run at specific context
 - ☑️Caddy based Docker image
 - ☑️Make Caddy proxy requests to tile server
 
@@ -50,5 +50,6 @@ docker run [-it] -p8080:8080 holgerstolzenberg/cities-of-europe
 
 - GitHub CI pipeline
   - ☑️docker build
-  - tag
   - ☑️publish
+  - ☑️GitHub pages
+  - tag
