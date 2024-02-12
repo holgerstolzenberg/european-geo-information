@@ -62,7 +62,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist_folder
-          path: ./dist
 
       - name: Folder debug
         shell: bash
