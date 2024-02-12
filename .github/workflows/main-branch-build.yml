@@ -41,6 +41,25 @@ jobs:
           name: dist_folder
           path: ./dist/cities-of-europe/browser
 
+  deploy:
+    needs: build-dist
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
   build-docker-image:
     runs-on: ubuntu-22.04
     needs: build-dist
