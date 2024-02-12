@@ -79,6 +79,6 @@ jobs:
           push: false
           build-args: |
             "dist_base=./dist"
-        run: |
-          pwd
-          ls -al .
+          run: |
+            pwd
+            ls -al .
