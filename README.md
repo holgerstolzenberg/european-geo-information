@@ -31,5 +31,6 @@ docker run [-it] -p8080:8080 holgerstolzenberg/cities-of-europe
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
 - Add user interactions for layer control
 - Caddy based Docker image
-- Github CI pipeline (docker build, tag, publish?)
+- GitHub CI pipeline (docker build, tag, publish?)
 - Make Docker image configurable at runtime
+- Pin package.json versions
