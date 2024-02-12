@@ -23,7 +23,7 @@ export class MapService {
   }
 
   load(layers: Layer[]) {
-    this.http.get<GeoJsonObject>('/assets/geo-data/european-borders.json').subscribe((json: GeoJsonObject) => {
+    this.http.get<GeoJsonObject>('./assets/geo-data/european-borders.json').subscribe((json: GeoJsonObject) => {
       this.log.info('Loaded borders json', json);
 
       layers.push(geoJson(json, { style: euBorderStyle }));
