@@ -46,6 +46,11 @@ jobs:
     needs: build-dist
 
     steps:
+      - name: Download dist
+        uses: actions/download-artifact@v4
+        with:
+          name: dist_folder
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -58,18 +63,12 @@ jobs:
       #          username: ${{ secrets.DOCKERHUB_USERNAME }}
       #          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Download dist
-        uses: actions/download-artifact@v4
-        with:
-          name: dist_folder
 
       - name: Folder debug
         shell: bash
         run: |
           pwd
-          mkdir ./dist
-          cp -R /home/runner/work/cities-of-europe ./dist
-          ls -al ./dist
+          ls -al ./cities-of-europe
 
       # TODO push also
       - name: Build and push
