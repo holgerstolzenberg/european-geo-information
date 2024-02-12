@@ -67,8 +67,8 @@ jobs:
         shell: bash
         run: |
           pwd
-          echo "---"
-          ls -al
+          mkdir ./dist
+          cp -R /home/runner/work/cities-of-europe/* ./dist/*
 
       # TODO push also
       - name: Build and push
@@ -78,4 +78,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: false
           build-args: |
-            "dist_base=/home/runner/work/cities-of-europe/cities-of-europe"
+            "dist_base=./dist"

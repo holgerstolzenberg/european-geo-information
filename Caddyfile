@@ -35,8 +35,6 @@
   import caching
 
   handle_path /tiles/dark-matter/* {
-    #uri strip_prefix /tiles/dark-matter
-
     reverse_proxy https://basemaps.cartocdn.com:443 {
       header_up Host {upstream_hostport}
       import proxy
