@@ -46,6 +46,7 @@ EXPOSE 2019
 WORKDIR /data/caddy
 
 ARG dist_base="./dist/cities-of-europe/browser"
+RUN echo "Dist: ${dist_base}"
 COPY --chown=nonroot:nonroot "${dist_base}" /usr/share/html
 
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
