@@ -1,5 +1,6 @@
 // TODO find a way to configure color
 import { circleMarker, latLng, layerGroup, tileLayer } from 'leaflet';
+import { environment } from '../../environments/environment';
 
 export const euBorderStyle = {
   color: '#fff',
@@ -9,7 +10,7 @@ export const euBorderStyle = {
   fillOpacity: 0.06
 };
 
-export const darkMatterNoLabelsLayer = tileLayer('/tiles/dark-matter/dark_nolabels/{z}/{x}/{y}{r}.png', {
+export const darkMatterNoLabelsLayer = tileLayer(environment.tileServerUrl, {
   attribution:
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 });
