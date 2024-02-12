@@ -29,6 +29,7 @@ RUN set -eux; \
   chmod +x /work/usr/bin/caddy; \
   /work/usr/bin/caddy version
 
+ARG build_base="."
 FROM gcr.io/distroless/static-debian12@sha256:39ae7f0201fee13b777a3e4a5a9326a8889269172c8b4f4289d9f19c831f45f4
 
 # See https://caddyserver.com/docs/conventions#file-locations for details
@@ -39,7 +40,7 @@ ENV XDG_CONFIG_HOME=/config \
 
 COPY --from=builder --chown=nonroot:nonroot /work /
 COPY --chown=nonroot:nonroot Caddyfile /etc/caddy/
-COPY --chown=nonroot:nonroot /dist/cities-of-europe/browser /usr/share/html
+COPY --chown=nonroot:nonroot ${build_base}/dist/cities-of-europe/browser /usr/share/html
 
 EXPOSE 8080
 EXPOSE 2019

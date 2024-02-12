@@ -34,7 +34,9 @@ jobs:
         run: npm run lint
 
       - name: Build
-        run: npm run build --configuration=production
+        run: |
+          npm run build --configuration=production
+          cp -R ./dist ${HOME}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -52,5 +54,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          push: false
           tags: holgerstolzenberg/cities-of-europe:latest
+          build_args: |
+            build_base: ${HOME}
+          push: false
