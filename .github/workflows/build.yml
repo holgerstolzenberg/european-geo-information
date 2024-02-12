@@ -82,4 +82,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           tags: holgerstolzenberg/cities-of-europe:latest
+          file: Dockerfile
+          context: .
+          platforms: linux/amd64,linux/arm64
           push: false
