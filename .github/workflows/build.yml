@@ -55,6 +55,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           tags: holgerstolzenberg/cities-of-europe:latest
-          build_args: |
+          build-args: |
             build_base: ${HOME}
           push: false
