@@ -46,6 +46,8 @@ jobs:
     needs: build-dist
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Download dist
         uses: actions/download-artifact@v4
         with:
