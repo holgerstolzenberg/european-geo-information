@@ -1,4 +1,4 @@
-const defaultTarget = 'https://basemaps.cartocdn.com';
+var defaultTarget = 'https://basemaps.cartocdn.com';
 module.exports = [
   {
     context: ['/tiles/dark-matter/**'],

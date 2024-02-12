@@ -27,11 +27,27 @@ docker run [-it] -p8080:8080 holgerstolzenberg/cities-of-europe
 
 ## ✅ Open points
 
+## Features
+
+- Add user interactions for layer control
+- Expandable toolbar
+- Own location finder
+
+## Development
+
 - Better SASS structure and cleanup
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
-- Add user interactions for layer control
-- Caddy based Docker image
-- GitHub CI pipeline (docker build, tag, publish?)
-- Make Docker image configurable at runtime
-- Make Caddy proxy requests to tile server
 - Pin package.json versions
+
+## Packaging
+
+- Make Docker image configurable at runtime
+- ☑️ Caddy based Docker image
+- ☑️ Make Caddy proxy requests to tile server
+
+## CI
+
+- GitHub CI pipeline
+  - docker build
+  - tag
+  - ❓publish

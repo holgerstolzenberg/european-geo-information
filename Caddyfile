@@ -1,20 +1,61 @@
 {
   admin off
   persist_config off
+
+  log {
+    level warn
+  }
+}
+
+(must_headers) {
+  header {
+    Strict-Transport-Security "max-age=31536000; includesubdomains; preload"
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "SAMEORIGIN"
+    Referrer-Policy "strict-origin-when-cross-origin"
+    X-Xss-Protection "1; mode=block"
+    Expect-CT "max-age=604800"
+    -Server
+  }
+}
+
+(proxy) {
+  header_down X-Powered-By "Cities of Europe"
+  header_down Server "Caddy httpd"
+}
+
+(caching) {
+  header {
+    Cache-Control "public, max-age=604800, must-revalidate"
+  }
 }
 
 :8080 {
-  root * /usr/share/html
-  file_server
+  import must_headers
+  import caching
 
-  # for spa
-  try_files {path} /index.html
+  handle_path /tiles/dark-matter/* {
+    #uri strip_prefix /tiles/dark-matter
 
-  templates index.html {
-    between {$CADDY_TEMPLATE_ENCLOSED_BEGIN} {$CADDY_TEMPLATE_ENCLOSED_END}
+    reverse_proxy https://basemaps.cartocdn.com:443 {
+      header_up Host {upstream_hostport}
+      import proxy
+    }
   }
 
-  encode zstd gzip
+  handle /* {
+    root * /usr/share/html
+    file_server
+
+    # for spa
+    try_files {path} /index.html
+
+    templates index.html {
+      between {$CADDY_TEMPLATE_ENCLOSED_BEGIN} {$CADDY_TEMPLATE_ENCLOSED_END}
+    }
+
+    encode zstd gzip
+  }
 }
 
 :2019 {
