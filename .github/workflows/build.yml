@@ -73,12 +73,14 @@ jobs:
           ls -al
           echo "---"
           ls -al ./dist
+          echo "---"
+          ls -al ./dist/cities-of-europe
+          echo "---"
+          ls -al ./dist/cities-of-europe/browser
 
       # TODO push also
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           tags: holgerstolzenberg/cities-of-europe:latest
-          build-args: |
-            build_base: "."
           push: false
