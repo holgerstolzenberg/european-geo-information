@@ -68,6 +68,7 @@ jobs:
         shell: bash
         run: |
           pwd
+          ls -al .
           ls -al ./cities-of-europe
 
       # TODO push also
