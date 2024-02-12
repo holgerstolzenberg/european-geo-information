@@ -68,7 +68,8 @@ jobs:
         run: |
           pwd
           mkdir ./dist
-          cp -R /home/runner/work/cities-of-europe/* ./dist/*
+          cp -R /home/runner/work/cities-of-europe ./dist
+          ls -al ./dist
 
       # TODO push also
       - name: Build and push
