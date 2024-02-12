@@ -33,4 +33,5 @@ docker run [-it] -p8080:8080 holgerstolzenberg/cities-of-europe
 - Caddy based Docker image
 - GitHub CI pipeline (docker build, tag, publish?)
 - Make Docker image configurable at runtime
+- Make Caddy proxy requests to tile server
 - Pin package.json versions
