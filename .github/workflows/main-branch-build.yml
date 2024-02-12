@@ -31,9 +31,10 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # TODO find a way to configure URL at runtime
       - name: Build
         run: |
-          npm run build --configuration=production
+          npm run build -- --configuration=production --base-href=/cities-of-europe/
 
       - name: Store dist folder
         uses: actions/upload-artifact@v4
