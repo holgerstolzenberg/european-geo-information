@@ -37,7 +37,7 @@ docker run [-it] -p8080:8080 holgerstolzenberg/cities-of-europe
 
 - Better SASS structure and cleanup
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
-- Pin package.json versions
+- ☑️Pin package.json versions
 - Glitching white focus frame around map
 
 ## Packaging
