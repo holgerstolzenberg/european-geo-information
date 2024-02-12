@@ -39,11 +39,13 @@ ENV XDG_CONFIG_HOME=/config \
 
 COPY --from=builder --chown=nonroot:nonroot /work /
 COPY --chown=nonroot:nonroot Caddyfile /etc/caddy/
-COPY --chown=nonroot:nonroot ./dist/cities-of-europe/browser /usr/share/html
 
 EXPOSE 8080
 EXPOSE 2019
 
 WORKDIR /data/caddy
+
+ARG dist_base="./dist/cities-of-europe/browser"
+COPY --chown=nonroot:nonroot ${dist_base}/* /usr/share/html
 
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
