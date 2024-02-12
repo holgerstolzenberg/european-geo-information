@@ -63,6 +63,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist_folder
+          path: ./dist
 
       - name: Folder debug
         shell: bash
@@ -72,8 +73,6 @@ jobs:
           ls -al
           echo "---"
           ls -al ./dist
-          echo "---"
-          ls -al $HOME/dist
 
       # TODO push also
       - name: Build and push
