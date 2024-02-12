@@ -34,7 +34,6 @@ jobs:
       - name: Build
         run: |
           npm run build --configuration=production
-          cp -R ./dist ${HOME}
 
       - name: Store dist folder
         uses: actions/upload-artifact@v4
