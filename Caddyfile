@@ -1,0 +1,22 @@
+{
+  admin off
+  persist_config off
+}
+
+:8080 {
+  root * /usr/share/html
+  file_server
+
+  # for spa
+  try_files {path} /index.html
+
+  templates index.html {
+    between {$CADDY_TEMPLATE_ENCLOSED_BEGIN} {$CADDY_TEMPLATE_ENCLOSED_END}
+  }
+
+  encode zstd gzip
+}
+
+:2019 {
+  metrics /metrics
+}

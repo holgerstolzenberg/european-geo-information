@@ -17,6 +17,12 @@ ng serve [-c dev]
 
 # Lint
 ng lint
+
+# Build docker image
+./docker-build.sh
+
+# Run docker image locally
+docker run [-it] -p8080:8080 holgerstolzenberg/cities-of-europe
 ```
 
 ## ✅ Open points
@@ -25,4 +31,5 @@ ng lint
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
 - Add user interactions for layer control
 - Caddy based Docker image
-- Github CI pipeline
+- Github CI pipeline (docker build, tag, publish?)
+- Make Docker image configurable at runtime
