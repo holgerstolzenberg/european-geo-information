@@ -64,6 +64,17 @@ jobs:
         with:
           name: dist_folder
 
+      - name: Folder debug
+        shell: bash
+        run: |
+          pwd
+          echo "---"
+          ls -al
+          echo "---"
+          ls -al ./dist
+          echo "---"
+          ls -al $HOME/dist
+
       # TODO push also
       - name: Build and push
         uses: docker/build-push-action@v5
