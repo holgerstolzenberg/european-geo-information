@@ -83,6 +83,6 @@ jobs:
         with:
           tags: holgerstolzenberg/cities-of-europe:latest
           file: Dockerfile
-          context: .
+          context: "/home/runner/work/cities-of-europe/cities-of-europe" # location of downloaded file
           platforms: linux/amd64,linux/arm64
           push: false
