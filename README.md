@@ -22,7 +22,7 @@ ng lint
 ./docker-build.sh
 
 # Run docker image locally
-docker run [-it] -p8080:8080 holgerstolzenberg/cities-of-europe
+docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 ```
 
 ## ✅ Open points
