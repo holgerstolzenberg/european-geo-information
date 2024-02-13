@@ -1,7 +1,14 @@
 <div class="toolbar">
-  <button mat-icon-button class="tertiary"
+  <button mat-button class="tertiary"
+          aria-label="Example icon button with a home icon"
+          (click)="toMyLocation()" (keyup)="toMyLocation()" [disableRipple]="true">
+    <mat-icon>my_location</mat-icon>
+    <span>{{ 'toolbar.my-location' | transloco }}</span>
+  </button>
+  <button mat-button class="tertiary"
           aria-label="Example icon button with a home icon"
           (click)="resetMap()" (keyup)="resetMap()" [disableRipple]="true">
     <mat-icon>filter_center_focus</mat-icon>
+    <span>{{ 'toolbar.reset' | transloco }}</span>
   </button>
 </div>

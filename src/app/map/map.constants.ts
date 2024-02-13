@@ -5,8 +5,8 @@ import { environment } from '../../environments/environment';
 export const euBorderStyle = {
   color: '#fff',
   fillColor: '#fff',
-  opacity: 0.3,
-  weight: 0.5,
+  opacity: 0.4,
+  weight: 0.6,
   fillOpacity: 0.06
 };
 
@@ -21,7 +21,7 @@ export const centerOfEurope = latLng(54.526, 15.2551);
 const berlin = circleMarker([52.52, 13.405], {
   radius: 8,
   weight: 2,
-  color: 'yellow'
+  color: '#ffd617'
 }).bindPopup('Berlin', {
   closeButton: false
 });

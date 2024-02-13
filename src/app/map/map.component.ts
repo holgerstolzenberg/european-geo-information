@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Layer, LeafletEvent, Map as LeafletMap, MapOptions } from 'leaflet';
+import { latLng, Layer, LeafletEvent, Map as LeafletMap, MapOptions } from 'leaflet';
 import { MapService } from './map.service';
 import { NGXLogger } from 'ngx-logger';
 import { centerOfEurope, defaultZoom } from './map.constants';
@@ -16,9 +16,11 @@ export class MapComponent implements OnInit, OnDestroy {
     minZoom: 4,
     maxZoom: 20,
     center: this.mapService.getCenterOfEurope(),
-    fadeAnimation: false,
+    fadeAnimation: true,
     zoomAnimation: true,
-    markerZoomAnimation: false
+    markerZoomAnimation: true,
+    zoomSnap: 0.25,
+    zoomDelta: 0.25
   };
 
   layers: Layer[] = [];
@@ -26,6 +28,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private map?: LeafletMap;
   private theZoom?: number;
   private onReset?: Subscription;
+  private onToMyLocation?: Subscription;
 
   constructor(
     private log: NGXLogger,
@@ -36,10 +39,15 @@ export class MapComponent implements OnInit, OnDestroy {
     this.onReset = this.mapService.resetMap.subscribe(() => {
       this.resetMap();
     });
+
+    this.onToMyLocation = this.mapService.toMyLocation.subscribe(() => {
+      this.myLocation();
+    });
   }
 
   ngOnDestroy(): void {
     this.onReset!.unsubscribe();
+    this.onToMyLocation!.unsubscribe();
 
     this.log.info('Disposing map');
 
@@ -63,5 +71,22 @@ export class MapComponent implements OnInit, OnDestroy {
 
   resetMap() {
     this.map!.flyTo(centerOfEurope, defaultZoom);
+    // TODO clear my location marker
+  }
+
+  myLocation() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.map!.flyTo(latLng(position.coords.latitude, position.coords.longitude), defaultZoom + 2, {
+          animate: true,
+          duration: 1
+        });
+      },
+      err => {
+        this.log.error('Could not get geolocation', err);
+
+        // TODO error notification toast
+      }
+    );
   }
 }

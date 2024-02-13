@@ -10,6 +10,10 @@ export class ToolbarComponent {
   constructor(private mapService: MapService) {}
 
   resetMap() {
-    this.mapService.onResetMap();
+    this.mapService.resetMapToEuropeanCenter();
+  }
+
+  toMyLocation() {
+    this.mapService.moveMapToMyLocation();
   }
 }

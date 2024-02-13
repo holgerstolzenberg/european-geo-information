@@ -10,7 +10,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MapComponent } from './map/map.component';
 import { MapService } from './map/map.service';
 import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 
 @NgModule({
   declarations: [HeaderComponent, ToolbarComponent, MapComponent, AppComponent],
@@ -22,7 +22,7 @@ import { MatIconButton } from '@angular/material/button';
     LeafletModule,
     BrowserModule,
     MatIcon,
-    MatIconButton
+    MatButton
   ],
   providers: [provideAnimationsAsync(), MapService],
   bootstrap: [AppComponent]

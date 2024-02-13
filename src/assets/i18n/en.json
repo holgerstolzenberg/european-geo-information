@@ -1,5 +1,9 @@
 {
   "header": {
     "title": "Cities of Europe"
+  },
+  "toolbar": {
+    "reset": "Reset",
+    "my-location": "My location"
   }
 }

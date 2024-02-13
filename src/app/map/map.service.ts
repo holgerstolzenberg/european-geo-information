@@ -8,6 +8,7 @@ import { capitols, centerOfEurope, darkMatterNoLabelsLayer, euBorderStyle } from
 @Injectable()
 export class MapService {
   @Output() resetMap = new EventEmitter<string>();
+  @Output() toMyLocation = new EventEmitter<string>();
 
   constructor(
     private http: HttpClient,
@@ -31,8 +32,13 @@ export class MapService {
     });
   }
 
-  onResetMap() {
-    this.log.info('Rest map to your position');
+  resetMapToEuropeanCenter() {
+    this.log.info('Reset map');
     this.resetMap.emit();
+  }
+
+  moveMapToMyLocation() {
+    this.log.info('Move map to my location');
+    this.toMyLocation.emit();
   }
 }

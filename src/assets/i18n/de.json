@@ -1,5 +1,9 @@
 {
   "header": {
     "title": "Europas Städte"
+  },
+  "toolbar": {
+    "reset": "Zurücksetzen",
+    "my-location": "Wo bin ich"
   }
 }

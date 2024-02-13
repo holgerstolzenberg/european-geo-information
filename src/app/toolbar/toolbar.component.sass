@@ -12,20 +12,13 @@ div.toolbar
   height: $toolbar-height
   background-color: $secondary
 
-  button.mdc-icon-button
+  button.mat-mdc-button
     border: 0
-    padding: 0
-    display: flex
-
-    align-items: center
-    justify-content: center
-    border-radius: 0
+    display: inline-block
+    color: white
+    padding: 0 10pt 0 10pt
     height: $toolbar-height
-    width: $toolbar-height
 
     &:hover, active
-      color: $tertiary
-      background-color: $primary
-
-  .mat-icon
-    font-size: 20pt
+      color: $primary
+      background-color: $accent-bright
