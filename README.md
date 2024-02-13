@@ -31,7 +31,10 @@ docker run [-it] -p8080:8080 holgerstolzenberg/cities-of-europe
 
 - Add user interactions for layer control
 - Expandable toolbar
-- Own location finder
+- ☑️Own location finder
+- Discover Leaflet plugins
+- Weather overlays
+- Smoother map animation
 
 ## Development
 
