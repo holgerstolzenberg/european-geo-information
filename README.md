@@ -1,4 +1,4 @@
-[![main](https://github.com/holgerstolzenberg/cities-of-europe/actions/workflows/build.yml/badge.svg)](https://github.com/holgerstolzenberg/cities-of-europe/actions/workflows/build.yml)
+[![build-main-branch](https://github.com/holgerstolzenberg/cities-of-europe/actions/workflows/main-branch-build.yml/badge.svg?branch=main)](https://github.com/holgerstolzenberg/cities-of-europe/actions/workflows/main-branch-build.yml)
 
 # Cities of Europe
 
