@@ -35,6 +35,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 - Discover Leaflet plugins
 - Weather overlays
 - Smoother map animation
+- Add loading indicator
 
 ## Development
 
