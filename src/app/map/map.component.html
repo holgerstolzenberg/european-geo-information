@@ -2,6 +2,8 @@
      [leafletOptions]="options"
      [leafletLayers]="layers"
      (leafletMapReady)="onMapReady($event)"
+     (leafletMapZoomStart)="onMapZoomStart()"
      (leafletMapZoomEnd)="onMapZoomEnd($event)"
      class="map">
 </div>
+<div class="loader" *ngIf="showLoader"><span>{{ showLoader }}</span></div>

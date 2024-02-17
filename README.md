@@ -35,10 +35,11 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 - Discover Leaflet plugins
 - Weather overlays
 - Smoother map animation
-- Add loading indicator
+- ☑️Add loading indicator
 
 ## Development
 
+- Investigate 404 on app start
 - Better SASS structure and cleanup
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
 - ☑️Pin package.json versions
@@ -46,7 +47,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 
 ## Packaging
 
-- Make Docker image configurable at runtime -> let run at specific context
+- Make Docker image configurable at runtime -> let run at specific context (env.js)
 - ☑️Caddy based Docker image
 - ☑️Make Caddy proxy requests to tile server
 

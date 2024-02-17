@@ -19,11 +19,12 @@ export class MapComponent implements OnInit, OnDestroy {
     fadeAnimation: true,
     zoomAnimation: true,
     markerZoomAnimation: true,
-    zoomSnap: 0.25,
-    zoomDelta: 0.25
+    zoomSnap: 0.5,
+    zoomDelta: 0.5
   };
 
   layers: Layer[] = [];
+  showLoader: boolean = false;
 
   private map?: LeafletMap;
   private theZoom?: number;
@@ -64,9 +65,15 @@ export class MapComponent implements OnInit, OnDestroy {
     this.theZoom = map.getZoom();
   }
 
+  onMapZoomStart() {
+    this.log.debug('MapZoomStart: zoom set to', this.theZoom);
+    this.showLoader = true;
+  }
+
   onMapZoomEnd(event: LeafletEvent) {
     this.theZoom = event.target.getZoom();
-    this.log.debug('Zoom set to', this.theZoom);
+    this.log.debug('MapZoomEnd: zoom set to', this.theZoom);
+    this.showLoader = false;
   }
 
   resetMap() {

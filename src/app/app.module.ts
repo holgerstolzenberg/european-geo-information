@@ -11,13 +11,14 @@ import { MapComponent } from './map/map.component';
 import { MapService } from './map/map.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [HeaderComponent, ToolbarComponent, MapComponent, AppComponent],
   imports: [
     I18nModule,
     LoggerModule.forRoot({
-      level: NgxLoggerLevel.INFO
+      level: environment.prodMode ? NgxLoggerLevel.WARN : NgxLoggerLevel.DEBUG
     }),
     LeafletModule,
     BrowserModule,
