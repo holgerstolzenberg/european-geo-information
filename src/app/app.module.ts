@@ -12,9 +12,10 @@ import { MapService } from './map/map.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { environment } from '../environments/environment';
+import { OptionPaneComponent } from './option-pane/option-pane.component';
 
 @NgModule({
-  declarations: [HeaderComponent, ToolbarComponent, MapComponent, AppComponent],
+  declarations: [HeaderComponent, ToolbarComponent, MapComponent, AppComponent, OptionPaneComponent],
   imports: [
     I18nModule,
     LoggerModule.forRoot({

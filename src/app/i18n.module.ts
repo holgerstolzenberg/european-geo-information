@@ -1,6 +1,6 @@
 import { provideTransloco, TranslocoModule } from '@ngneat/transloco';
 import { isDevMode, NgModule } from '@angular/core';
-import { TranslocoHttpLoader } from './utils/TranslocoHttpLoader';
+import { I18nHttpLoader } from './utils/I18nHttpLoader';
 import { provideHttpClient } from '@angular/common/http';
 import { provideTranslocoPreloadLangs } from '@ngneat/transloco-preload-langs';
 
@@ -15,7 +15,7 @@ import { provideTranslocoPreloadLangs } from '@ngneat/transloco-preload-langs';
         reRenderOnLangChange: true,
         prodMode: !isDevMode()
       },
-      loader: TranslocoHttpLoader
+      loader: I18nHttpLoader
     }),
     provideTranslocoPreloadLangs(['en', 'de'])
   ]

@@ -3,7 +3,7 @@ import { Translation, TranslocoLoader } from '@ngneat/transloco';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
-export class TranslocoHttpLoader implements TranslocoLoader {
+export class I18nHttpLoader implements TranslocoLoader {
   private http = inject(HttpClient);
 
   getTranslation(lang: string) {

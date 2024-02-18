@@ -1,7 +1,9 @@
 $header-height: 50pt
 $toolbar-height: 30pt
+$option-pane-width: 215pt
 
 $primary: #101010
+$primary-bright: #262626
 $secondary: #2626b9
 $tertiary: #fff
 $accent: #404040
@@ -35,10 +37,9 @@ a.leaflet-control-zoom-out
   background-color: $primary
   color: $secondary
 
-a.leaflet-control-zoom-in:hover,
-a.leaflet-control-zoom-out:hover
-  background-color: $secondary
-  color: $tertiary
+  &:hover
+    background-color: $secondary
+    color: $tertiary
 
 div.leaflet-popup-content-wrapper
   border-radius: 3pt
@@ -47,9 +48,6 @@ div.leaflet-popup-content-wrapper,
 div.leaflet-popup-tip
   background-color: $accent-bright
   color: $primary
-  border: 0
-
-div.leaflet-popup-tip
   border: 0
 
 div.leaflet-popup-content
