@@ -34,7 +34,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 - ☑️Own location finder
 - Discover Leaflet plugins
 - Weather overlays
-- Smoother map animation
+- Smoother map animation (only mac chrome so far, retina)
 - ☑️Add loading indicator
 
 ## Development
@@ -57,4 +57,3 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
   - ☑️docker build
   - ☑️publish
   - ☑️GitHub pages
-  - tag
