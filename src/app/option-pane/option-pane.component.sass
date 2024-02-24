@@ -1,10 +1,69 @@
+@use "mixins/triangle"
+@use "mixins/typography"
+
 @import "main"
 
 div.option-pane
+  @include typography.default
   position: absolute
   right: 0
   bottom: 0
   top: 0
-  width: $option-pane-width
-  background-color: $primary-bright
-  box-shadow: rgba(38, 38, 38, 0.35) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px
+  width: typography.$option-pane-width
+  background-color: typography.$primary-bright
+  box-shadow: rgba(38, 38, 38, 0.35) 0 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px
+  z-index: 9999
+  opacity: .9
+
+  &.expanded
+    width: typography.$option-pane-width-expanded
+
+  div.expando
+    border: 0
+    text-align: center
+    width: 40pt
+    height: 100%
+    float: left
+    background: none
+
+    div.vertical-align
+      display: flex
+      justify-content: center
+      align-items: center
+      height: 100%
+      background: none
+
+    div.button
+      @include typography.prevent-select
+      border: 2pt solid typography.$secondary
+      color: typography.$tertiary
+      cursor: pointer
+      display: inline-block
+      line-height: 20pt
+      font-size: 15pt
+      padding: 5pt
+      margin: 10pt
+      width: 5pt
+      height: 60pt
+
+      &:hover
+        background-color: typography.$secondary
+        border-color: typography.$accent-bright
+
+      &:active
+        background-color: typography.$accent-bright
+
+      div.triangle
+        &.t-open
+          @include triangle.equilateral-triangle('left', 5pt, typography.$tertiary)
+          display: inline-block
+
+        &.t-close
+          @include triangle.equilateral-triangle('right', 5pt, typography.$tertiary)
+          display: inline-block
+
+  div.options
+    padding: 10pt
+    width: calc($option-pane-width-expanded - $option-pane-width - 20pt)
+    height: 100%
+    display: inline-block

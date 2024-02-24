@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { latLng, Layer, LeafletEvent, Map as LeafletMap, MapOptions } from 'leaflet';
+import { control, latLng, Layer, LeafletEvent, Map as LeafletMap, MapOptions } from 'leaflet';
 import { MapService } from './map.service';
 import { NGXLogger } from 'ngx-logger';
 import { centerOfEurope, defaultZoom } from './map.constants';
@@ -20,7 +20,8 @@ export class MapComponent implements OnInit, OnDestroy {
     zoomAnimation: true,
     markerZoomAnimation: true,
     zoomSnap: 0.5,
-    zoomDelta: 0.5
+    zoomDelta: 0.5,
+    attributionControl: false
   };
 
   layers: Layer[] = [];
@@ -58,6 +59,13 @@ export class MapComponent implements OnInit, OnDestroy {
 
   onMapReady(map: LeafletMap) {
     this.map = map;
+
+    this.map.addControl(
+      control.attribution({
+        position: 'bottomleft',
+        prefix: ''
+      })
+    );
 
     this.layers.push(this.mapService.getBaseLayer());
     this.mapService.load(this.layers);

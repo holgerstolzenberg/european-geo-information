@@ -6,5 +6,15 @@ import { Component } from '@angular/core';
   styleUrl: 'option-pane.component.sass'
 })
 export class OptionPaneComponent {
+  expanded: boolean = false;
+
   constructor() {}
+
+  protected expand() {
+    this.expanded = true;
+  }
+
+  protected compress() {
+    this.expanded = false;
+  }
 }
