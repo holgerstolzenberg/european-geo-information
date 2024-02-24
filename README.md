@@ -30,7 +30,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 ## Features
 
 - Add user interactions for layer control
-- Expandable toolbar
+- ☑️Expandable toolbar
 - ☑️Own location finder
 - Discover Leaflet plugins
 - Weather overlays
