@@ -5,5 +5,9 @@
   "toolbar": {
     "reset": "Zurücksetzen",
     "my-location": "Wo bin ich"
+  },
+  "option-pane":{
+    "show-eu-borders": "EU Grenzen (UN)",
+    "show-berlin": "Berlin anzeigen"
   }
 }

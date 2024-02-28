@@ -5,5 +5,9 @@
   "toolbar": {
     "reset": "Reset",
     "my-location": "My location"
+  },
+  "option-pane": {
+    "show-eu-borders": "European borders (UN)",
+    "show-berlin": "Show Berlin"
   }
 }

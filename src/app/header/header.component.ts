@@ -5,7 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 @Component({
   selector: 'app-header',
   templateUrl: 'header.component.html',
-  styleUrl: 'header.component.sass'
+  styleUrl: 'header.component.scss'
 })
 export class HeaderComponent {
   constructor(

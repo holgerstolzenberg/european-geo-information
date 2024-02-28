@@ -1,0 +1,63 @@
+@use "mixins/typography";
+
+@import "variables";
+
+div.map {
+  @include typography.prevent-select;
+  background-color: $accent;
+  tab-index: -1;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.loader,
+.loader:after {
+  border-radius: 50%;
+  width: 10pt;
+  height: 10pt;
+  display: block;
+  position: absolute;
+  left: 10pt;
+  bottom: 10pt;
+}
+
+.loader {
+  margin: 0;
+  font-size: 0;
+  text-indent: -9999pt;
+  border-top: 1.5pt solid $accent-dark;
+  border-right: 1.5pt solid $accent-dark;
+  border-bottom: 1.5pt solid $accent-dark;
+  border-left: 1.5pt solid $accent-bright;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+  z-index: 99;
+}
+
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

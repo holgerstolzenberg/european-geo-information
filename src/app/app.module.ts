@@ -13,6 +13,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { environment } from '../environments/environment';
 import { OptionPaneComponent } from './option-pane/option-pane.component';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [HeaderComponent, ToolbarComponent, MapComponent, AppComponent, OptionPaneComponent],
@@ -21,10 +22,11 @@ import { OptionPaneComponent } from './option-pane/option-pane.component';
     LoggerModule.forRoot({
       level: environment.prodMode ? NgxLoggerLevel.WARN : NgxLoggerLevel.DEBUG
     }),
-    LeafletModule,
     BrowserModule,
+    LeafletModule,
     MatIcon,
-    MatButton
+    MatButton,
+    MatSlideToggle
   ],
   providers: [provideAnimationsAsync(), MapService],
   bootstrap: [AppComponent]

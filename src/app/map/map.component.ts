@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrl: './map.component.sass'
+  styleUrl: './map.component.scss'
 })
 export class MapComponent implements OnInit, OnDestroy {
   @Input() options: MapOptions = {

@@ -9,7 +9,7 @@
         "@schematics/angular:component": {
           "inlineTemplate": true,
           "inlineStyle": true,
-          "style": "sass",
+          "style": "scss",
           "skipTests": true
         },
         "@schematics/angular:class": {
@@ -48,7 +48,7 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "sass",
+            "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -60,7 +60,7 @@
             ],
             "styles": [
               "node_modules/leaflet/dist/leaflet.css",
-              "src/assets/styles/main.sass"
+              "src/assets/styles/main.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

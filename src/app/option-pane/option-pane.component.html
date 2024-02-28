@@ -13,6 +13,20 @@
             </div>
         </div>
     </div>
-    <div class="options" *ngIf="expanded">
+    <div class="options">
+        <div class="row">
+            <mat-slide-toggle
+                    [checked]="showEuBorders"
+                    (change)="euBordersChanged()">
+                {{ 'option-pane.show-eu-borders' | transloco }}
+            </mat-slide-toggle>
+        </div>
+        <div class="row">
+            <mat-slide-toggle
+                    [checked]="showBerlin"
+                    (change)="berlinChanged()">
+                {{ 'option-pane.show-berlin' | transloco }}
+            </mat-slide-toggle>
+        </div>
     </div>
 </div>
