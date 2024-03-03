@@ -20,7 +20,7 @@ export class NotificationService {
     private readonly log: NGXLogger
   ) {}
 
-  async showError(message: string, error: HttpErrorResponse) {
+  async showError(message: string, error: HttpErrorResponse | GeolocationPositionError) {
     this.log.error(message, error);
     firstValueFrom(this.i18nService.translate('notifications.error-title')).then(title =>
       this.toastrService.error(error.message, title, options)
