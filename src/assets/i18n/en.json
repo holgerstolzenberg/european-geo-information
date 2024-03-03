@@ -9,5 +9,8 @@
   "option-pane": {
     "show-eu-borders": "European borders (UN)",
     "show-capitols": "Show capitols"
+  },
+  "notifications": {
+    "error-title": "Error"
   }
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
 import { NGXLogger } from 'ngx-logger';
 import { Title } from '@angular/platform-browser';
+import { I18nService } from './i18n/i18n.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class AppComponent implements OnInit {
   constructor(
-    private i18nService: TranslocoService,
+    private i18nService: I18nService,
     private logger: NGXLogger,
     private title: Title
   ) {
@@ -18,6 +19,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.i18nService.selectTranslate('header.title').subscribe(value => this.title.setTitle(value));
+    firstValueFrom(this.i18nService.translate('header.title')).then(value => this.title.setTitle(value));
   }
 }

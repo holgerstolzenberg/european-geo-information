@@ -6,8 +6,11 @@
     "reset": "Karte zurücksetzen",
     "my-location": "Wo bin ich"
   },
-  "option-pane":{
+  "option-pane": {
     "show-eu-borders": "EU Grenzen (UN)",
     "show-capitols": "Hauptstädte anzeigen"
+  },
+  "notifications": {
+    "error-title": "Fehler"
   }
 }

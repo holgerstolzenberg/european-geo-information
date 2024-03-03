@@ -23,6 +23,7 @@ import {
   noDrawStyle
 } from './map.constants';
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../notifications/notification.service';
 
 @Component({
   selector: 'app-map',
@@ -53,7 +54,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
   constructor(
     private log: NGXLogger,
-    private mapService: MapService
+    private mapService: MapService,
+    private notificationService: NotificationService
   ) {
     this.layers = this.loadAllLayers();
   }
@@ -128,18 +130,13 @@ export class MapComponent implements OnInit, OnDestroy {
 
   myLocation() {
     navigator.geolocation.getCurrentPosition(
-      position => {
+      position =>
         this.theMap!.flyTo(
           latLng(position.coords.latitude, position.coords.longitude),
           defaultZoom + 2,
           defaultZoomPanOptions
-        );
-      },
-      err => {
-        this.log.error('Could not get geolocation', err);
-
-        // TODO error notification toast
-      }
+        ),
+      err => this.notificationService.showError('Could not get geolocation', err)
     );
   }
 

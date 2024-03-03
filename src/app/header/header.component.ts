@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
 import { NGXLogger } from 'ngx-logger';
+import { I18nService } from '../i18n/i18n.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +9,7 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class HeaderComponent {
   constructor(
-    private i18nService: TranslocoService,
+    private i18nService: I18nService,
     private logger: NGXLogger
   ) {}
 

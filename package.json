@@ -24,6 +24,7 @@
     "@ngneat/transloco-preload-langs": "5.0.1",
     "leaflet": "1.9.4",
     "ngx-logger": "5.0.12",
+    "ngx-toastr": "18.0.0",
     "rxjs": "~7.8.0",
     "tslib": "2.3.0",
     "zone.js": "~0.14.3"

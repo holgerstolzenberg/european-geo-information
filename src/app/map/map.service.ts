@@ -5,6 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 import { GeoJsonObject } from 'geojson';
 import { capitols, centerOfEurope, darkMatterNoLabelsLayer, euBorderStyle } from './map.constants';
 import { firstValueFrom } from 'rxjs';
+import { NotificationService } from '../notifications/notification.service';
 
 @Injectable()
 export class MapService {
@@ -16,8 +17,9 @@ export class MapService {
   private readonly euBordersLayer: Promise<GeoJSON>;
 
   constructor(
-    private http: HttpClient,
-    private log: NGXLogger
+    private readonly http: HttpClient,
+    private readonly log: NGXLogger,
+    private readonly notificationService: NotificationService
   ) {
     this.euBordersLayer = this.initEuBordersLayer();
   }
@@ -29,8 +31,7 @@ export class MapService {
         return geoJson(jsonResponse, { style: euBorderStyle });
       })
       .catch(err => {
-        this.log.error('Error loading EU borders geo json', err);
-        // TODO error notification
+        this.notificationService.showError('Error loading EU borders geo json', err);
         return geoJson();
       });
   }
