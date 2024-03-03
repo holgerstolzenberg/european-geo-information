@@ -13,11 +13,10 @@ import { MatButton } from '@angular/material/button';
 import { environment } from '../environments/environment';
 import { OptionPaneComponent } from './option-pane/option-pane.component';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NotificationService } from './utils/notification.service';
 import { CommonModule } from '@angular/common';
-import { I18nModule } from './utils/i18n.module';
+import { I18nModule } from './i18n/i18n.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @NgModule({
   declarations: [HeaderComponent, ToolbarComponent, MapComponent, AppComponent, OptionPaneComponent],
@@ -28,14 +27,14 @@ import { I18nModule } from './utils/i18n.module';
     LoggerModule.forRoot({
       level: environment.prodMode ? NgxLoggerLevel.WARN : NgxLoggerLevel.DEBUG
     }),
-    ToastrModule.forRoot({ preventDuplicates: true }),
     I18nModule,
+    NotificationsModule,
     LeafletModule,
     MatIcon,
     MatButton,
     MatSlideToggle
   ],
-  providers: [provideAnimationsAsync(), NotificationService, MapService],
+  providers: [provideAnimationsAsync(), MapService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

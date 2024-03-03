@@ -5,7 +5,7 @@ import { NGXLogger } from 'ngx-logger';
 import { GeoJsonObject } from 'geojson';
 import { capitols, centerOfEurope, darkMatterNoLabelsLayer, euBorderStyle } from './map.constants';
 import { firstValueFrom } from 'rxjs';
-import { NotificationService } from '../utils/notification.service';
+import { NotificationService } from '../notifications/notification.service';
 
 @Injectable()
 export class MapService {
