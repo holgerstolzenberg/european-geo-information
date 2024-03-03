@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { TranslocoService } from '@ngneat/transloco';
 import { NGXLogger } from 'ngx-logger';
 import { HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { I18nService } from '../i18n/i18n.service';
 
 export const options = {
   timeOut: 5000,
@@ -15,15 +15,15 @@ export const options = {
 @Injectable()
 export class NotificationService {
   constructor(
-    private toastr: ToastrService,
-    private i18nService: TranslocoService,
-    private log: NGXLogger
+    private readonly toastrService: ToastrService,
+    private readonly i18nService: I18nService,
+    private readonly log: NGXLogger
   ) {}
 
   async showError(message: string, error: HttpErrorResponse) {
     this.log.error(message, error);
-    firstValueFrom(this.i18nService.selectTranslate('notifications.error-title')).then(title =>
-      this.toastr.error(error.message, title, options)
+    firstValueFrom(this.i18nService.translate('notifications.error-title')).then(title =>
+      this.toastrService.error(error.message, title, options)
     );
   }
 }

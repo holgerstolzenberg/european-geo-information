@@ -17,15 +17,15 @@ export class MapService {
   private readonly euBordersLayer: Promise<GeoJSON>;
 
   constructor(
-    private http: HttpClient,
-    private log: NGXLogger,
-    private notificationService: NotificationService
+    private readonly http: HttpClient,
+    private readonly log: NGXLogger,
+    private readonly notificationService: NotificationService
   ) {
     this.euBordersLayer = this.initEuBordersLayer();
   }
 
   private async initEuBordersLayer() {
-    return firstValueFrom(this.http.get<GeoJsonObject>('./assets/geo-data/european-borders.json2'))
+    return firstValueFrom(this.http.get<GeoJsonObject>('./assets/geo-data/european-borders.json'))
       .then(jsonResponse => {
         this.log.debug('Loaded borders json', jsonResponse);
         return geoJson(jsonResponse, { style: euBorderStyle });
