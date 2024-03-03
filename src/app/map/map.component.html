@@ -1,9 +1,11 @@
 <div leaflet
      [leafletOptions]="options"
-     [leafletLayers]="layers"
      (leafletMapReady)="onMapReady($event)"
      (leafletMapZoomStart)="onMapZoomStart()"
      (leafletMapZoomEnd)="onMapZoomEnd($event)"
      class="map">
+    <div *ngFor="let value of layers | async" [leafletLayer]="value"></div>
 </div>
-<div class="loader" *ngIf="showLoader"><span>{{ showLoader }}</span></div>
+<div class="loader" *ngIf="showLoader">
+    <span>{{ showLoader }}</span>
+</div>

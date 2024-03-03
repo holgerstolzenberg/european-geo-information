@@ -17,15 +17,15 @@
         <div class="row">
             <mat-slide-toggle
                     [checked]="showEuBorders"
-                    (change)="euBordersChanged()">
+                    (change)="euBordersChanged($event)">
                 {{ 'option-pane.show-eu-borders' | transloco }}
             </mat-slide-toggle>
         </div>
         <div class="row">
             <mat-slide-toggle
-                    [checked]="showBerlin"
-                    (change)="berlinChanged()">
-                {{ 'option-pane.show-berlin' | transloco }}
+                    [checked]="showCapitols"
+                    (change)="capitolsChanged($event)">
+                {{ 'option-pane.show-capitols' | transloco }}
             </mat-slide-toggle>
         </div>
     </div>

@@ -1,9 +1,28 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { control, latLng, Layer, LeafletEvent, Map as LeafletMap, MapOptions } from 'leaflet';
+import {
+  CircleMarker,
+  control,
+  GeoJSON,
+  latLng,
+  Layer,
+  LayerGroup,
+  LeafletEvent,
+  Map as LeafletMap,
+  MapOptions
+} from 'leaflet';
 import { MapService } from './map.service';
 import { NGXLogger } from 'ngx-logger';
-import { centerOfEurope, defaultZoom } from './map.constants';
-import { Subscription } from 'rxjs';
+import {
+  attributionOptions,
+  centerOfEurope,
+  defaultCapitolsStyle,
+  defaultZoom,
+  defaultZoomPanOptions,
+  euBorderStyle,
+  LayerIndices,
+  noDrawStyle
+} from './map.constants';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -24,53 +43,71 @@ export class MapComponent implements OnInit, OnDestroy {
     attributionControl: false
   };
 
-  layers: Layer[] = [];
+  layers: Promise<Layer[]>;
   showLoader: boolean = false;
 
-  private map?: LeafletMap;
+  private theMap?: LeafletMap;
   private theZoom?: number;
-  private onReset?: Subscription;
-  private onToMyLocation?: Subscription;
+
+  private onUnsubscribe$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private log: NGXLogger,
     private mapService: MapService
-  ) {}
+  ) {
+    this.layers = this.loadAllLayers();
+  }
 
   ngOnInit(): void {
-    this.onReset = this.mapService.resetMap.subscribe(() => {
+    this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
       this.resetMap();
     });
 
-    this.onToMyLocation = this.mapService.toMyLocation.subscribe(() => {
+    this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
       this.myLocation();
+    });
+
+    this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
+      this.showEuBorders(value);
+    });
+
+    this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
+      this.showCapitols(value);
     });
   }
 
   ngOnDestroy(): void {
-    this.onReset!.unsubscribe();
-    this.onToMyLocation!.unsubscribe();
+    this.unsubscribeAll();
+    this.disposeMap();
+  }
 
-    this.log.info('Disposing map');
+  private unsubscribeAll() {
+    this.onUnsubscribe$.next(true);
+    this.onUnsubscribe$.complete();
+  }
 
-    this.map!.clearAllEventListeners();
-    this.map!.remove();
+  private disposeMap() {
+    this.theMap!.clearAllEventListeners();
+    this.theMap!.remove();
+    this.log.info('Disposed theMap');
   }
 
   onMapReady(map: LeafletMap) {
-    this.map = map;
-
-    this.map.addControl(
-      control.attribution({
-        position: 'bottomleft',
-        prefix: ''
-      })
-    );
-
-    this.layers.push(this.mapService.getBaseLayer());
-    this.mapService.load(this.layers);
-
+    this.theMap = map;
+    this.log.info('Leaflet theMap ready');
+    this.theMap.addControl(control.attribution(attributionOptions));
     this.theZoom = map.getZoom();
+  }
+
+  private async loadAllLayers() {
+    return this.mapService.loadAllLayers().then(([baseLayer, euBorderLayer, capitolsLayer]) => {
+      const layers = new Array<Layer>(3);
+      layers[LayerIndices.BASE_LAYER_INDEX] = baseLayer;
+      layers[LayerIndices.EU_LAYER_INDEX] = euBorderLayer;
+      layers[LayerIndices.CAPITOLS_LAYER_INDEX] = capitolsLayer;
+
+      return layers;
+    });
   }
 
   onMapZoomStart() {
@@ -85,17 +122,18 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   resetMap() {
-    this.map!.flyTo(centerOfEurope, defaultZoom);
+    this.theMap!.flyTo(centerOfEurope, defaultZoom);
     // TODO clear my location marker
   }
 
   myLocation() {
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.map!.flyTo(latLng(position.coords.latitude, position.coords.longitude), defaultZoom + 2, {
-          animate: true,
-          duration: 1
-        });
+        this.theMap!.flyTo(
+          latLng(position.coords.latitude, position.coords.longitude),
+          defaultZoom + 2,
+          defaultZoomPanOptions
+        );
       },
       err => {
         this.log.error('Could not get geolocation', err);
@@ -103,5 +141,27 @@ export class MapComponent implements OnInit, OnDestroy {
         // TODO error notification toast
       }
     );
+  }
+
+  private showEuBorders(value: boolean) {
+    this.layers
+      .then(layer => {
+        return layer[LayerIndices.EU_LAYER_INDEX] as GeoJSON;
+      })
+      .then(l => l.setStyle(value ? euBorderStyle : noDrawStyle));
+  }
+
+  private showCapitols(value: boolean) {
+    this.theMap!.closePopup();
+
+    this.layers
+      .then(layer => {
+        return layer[LayerIndices.CAPITOLS_LAYER_INDEX] as LayerGroup;
+      })
+      .then(capitols => capitols.getLayers().forEach(capitol => this.markerVisible(capitol, value)));
+  }
+
+  private markerVisible(layer: Layer, visible: boolean) {
+    (layer as CircleMarker).setStyle(visible ? defaultCapitolsStyle : noDrawStyle);
   }
 }

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
+import { Component, Input } from '@angular/core';
+import { MapService } from '../map/map.service';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-option-pane',
@@ -7,11 +8,12 @@ import { NGXLogger } from 'ngx-logger';
   styleUrl: 'option-pane.component.scss'
 })
 export class OptionPaneComponent {
-  expanded: boolean = true;
-  showEuBorders: boolean = true;
-  showBerlin: boolean = true;
+  expanded: boolean = false;
 
-  constructor(private log: NGXLogger) {}
+  @Input() showEuBorders: boolean = true;
+  @Input() showCapitols: boolean = true;
+
+  constructor(private mapService: MapService) {}
 
   protected expand() {
     this.expanded = true;
@@ -21,11 +23,11 @@ export class OptionPaneComponent {
     this.expanded = false;
   }
 
-  euBordersChanged() {
-    this.log.debug('EU border changed');
+  euBordersChanged(event: MatSlideToggleChange) {
+    this.mapService.doShowEuBorders(event.checked).then(() => (this.showEuBorders = event.checked));
   }
 
-  berlinChanged() {
-    this.log.debug('Berlin changed');
+  capitolsChanged(event: MatSlideToggleChange) {
+    this.mapService.doShowCapitols(event.checked).then(() => (this.showCapitols = event.checked));
   }
 }

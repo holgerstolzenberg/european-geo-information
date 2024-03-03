@@ -3,11 +3,11 @@
     "title": "Europas Städte"
   },
   "toolbar": {
-    "reset": "Zurücksetzen",
+    "reset": "Karte zurücksetzen",
     "my-location": "Wo bin ich"
   },
   "option-pane":{
     "show-eu-borders": "EU Grenzen (UN)",
-    "show-berlin": "Berlin anzeigen"
+    "show-capitols": "Hauptstädte anzeigen"
   }
 }

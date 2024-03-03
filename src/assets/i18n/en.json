@@ -3,11 +3,11 @@
     "title": "Cities of Europe"
   },
   "toolbar": {
-    "reset": "Reset",
+    "reset": "Reset map",
     "my-location": "My location"
   },
   "option-pane": {
     "show-eu-borders": "European borders (UN)",
-    "show-berlin": "Show Berlin"
+    "show-capitols": "Show capitols"
   }
 }
