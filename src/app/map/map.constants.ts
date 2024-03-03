@@ -1,4 +1,3 @@
-// TODO find a way to configure color
 import {
   CircleMarker,
   circleMarker,
@@ -24,6 +23,7 @@ export const defaultZoomPanOptions: ZoomPanOptions = {
 
 export const noDrawStyle = { radius: 0, opacity: 0, fill: false, stroke: false, popup: false };
 
+// TODO find a way to configure color
 export const euBorderStyle = {
   color: '#fff',
   fillColor: '#fff',
