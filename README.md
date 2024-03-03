@@ -30,7 +30,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 ## Features
 
 - Add user interactions for layer control
-- Expandable toolbar
+- ☑️Expandable toolbar
 - ☑️Own location finder
 - Discover Leaflet plugins
 - Weather overlays
@@ -40,7 +40,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 ## Development
 
 - Investigate 404 on app start
-- Better SASS structure and cleanup
+- Better SCSS structure and cleanup
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
 - ☑️Pin package.json versions
 - Glitching white focus frame around map

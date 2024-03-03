@@ -1,0 +1,32 @@
+<div class="option-pane" [ngClass]="{'expanded': expanded}">
+    <div class="expando">
+        <div class="vertical-align">
+            <div class="button open" *ngIf="!expanded" (click)="expand()" (keydown)="compress()" tabindex={0}>
+                <div class="triangle t-open"></div>
+                <div class="triangle t-open"></div>
+                <div class="triangle t-open"></div>
+            </div>
+            <div class="button close" *ngIf="expanded" (click)="compress()" (keydown)="compress()" tabindex={1}>
+                <div class="triangle t-close"></div>
+                <div class="triangle t-close"></div>
+                <div class="triangle t-close"></div>
+            </div>
+        </div>
+    </div>
+    <div class="options">
+        <div class="row">
+            <mat-slide-toggle
+                    [checked]="showEuBorders"
+                    (change)="euBordersChanged($event)">
+                {{ 'option-pane.show-eu-borders' | transloco }}
+            </mat-slide-toggle>
+        </div>
+        <div class="row">
+            <mat-slide-toggle
+                    [checked]="showCapitols"
+                    (change)="capitolsChanged($event)">
+                {{ 'option-pane.show-capitols' | transloco }}
+            </mat-slide-toggle>
+        </div>
+    </div>
+</div>
