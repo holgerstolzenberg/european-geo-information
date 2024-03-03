@@ -29,7 +29,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 
 ## Features
 
-- Add user interactions for layer control
+- ☑️Add user interactions for layer control
 - ☑️Expandable toolbar
 - ☑️Own location finder
 - Discover Leaflet plugins
@@ -43,7 +43,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 - Better SCSS structure and cleanup
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
 - ☑️Pin package.json versions
-- Glitching white focus frame around map
+- Glitching focus frame around map
 
 ## Packaging
 
