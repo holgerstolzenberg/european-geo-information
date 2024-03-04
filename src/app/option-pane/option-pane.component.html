@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="options">
+    <div class="options" *ngIf="expanded">
         <div class="row">
             <mat-slide-toggle
                     [checked]="showEuBorders"
