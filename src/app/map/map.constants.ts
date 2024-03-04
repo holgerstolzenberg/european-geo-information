@@ -1,62 +1,72 @@
-import {
-  CircleMarker,
-  circleMarker,
-  Control,
-  latLng,
-  LayerGroup,
-  layerGroup,
-  tileLayer,
-  ZoomPanOptions
-} from 'leaflet';
+import { BitmapLayer, ScatterplotLayer } from '@deck.gl/layers/typed';
+import { TileLayer } from '@deck.gl/geo-layers/typed';
 import { environment } from '../../environments/environment';
-import AttributionOptions = Control.AttributionOptions;
 
-export const attributionOptions: AttributionOptions = {
-  position: 'bottomleft',
-  prefix: ''
+export const DEFAULT_ZOOM = 5;
+
+export const CENTER_OF_EUROPE = [54.526, 15.2551];
+
+export const INITIAL_VIEW_STATE = {
+  latitude: CENTER_OF_EUROPE[0],
+  longitude: CENTER_OF_EUROPE[1],
+  zoom: DEFAULT_ZOOM,
+  minZoom: 0,
+  maxZoom: 19,
+  pitch: 0,
+  bearing: 0
 };
 
-export const defaultZoomPanOptions: ZoomPanOptions = {
-  animate: true,
-  duration: 1
-};
+export const MAP_LAYER = new TileLayer({
+  id: 'map-layer',
+  data: environment.tileServerUrls,
+  maxRequests: 10,
+  pickable: false,
+  tileSize: 256,
 
-export const noDrawStyle = { radius: 0, opacity: 0, fill: false, stroke: false, popup: false };
+  renderSubLayers: props => {
+    // using never in next two lines is just a hack for typescript
+    // see:
+    const {
+      bbox: { west, south, east, north }
+    } = props.tile as never;
 
-// TODO find a way to configure color
-export const euBorderStyle = {
-  color: '#fff',
-  fillColor: '#fff',
-  opacity: 0.4,
-  weight: 0.6,
-  fillOpacity: 0.06,
-  fill: true,
-  stroke: true
-};
+    const what = { ...props, data: undefined };
 
-export const darkMatterNoLabelsLayer = tileLayer(environment.tileServerUrl, {
-  attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    return [
+      new BitmapLayer(what as never, {
+        image: props.data,
+        bounds: [west, south, east, north]
+      })
+    ];
+  }
 });
 
-export const centerOfEurope = latLng(54.526, 15.2551);
+// TODO attribution
+// export const darkMatterNoLabelsLayer = new TileLayer(environment.tileServerUrl, {
+//   attribution:
+//     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+// });
 
-// TODO find a way to configure color
-export const defaultCapitolsStyle = {
-  radius: 8,
-  weight: 2,
-  color: '#ffd617',
-  opacity: 1.0,
-  fill: true,
-  stroke: true,
-  popup: true
-};
+export const BERLIN = [52.52, 13.405];
 
-const berlin = circleMarker([52.52, 13.405], defaultCapitolsStyle).bindPopup('Berlin', { closeButton: false });
-
-export const capitols: LayerGroup<CircleMarker> = layerGroup([berlin]);
-
-export const defaultZoom = 5;
+// TODO popup
+export const CAPITOLS_LAYER = new ScatterplotLayer({
+  id: 'capitols-layer',
+  data: [{ coordinates: BERLIN, radius: 30 }],
+  pickable: false,
+  radiusScale: 6,
+  radiusMinPixels: 1,
+  radiusMaxPixels: 1000,
+  lineWidthMinPixels: 1,
+  stroked: true,
+  filled: true,
+  colorFormat: 'RGBA',
+  getRadius: () => 2000,
+  getPosition: d => [d.coordinates[1], d.coordinates[0]], // only explicit syntax works
+  getLineColor: () => [255, 214, 23, 255],
+  getFillColor: () => [255, 214, 23, 50],
+  getLineWidth: () => 3000
+});
 
 export enum LayerIndices {
   BASE_LAYER_INDEX = 0,

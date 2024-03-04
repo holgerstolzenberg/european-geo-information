@@ -1,56 +1,27 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-  CircleMarker,
-  control,
-  GeoJSON,
-  latLng,
-  Layer,
-  LayerGroup,
-  LeafletEvent,
-  Map as LeafletMap,
-  MapOptions
-} from 'leaflet';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MapService } from './map.service';
 import { NGXLogger } from 'ngx-logger';
-import {
-  attributionOptions,
-  centerOfEurope,
-  defaultCapitolsStyle,
-  defaultZoom,
-  defaultZoomPanOptions,
-  euBorderStyle,
-  LayerIndices,
-  noDrawStyle
-} from './map.constants';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../notifications/notification.service';
+import { Deck, Layer } from '@deck.gl/core/typed';
+import { INITIAL_VIEW_STATE } from './map.constants';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
-export class MapComponent implements OnInit, OnDestroy {
-  @Input() options: MapOptions = {
-    zoom: defaultZoom,
-    minZoom: 4,
-    maxZoom: 20,
-    center: this.mapService.getCenterOfEurope(),
-    fadeAnimation: true,
-    zoomAnimation: true,
-    markerZoomAnimation: true,
-    zoomSnap: 0.5,
-    zoomDelta: 0.5,
-    attributionControl: false
-  };
-
+export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   layers: Promise<Layer[]>;
   showLoader: boolean = false;
 
-  private theMap?: LeafletMap;
-  private theZoom?: number;
+  //private theZoom?: number;
 
   private onUnsubscribe$: Subject<boolean> = new Subject<boolean>();
+
+  @ViewChild('deckGlMap', { static: false }) mapDiv?: ElementRef<HTMLDivElement>;
+
+  private map?: Deck;
 
   constructor(
     private log: NGXLogger,
@@ -61,20 +32,47 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.initAllSubscriptions();
+  }
+
+  ngAfterViewInit() {
+    this.initDeckGlMap();
+  }
+
+  private initDeckGlMap() {
+    this.layers.then(layers => {
+      this.map = new Deck({
+        parent: this.mapDiv?.nativeElement,
+        initialViewState: INITIAL_VIEW_STATE,
+        style: { position: 'relative' },
+        width: '100vw',
+        height: '100vh',
+        controller: true,
+        useDevicePixels: true,
+        layers: [layers],
+        onWebGLInitialized: gl => {
+          gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE_MINUS_DST_ALPHA, gl.ONE);
+          gl.blendEquation(gl.FUNC_ADD);
+        }
+      });
+    });
+  }
+
+  private initAllSubscriptions() {
     this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      this.resetMap();
+      // TODO this.resetMap();
     });
 
     this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      this.myLocation();
+      // TODO this.myLocation();
     });
 
     this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
-      this.showEuBorders(value);
+      // TODO this.showEuBorders(value);
     });
 
     this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
-      this.showCapitols(value);
+      // TODO this.showCapitols(value);
     });
   }
 
@@ -89,76 +87,78 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private disposeMap() {
-    this.theMap!.clearAllEventListeners();
-    this.theMap!.remove();
+    // TODO dispose map map
     this.log.info('Disposed theMap');
   }
 
-  onMapReady(map: LeafletMap) {
-    this.theMap = map;
-    this.log.info('Leaflet theMap ready');
-    this.theMap.addControl(control.attribution(attributionOptions));
-    this.theZoom = map.getZoom();
-  }
+  // onMapReady(map: LeafletMap) {
+  //   this.theMap = map;
+  //   this.log.info('Leaflet theMap ready');
+  //   this.theMap.addControl(control.attribution(attributionOptions));
+  //   this.theZoom = map.getZoom();
+  // }
 
   private async loadAllLayers() {
-    return this.mapService.loadAllLayers().then(([baseLayer, euBorderLayer, capitolsLayer]) => {
-      const layers = new Array<Layer>(3);
-      layers[LayerIndices.BASE_LAYER_INDEX] = baseLayer;
-      layers[LayerIndices.EU_LAYER_INDEX] = euBorderLayer;
-      layers[LayerIndices.CAPITOLS_LAYER_INDEX] = capitolsLayer;
+    // TODO map.gl impl
+    return this.mapService.loadAllLayers().then(([baseLayer, capitolsLayer]) => {
+      const layers = new Array<Layer>(2);
+      layers[0] = baseLayer;
+      //layers[LayerIndices.EU_LAYER_INDEX] = euBorderLayer;
+      layers[1] = capitolsLayer;
 
+      this.log.debug('Layers loaded', layers);
       return layers;
     });
   }
 
-  onMapZoomStart() {
-    this.log.debug('MapZoomStart: zoom set to', this.theZoom);
-    this.showLoader = true;
-  }
+  // onMapZoomStart() {
+  //   this.log.debug('MapZoomStart: zoom set to', this.theZoom);
+  //   this.showLoader = true;
+  // }
 
-  onMapZoomEnd(event: LeafletEvent) {
-    this.theZoom = event.target.getZoom();
-    this.log.debug('MapZoomEnd: zoom set to', this.theZoom);
-    this.showLoader = false;
-  }
+  // onMapZoomEnd(event: LeafletEvent) {
+  //   this.theZoom = event.target.getZoom();
+  //   this.log.debug('MapZoomEnd: zoom set to', this.theZoom);
+  //   this.showLoader = false;
+  // }
 
-  resetMap() {
-    this.theMap!.flyTo(centerOfEurope, defaultZoom);
-    // TODO clear my location marker
-  }
+  // resetMap() {
+  //   this.theMap!.flyTo(centerOfEurope, defaultZoom);
+  //   // TODO clear my location marker
+  // }
 
-  myLocation() {
-    navigator.geolocation.getCurrentPosition(
-      position =>
-        this.theMap!.flyTo(
-          latLng(position.coords.latitude, position.coords.longitude),
-          defaultZoom + 2,
-          defaultZoomPanOptions
-        ),
-      err => this.notificationService.showError('Could not get geolocation', err)
-    );
-  }
+  // myLocation() {
+  //   navigator.geolocation.getCurrentPosition(
+  //     position =>
+  //       this.theMap!.flyTo(
+  //         latLng(position.coords.latitude, position.coords.longitude),
+  //         defaultZoom + 2,
+  //         defaultZoomPanOptions
+  //       ),
+  //     err => this.notificationService.showError('Could not get geolocation', err)
+  //   );
+  // }
 
-  private showEuBorders(value: boolean) {
-    this.layers
-      .then(layer => {
-        return layer[LayerIndices.EU_LAYER_INDEX] as GeoJSON;
-      })
-      .then(l => l.setStyle(value ? euBorderStyle : noDrawStyle));
-  }
+  // private showEuBorders(value: boolean) {
+  //   this.layers
+  //     .then(layer => {
+  //       return layer[LayerIndices.EU_LAYER_INDEX] as GeoJSON;
+  //     })
+  //     .then(l => l.setStyle(value ? euBorderStyle : noDrawStyle));
+  // }
 
-  private showCapitols(value: boolean) {
-    this.theMap!.closePopup();
+  // private showCapitols(value: boolean) {
+  //   this.theMap!.closePopup();
+  //
+  //   this.layers
+  //     .then(layer => {
+  //       return layer[LayerIndices.CAPITOLS_LAYER_INDEX] as LayerGroup;
+  //     })
+  //     .then(capitols => capitols.getLayers().forEach(capitol => this.markerVisible(capitol, value)));
+  // }
 
-    this.layers
-      .then(layer => {
-        return layer[LayerIndices.CAPITOLS_LAYER_INDEX] as LayerGroup;
-      })
-      .then(capitols => capitols.getLayers().forEach(capitol => this.markerVisible(capitol, value)));
-  }
-
+  // TODO does that work
   private markerVisible(layer: Layer, visible: boolean) {
-    (layer as CircleMarker).setStyle(visible ? defaultCapitolsStyle : noDrawStyle);
+    layer.setState({ visible: visible });
   }
 }

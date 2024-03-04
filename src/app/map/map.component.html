@@ -1,10 +1,4 @@
-<div leaflet
-     [leafletOptions]="options"
-     (leafletMapReady)="onMapReady($event)"
-     (leafletMapZoomStart)="onMapZoomStart()"
-     (leafletMapZoomEnd)="onMapZoomEnd($event)"
-     class="map">
-    <div *ngFor="let value of layers | async" [leafletLayer]="value"></div>
+<div class="map" #deckGlMap>
 </div>
 <div class="loader" *ngIf="showLoader">
     <span>{{ showLoader }}</span>
