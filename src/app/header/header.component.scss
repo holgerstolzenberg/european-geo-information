@@ -33,7 +33,7 @@ div.header {
     background-color: $primary;
     color: $secondary;
 
-    // TODO find better way for vertical align
+    // TODO scss: find better way for vertical align
     a.switch-button {
       @include typography.default;
       display: inline-block;
