@@ -4,7 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../notifications/notification.service';
 import { Deck, Layer } from '@deck.gl/core/typed';
-import { INITIAL_VIEW_STATE } from './map.constants';
+import { INITIAL_VIEW_STATE, LayerIndices } from './map.constants';
 
 @Component({
   selector: 'app-map',
@@ -40,6 +40,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initDeckGlMap() {
+    // TODO deck.gl: show metrics
     this.layers.then(layers => {
       this.map = new Deck({
         parent: this.mapDiv?.nativeElement,
@@ -48,7 +49,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         width: '100vw',
         height: '100vh',
         controller: true,
-        useDevicePixels: true,
+        useDevicePixels: false,
         layers: [layers],
         onWebGLInitialized: gl => {
           gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE_MINUS_DST_ALPHA, gl.ONE);
@@ -60,19 +61,19 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private initAllSubscriptions() {
     this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      // TODO this.resetMap();
+      // TODO deck.gl: this.resetMap();
     });
 
     this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      // TODO this.myLocation();
+      // TODO deck.gl: this.myLocation();
     });
 
-    this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
-      // TODO this.showEuBorders(value);
+    this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
+      // TODO deck.gl: this.showEuBorders(value);
     });
 
-    this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
-      // TODO this.showCapitols(value);
+    this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
+      // TODO deck.gl: this.showCapitols(value);
     });
   }
 
@@ -87,7 +88,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private disposeMap() {
-    // TODO dispose map map
+    // TODO deck.gl: dispose map map
     this.log.info('Disposed theMap');
   }
 
@@ -99,12 +100,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   // }
 
   private async loadAllLayers() {
-    // TODO map.gl impl
-    return this.mapService.loadAllLayers().then(([baseLayer, capitolsLayer]) => {
+    return this.mapService.loadAllLayers().then(([mapLayer, euBorderLayer, capitolsLayer]) => {
       const layers = new Array<Layer>(2);
-      layers[0] = baseLayer;
-      //layers[LayerIndices.EU_LAYER_INDEX] = euBorderLayer;
-      layers[1] = capitolsLayer;
+      layers[LayerIndices.MAP_LAYER_INDEX] = mapLayer;
+      layers[LayerIndices.EU_LAYER_INDEX] = euBorderLayer;
+      layers[LayerIndices.CAPITOLS_LAYER_INDEX] = capitolsLayer;
 
       this.log.debug('Layers loaded', layers);
       return layers;
@@ -124,7 +124,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // resetMap() {
   //   this.theMap!.flyTo(centerOfEurope, defaultZoom);
-  //   // TODO clear my location marker
+  //   // TODO deck.gl: clear my location marker
   // }
 
   // myLocation() {
@@ -157,7 +157,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   //     .then(capitols => capitols.getLayers().forEach(capitol => this.markerVisible(capitol, value)));
   // }
 
-  // TODO does that work
+  // TODO deck.gl: does that work
   private markerVisible(layer: Layer, visible: boolean) {
     layer.setState({ visible: visible });
   }

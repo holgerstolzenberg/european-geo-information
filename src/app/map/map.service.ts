@@ -5,6 +5,7 @@ import { CAPITOLS_LAYER, CENTER_OF_EUROPE, MAP_LAYER } from './map.constants';
 import { NotificationService } from '../notifications/notification.service';
 import { Layer } from '@deck.gl/core/typed';
 import { GeoJsonLayer } from '@deck.gl/layers/typed';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class MapService {
@@ -13,40 +14,49 @@ export class MapService {
   showEuBorders$ = new EventEmitter<boolean>();
   showCapitols$ = new EventEmitter<boolean>();
 
-  private readonly euBordersLayer?: GeoJsonLayer;
+  private readonly euBordersLayer: Promise<GeoJsonLayer>;
 
   constructor(
     private readonly http: HttpClient,
     private readonly log: NGXLogger,
     private readonly notificationService: NotificationService
   ) {
-    //this.euBordersLayer = this.initEuBordersLayer();
-    //this.euBordersLayer = new GeoJsonLayer({});
+    this.euBordersLayer = this.initEuBordersLayer();
   }
 
-  // private async initEuBordersLayer() {
-  //   return firstValueFrom(this.http.get<JSON>('./assets/geo-data/european-borders.json'))
-  //     .then(jsonResponse => {
-  //       this.log.debug('Loaded borders json', jsonResponse);
-  //       return new GeoJsonLayer(jsonResponse, { style: euBorderStyle });
-  //     })
-  //     .catch(err => {
-  //       this.notificationService.showError('Error loading EU borders geo json', err);
-  //       return geoJson();
-  //     });
-  // }
+  private async initEuBordersLayer() {
+    return firstValueFrom(this.http.get<JSON>('./assets/geo-data/eu-borders.json'))
+      .then(geoJson => {
+        this.log.debug('Loaded borders json', geoJson);
 
+        return new GeoJsonLayer({
+          id: 'eu-borders-layer',
+          data: geoJson,
+          pickable: false,
+          stroked: true,
+          filled: true,
+          lineWidthMinPixels: 1,
+          getFillColor: [255, 214, 23, 15],
+          getLineColor: [255, 214, 23],
+          getElevation: 0
+        });
+      })
+      .catch(err => {
+        this.notificationService.showError('Error loading EU borders geo json', err);
+        return new GeoJsonLayer({ id: 'eu-borders-layer' });
+      });
+  }
+
+  // TODO deck.gl: do not forget this method
   getCenterOfEurope() {
     return CENTER_OF_EUROPE;
   }
 
   async loadAllLayers(): Promise<Layer[]> {
-    // TODO deck.gl impl
-    // return Promise.all([this.getBaseLayer(), this.getEuBordersLayer(), this.getCapitolsLayer()]);
-    return Promise.all([this.getBaseLayer(), this.getCapitolsLayer()]);
+    return Promise.all([this.getMapLayer(), this.getEuBordersLayer(), this.getCapitolsLayer()]);
   }
 
-  private getBaseLayer() {
+  private getMapLayer() {
     return MAP_LAYER;
   }
 
@@ -54,7 +64,7 @@ export class MapService {
     return this.euBordersLayer;
   }
 
-  // TODO load capitols via HTTP
+  // TODO feature: load capitols via HTTP and add population
   private async getCapitolsLayer() {
     return CAPITOLS_LAYER;
   }

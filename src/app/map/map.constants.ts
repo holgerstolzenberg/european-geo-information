@@ -10,8 +10,8 @@ export const INITIAL_VIEW_STATE = {
   latitude: CENTER_OF_EUROPE[0],
   longitude: CENTER_OF_EUROPE[1],
   zoom: DEFAULT_ZOOM,
-  minZoom: 0,
-  maxZoom: 19,
+  minZoom: 3,
+  maxZoom: 10,
   pitch: 0,
   bearing: 0
 };
@@ -19,13 +19,13 @@ export const INITIAL_VIEW_STATE = {
 export const MAP_LAYER = new TileLayer({
   id: 'map-layer',
   data: environment.tileServerUrls,
-  maxRequests: 10,
+  maxRequests: 20,
   pickable: false,
   tileSize: 256,
 
   renderSubLayers: props => {
-    // using never in next two lines is just a hack for typescript
-    // see:
+    // using 'never' in next two lines is just a hack for typescript
+    // see: https://github.com/visgl/deck.gl/issues/8467
     const {
       bbox: { west, south, east, north }
     } = props.tile as never;
@@ -41,7 +41,7 @@ export const MAP_LAYER = new TileLayer({
   }
 });
 
-// TODO attribution
+// TODO deck.gl: attribution
 // export const darkMatterNoLabelsLayer = new TileLayer(environment.tileServerUrl, {
 //   attribution:
 //     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
@@ -49,7 +49,7 @@ export const MAP_LAYER = new TileLayer({
 
 export const BERLIN = [52.52, 13.405];
 
-// TODO popup
+// TODO deck.gl: popup
 export const CAPITOLS_LAYER = new ScatterplotLayer({
   id: 'capitols-layer',
   data: [{ coordinates: BERLIN, radius: 30 }],
@@ -69,7 +69,7 @@ export const CAPITOLS_LAYER = new ScatterplotLayer({
 });
 
 export enum LayerIndices {
-  BASE_LAYER_INDEX = 0,
+  MAP_LAYER_INDEX = 0,
   EU_LAYER_INDEX = 1,
   CAPITOLS_LAYER_INDEX = 2
 }
