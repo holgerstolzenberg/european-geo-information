@@ -71,9 +71,10 @@ export class MapService {
           stroked: true,
           filled: true,
           lineWidthMinPixels: 1,
-          getFillColor: [255, 214, 23, 15],
-          getLineColor: [255, 214, 23],
-          getElevation: 0
+          getFillColor: [255, 214, 23, 5],
+          getLineColor: [255, 214, 23, 50],
+          getElevation: 0,
+          visible: true
         });
       })
       .catch(err => {
@@ -105,12 +106,12 @@ export class MapService {
   }
 
   async resetMapToEuropeanCenter() {
-    this.log.info('Reset map');
+    this.log.debug('Reset map');
     this.resetMap$.emit();
   }
 
   async moveMapToMyLocation() {
-    this.log.info('Move map to my location');
+    this.log.debug('Move map to my location');
     this.toMyLocation$.emit();
   }
 

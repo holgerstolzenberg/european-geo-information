@@ -33,7 +33,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 - ☑️Expandable toolbar
 - ☑️Own location finder
 - Weather or other overlays, distance to cities
-- Smoother map animation (only mac chrome so far, retina)
+- ☑️Smoother map animation (only mac chrome so far, retina)
 - ☑️Add loading indicator
 
 ## Development
@@ -42,7 +42,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 - Better SCSS structure and cleanup
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
 - ☑️Pin package.json versions
-- Glitching focus frame around map
+- ☑️Glitching focus frame around map
 
 ## Packaging
 

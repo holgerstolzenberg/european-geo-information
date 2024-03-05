@@ -44,7 +44,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initDeckGlMap() {
-    // TODO deck.gl: show metrics
     this.layers.then(layers => {
       this.map = new Deck({
         parent: this.mapDiv?.nativeElement,
@@ -53,10 +52,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         controller: true,
         useDevicePixels: false,
         layers: [layers],
+
         onWebGLInitialized: gl => {
           gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE_MINUS_DST_ALPHA, gl.ONE);
           gl.blendEquation(gl.FUNC_ADD);
         },
+
         _onMetrics: metrics => {
           this.metrics = metrics;
         }
@@ -65,11 +66,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initAllSubscriptions() {
-    this.mapService.loading$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(tileId => {
-      this.loadedTileId = tileId;
-      this.showLoader = true;
-      setTimeout(() => (this.showLoader = false), 500);
-    });
+    // prettier-ignore
+    this.mapService.loading$
+      .pipe(takeUntil(this.onUnsubscribe$))
+      .subscribe(tileId => this.showHideLoader(tileId));
 
     // TODO deck.gl: this.resetMap();
     this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {});
@@ -77,11 +77,31 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     // TODO deck.gl: this.myLocation();
     this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {});
 
-    // TODO deck.gl: this.showEuBorders(value);
-    this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {});
+    // TODO deck.gl: maybe can be moved to service class
+    this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
+      this.layers.then(layer => {
+        this.changeLayerVisibility(layer, LayerIndices.EU_LAYER_INDEX, value);
+      });
+    });
 
-    // TODO deck.gl: this.showCapitols(value);
-    this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {});
+    // TODO deck.gl: maybe can be moved to service class
+    this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
+      this.layers.then(layers => {
+        this.changeLayerVisibility(layers, LayerIndices.CAPITOLS_LAYER_INDEX, value);
+      });
+    });
+  }
+
+  private changeLayerVisibility(layers: Layer[], layerIndex: number, value: boolean) {
+    const clonedLayers = layers.slice();
+    clonedLayers[layerIndex] = layers[layerIndex].clone({ visible: value });
+    this.map!.setProps({ layers: clonedLayers });
+  }
+
+  private showHideLoader(tileId: string) {
+    this.loadedTileId = tileId;
+    this.showLoader = true;
+    setTimeout(() => (this.showLoader = false), 500);
   }
 
   ngOnDestroy(): void {
@@ -94,11 +114,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.onUnsubscribe$.complete();
   }
 
+  // TODO deck.gl: dispose deck map
   private disposeMap() {
-    // TODO deck.gl: dispose map map
     this.log.info('Disposed theMap');
   }
 
+  // TODO deck.gl: map ready and attribution
   // onMapReady(map: LeafletMap) {
   //   this.theMap = map;
   //   this.log.info('Leaflet theMap ready');
@@ -118,22 +139,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // onMapZoomStart() {
-  //   this.log.debug('MapZoomStart: zoom set to', this.theZoom);
-  //   this.showLoader = true;
-  // }
-
-  // onMapZoomEnd(event: LeafletEvent) {
-  //   this.theZoom = event.target.getZoom();
-  //   this.log.debug('MapZoomEnd: zoom set to', this.theZoom);
-  //   this.showLoader = false;
-  // }
-
+  // TODO deck.gl: implement method
   // resetMap() {
   //   this.theMap!.flyTo(centerOfEurope, defaultZoom);
   //   // TODO deck.gl: clear my location marker
   // }
 
+  // TODO deck.gl: implement method
   // myLocation() {
   //   navigator.geolocation.getCurrentPosition(
   //     position =>
@@ -145,27 +157,4 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   //     err => this.notificationService.showError('Could not get geolocation', err)
   //   );
   // }
-
-  // private showEuBorders(value: boolean) {
-  //   this.layers
-  //     .then(layer => {
-  //       return layer[LayerIndices.EU_LAYER_INDEX] as GeoJSON;
-  //     })
-  //     .then(l => l.setStyle(value ? euBorderStyle : noDrawStyle));
-  // }
-
-  // private showCapitols(value: boolean) {
-  //   this.theMap!.closePopup();
-  //
-  //   this.layers
-  //     .then(layer => {
-  //       return layer[LayerIndices.CAPITOLS_LAYER_INDEX] as LayerGroup;
-  //     })
-  //     .then(capitols => capitols.getLayers().forEach(capitol => this.markerVisible(capitol, value)));
-  // }
-
-  // TODO deck.gl: does that work
-  private markerVisible(layer: Layer, visible: boolean) {
-    layer.setState({ visible: visible });
-  }
 }

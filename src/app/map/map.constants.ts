@@ -34,6 +34,7 @@ export const CAPITOLS_LAYER = new ScatterplotLayer({
   stroked: true,
   filled: true,
   colorFormat: 'RGBA',
+  visible: true,
   getRadius: () => 2000,
   getPosition: d => [d.coordinates[1], d.coordinates[0]], // only explicit syntax works
   getLineColor: () => [255, 214, 23, 255],
