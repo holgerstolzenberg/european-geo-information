@@ -1,11 +1,13 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
-import { CAPITOLS_LAYER, CENTER_OF_EUROPE, MAP_LAYER } from './map.constants';
+import { CAPITOLS_LAYER, CENTER_OF_EUROPE } from './map.constants';
 import { NotificationService } from '../notifications/notification.service';
 import { Layer } from '@deck.gl/core/typed';
-import { GeoJsonLayer } from '@deck.gl/layers/typed';
+import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers/typed';
 import { firstValueFrom } from 'rxjs';
+import { TileLayer } from '@deck.gl/geo-layers/typed';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class MapService {
@@ -13,7 +15,9 @@ export class MapService {
   toMyLocation$ = new EventEmitter<string>();
   showEuBorders$ = new EventEmitter<boolean>();
   showCapitols$ = new EventEmitter<boolean>();
+  loading$ = new EventEmitter<string>();
 
+  private readonly mapLayer: Promise<TileLayer>;
   private readonly euBordersLayer: Promise<GeoJsonLayer>;
 
   constructor(
@@ -21,13 +25,44 @@ export class MapService {
     private readonly log: NGXLogger,
     private readonly notificationService: NotificationService
   ) {
+    this.mapLayer = this.initMapLayer();
     this.euBordersLayer = this.initEuBordersLayer();
+  }
+
+  private async initMapLayer() {
+    return new TileLayer({
+      id: 'map-layer',
+      data: environment.tileServerUrls,
+      maxRequests: 20,
+      pickable: false,
+      tileSize: 256,
+      onTileLoad: d => {
+        this.loading$.emit(d.id);
+      },
+
+      // using 'never' in next two lines is just a hack for typescript
+      // see: https://github.com/visgl/deck.gl/issues/8467
+      renderSubLayers: props => {
+        const {
+          bbox: { west, south, east, north }
+        } = props.tile as never;
+
+        const what = { ...props, data: undefined };
+
+        return [
+          new BitmapLayer(what as never, {
+            image: props.data,
+            bounds: [west, south, east, north]
+          })
+        ];
+      }
+    });
   }
 
   private async initEuBordersLayer() {
     return firstValueFrom(this.http.get<JSON>('./assets/geo-data/eu-borders.json'))
       .then(geoJson => {
-        this.log.debug('Loaded borders json', geoJson);
+        this.log.info('Loaded borders json', geoJson);
 
         return new GeoJsonLayer({
           id: 'eu-borders-layer',
@@ -57,10 +92,10 @@ export class MapService {
   }
 
   private getMapLayer() {
-    return MAP_LAYER;
+    return this.mapLayer;
   }
 
-  private getEuBordersLayer() {
+  private async getEuBordersLayer() {
     return this.euBordersLayer;
   }
 

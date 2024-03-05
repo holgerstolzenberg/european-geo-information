@@ -1,8 +1,6 @@
-import { BitmapLayer, ScatterplotLayer } from '@deck.gl/layers/typed';
-import { TileLayer } from '@deck.gl/geo-layers/typed';
-import { environment } from '../../environments/environment';
+import { ScatterplotLayer } from '@deck.gl/layers/typed';
 
-export const DEFAULT_ZOOM = 5;
+export const DEFAULT_ZOOM = 3;
 
 export const CENTER_OF_EUROPE = [54.526, 15.2551];
 
@@ -15,31 +13,6 @@ export const INITIAL_VIEW_STATE = {
   pitch: 0,
   bearing: 0
 };
-
-export const MAP_LAYER = new TileLayer({
-  id: 'map-layer',
-  data: environment.tileServerUrls,
-  maxRequests: 20,
-  pickable: false,
-  tileSize: 256,
-
-  renderSubLayers: props => {
-    // using 'never' in next two lines is just a hack for typescript
-    // see: https://github.com/visgl/deck.gl/issues/8467
-    const {
-      bbox: { west, south, east, north }
-    } = props.tile as never;
-
-    const what = { ...props, data: undefined };
-
-    return [
-      new BitmapLayer(what as never, {
-        image: props.data,
-        bounds: [west, south, east, north]
-      })
-    ];
-  }
-});
 
 // TODO deck.gl: attribution
 // export const darkMatterNoLabelsLayer = new TileLayer(environment.tileServerUrl, {

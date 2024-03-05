@@ -5,6 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../notifications/notification.service';
 import { Deck, Layer } from '@deck.gl/core/typed';
 import { INITIAL_VIEW_STATE, LayerIndices } from './map.constants';
+import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 
 @Component({
   selector: 'app-map',
@@ -13,13 +14,16 @@ import { INITIAL_VIEW_STATE, LayerIndices } from './map.constants';
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   layers: Promise<Layer[]>;
-  showLoader: boolean = false;
 
-  //private theZoom?: number;
+  showLoader: boolean = false;
+  showMetrics: boolean = true;
+  loadedTileId: string = '';
+
+  metrics?: DeckMetrics;
 
   private onUnsubscribe$: Subject<boolean> = new Subject<boolean>();
 
-  @ViewChild('deckGlMap', { static: false }) mapDiv?: ElementRef<HTMLDivElement>;
+  @ViewChild('deckGlMap', { static: false }) private mapDiv?: ElementRef<HTMLDivElement>;
 
   private map?: Deck;
 
@@ -45,36 +49,39 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       this.map = new Deck({
         parent: this.mapDiv?.nativeElement,
         initialViewState: INITIAL_VIEW_STATE,
-        style: { position: 'relative' },
-        width: '100vw',
-        height: '100vh',
+        style: { position: 'relative', top: '0', bottom: '0' },
         controller: true,
         useDevicePixels: false,
         layers: [layers],
         onWebGLInitialized: gl => {
           gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE_MINUS_DST_ALPHA, gl.ONE);
           gl.blendEquation(gl.FUNC_ADD);
+        },
+        _onMetrics: metrics => {
+          this.metrics = metrics;
         }
       });
     });
   }
 
   private initAllSubscriptions() {
-    this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      // TODO deck.gl: this.resetMap();
+    this.mapService.loading$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(tileId => {
+      this.loadedTileId = tileId;
+      this.showLoader = true;
+      setTimeout(() => (this.showLoader = false), 500);
     });
 
-    this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      // TODO deck.gl: this.myLocation();
-    });
+    // TODO deck.gl: this.resetMap();
+    this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {});
 
-    this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      // TODO deck.gl: this.showEuBorders(value);
-    });
+    // TODO deck.gl: this.myLocation();
+    this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {});
 
-    this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      // TODO deck.gl: this.showCapitols(value);
-    });
+    // TODO deck.gl: this.showEuBorders(value);
+    this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {});
+
+    // TODO deck.gl: this.showCapitols(value);
+    this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {});
   }
 
   ngOnDestroy(): void {

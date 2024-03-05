@@ -2,16 +2,42 @@
 
 @import "variables";
 
+div.metrics {
+  @include typography.prevent-select;
+  position: absolute;
+  font-size: 10pt;
+  font-family: "Courier New", serif;
+  padding: 5pt;
+  top: 20pt;
+  left: 20pt;
+  background-color: typography.$primary;
+  z-index: 1;
+  border: 2px solid typography.$secondary;
+  width: 140pt;
+  opacity: .9;
+  overflow: hidden;
+
+  span.label {
+    @include typography.prevent-select;
+    display: inline-block;
+    width: 70pt;
+    padding: 5pt;
+    font-weight: bold;
+  }
+}
+
 div.map {
   @include typography.prevent-select;
   background-color: $accent;
-  tab-index: -1;
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
   z-index: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 .loader,
@@ -39,6 +65,17 @@ div.map {
   -webkit-animation: load8 1.1s infinite linear;
   animation: load8 1.1s infinite linear;
   z-index: 99;
+}
+
+div.tile {
+  @include typography.prevent-select;
+  position: absolute;
+  display: inline-block;
+  bottom: 10pt;
+  left: 30pt;
+  z-index: 3;
+  color: typography.$accent-bright;
+  font-size: 10pt;
 }
 
 @-webkit-keyframes load8 {
