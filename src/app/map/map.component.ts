@@ -72,10 +72,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(tileId => this.showHideLoader(tileId));
 
     // TODO deck.gl: this.resetMap();
-    this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {});
+    this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
+      this.notificationService.showWarn('Not implemented yet');
+    });
 
     // TODO deck.gl: this.myLocation();
-    this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {});
+    this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
+      this.notificationService.showWarn('Not implemented yet');
+    });
 
     // TODO deck.gl: maybe can be moved to service class
     this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {

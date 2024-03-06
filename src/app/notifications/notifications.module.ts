@@ -3,7 +3,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NotificationService } from './notification.service';
 
 @NgModule({
-  imports: [ToastrModule.forRoot({ preventDuplicates: true })],
+  imports: [ToastrModule.forRoot({ preventDuplicates: true, disableTimeOut: false })],
   providers: [NotificationService]
 })
 export class NotificationsModule {

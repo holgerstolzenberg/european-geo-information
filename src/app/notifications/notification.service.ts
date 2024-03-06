@@ -20,10 +20,17 @@ export class NotificationService {
     private readonly log: NGXLogger
   ) {}
 
-  async showError(message: string, error: HttpErrorResponse | GeolocationPositionError) {
+  showError(message: string, error: HttpErrorResponse | GeolocationPositionError) {
     this.log.error(message, error);
     firstValueFrom(this.i18nService.translate('notifications.error-title')).then(title =>
       this.toastrService.error(error.message, title, options)
+    );
+  }
+
+  showWarn(message: string) {
+    this.log.warn(message);
+    firstValueFrom(this.i18nService.translate('notifications.warn-title')).then(title =>
+      this.toastrService.warning(message, title, options)
     );
   }
 }

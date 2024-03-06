@@ -42,6 +42,7 @@ div.header {
       margin: 11pt 5pt 0 0;
       cursor: pointer;
       border: 2pt solid $primary;
+      border-radius: 1pt;
 
       &.double-right-margin {
         margin-right: 10pt

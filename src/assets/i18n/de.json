@@ -11,6 +11,7 @@
     "show-capitols": "Hauptstädte anzeigen"
   },
   "notifications": {
-    "error-title": "Fehler"
+    "error-title": "Fehler",
+    "warn-title": "Warnung"
   }
 }

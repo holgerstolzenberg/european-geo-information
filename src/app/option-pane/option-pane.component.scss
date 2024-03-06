@@ -48,6 +48,7 @@ div.option-pane {
       margin: 10pt;
       width: 5pt;
       height: 60pt;
+      border-radius: 10pt;
 
       &:hover {
         background-color: typography.$secondary;

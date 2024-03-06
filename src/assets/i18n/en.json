@@ -11,6 +11,7 @@
     "show-capitols": "Show capitols"
   },
   "notifications": {
-    "error-title": "Error"
+    "error-title": "Error",
+    "warn-title": "Warning"
   }
 }
