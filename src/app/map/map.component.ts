@@ -3,7 +3,7 @@ import { MapService } from './map.service';
 import { NGXLogger } from 'ngx-logger';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../notifications/notification.service';
-import { Deck, Layer } from '@deck.gl/core/typed';
+import { Deck } from '@deck.gl/core/typed';
 import { INITIAL_VIEW_STATE, LayerIndices } from './map.constants';
 import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 
@@ -13,27 +13,22 @@ import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
   styleUrl: './map.component.scss'
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
-  layers: Promise<Layer[]>;
-
   showLoader: boolean = false;
   showMetrics: boolean = true;
   loadedTileId: string = '';
 
-  metrics?: DeckMetrics;
+  readonly metrics$?: Subject<DeckMetrics> = new Subject<DeckMetrics>();
 
-  private onUnsubscribe$: Subject<boolean> = new Subject<boolean>();
+  private readonly onUnsubscribe$: Subject<boolean> = new Subject<boolean>();
 
   @ViewChild('deckGlMap', { static: false }) private mapDiv?: ElementRef<HTMLDivElement>;
-
   private map?: Deck;
 
   constructor(
     private log: NGXLogger,
     private mapService: MapService,
     private notificationService: NotificationService
-  ) {
-    this.layers = this.loadAllLayers();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.initAllSubscriptions();
@@ -43,10 +38,15 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initDeckGlMap();
   }
 
-  private initDeckGlMap() {
-    this.layers.then(layers => {
+  ngOnDestroy(): void {
+    this.unsubscribeAll();
+    this.disposeMap();
+  }
+
+  initDeckGlMap() {
+    this.mapService.getLayers().then(layers => {
       this.map = new Deck({
-        parent: this.mapDiv?.nativeElement,
+        parent: this.mapDiv!.nativeElement,
         initialViewState: INITIAL_VIEW_STATE,
         style: { position: 'relative', top: '0', bottom: '0' },
         controller: true,
@@ -59,7 +59,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         },
 
         _onMetrics: metrics => {
-          this.metrics = metrics;
+          this.metrics$!.next(metrics);
         }
       });
     });
@@ -81,25 +81,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       this.notificationService.showWarn('Not implemented yet');
     });
 
-    // TODO deck.gl: maybe can be moved to service class
     this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
-      this.layers.then(layer => {
-        this.changeLayerVisibility(layer, LayerIndices.EU_LAYER_INDEX, value);
-      });
+      this.mapService.changeLayerVisibility(this.map!, LayerIndices.EU_LAYER_INDEX, value);
     });
 
-    // TODO deck.gl: maybe can be moved to service class
     this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
-      this.layers.then(layers => {
-        this.changeLayerVisibility(layers, LayerIndices.CAPITOLS_LAYER_INDEX, value);
-      });
+      this.mapService.changeLayerVisibility(this.map!, LayerIndices.CAPITOLS_LAYER_INDEX, value);
     });
-  }
-
-  private changeLayerVisibility(layers: Layer[], layerIndex: number, value: boolean) {
-    const clonedLayers = layers.slice();
-    clonedLayers[layerIndex] = layers[layerIndex].clone({ visible: value });
-    this.map!.setProps({ layers: clonedLayers });
   }
 
   private showHideLoader(tileId: string) {
@@ -108,14 +96,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     setTimeout(() => (this.showLoader = false), 500);
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribeAll();
-    this.disposeMap();
-  }
-
   private unsubscribeAll() {
     this.onUnsubscribe$.next(true);
     this.onUnsubscribe$.complete();
+    this.onUnsubscribe$!.unsubscribe();
+
+    this.metrics$!.complete();
+    this.metrics$!.unsubscribe();
   }
 
   // TODO deck.gl: dispose deck map
@@ -130,18 +117,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   //   this.theMap.addControl(control.attribution(attributionOptions));
   //   this.theZoom = map.getZoom();
   // }
-
-  private async loadAllLayers() {
-    return this.mapService.loadAllLayers().then(([mapLayer, euBorderLayer, capitolsLayer]) => {
-      const layers = new Array<Layer>(2);
-      layers[LayerIndices.MAP_LAYER_INDEX] = mapLayer;
-      layers[LayerIndices.EU_LAYER_INDEX] = euBorderLayer;
-      layers[LayerIndices.CAPITOLS_LAYER_INDEX] = capitolsLayer;
-
-      this.log.debug('Layers loaded', layers);
-      return layers;
-    });
-  }
 
   // TODO deck.gl: implement method
   // resetMap() {

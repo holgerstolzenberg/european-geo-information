@@ -1,23 +1,23 @@
 <div class="metrics" *ngIf="showMetrics">
-  <div>
-    <span class="label">FPS</span><span>{{ metrics?.fps | number: '1.0-3' }}</span>
-  </div>
-  <div>
-    <span class="label">CPU time</span><span>{{ metrics?.cpuTime | number: '1.0-3' }}</span>
-  </div>
-  <div>
-    <span class="label">GPU time</span><span>{{ metrics?.gpuTime | number: '1.0-3' }}</span>
-  </div>
-  <div>
-    <span class="label">GPU memory</span><span>{{ metrics?.gpuMemory }}</span>
-  </div>
+    <div>
+        <span class="label">FPS</span><span>{{ (metrics$ | async)?.fps | number: '1.0-3' }}</span>
+    </div>
+    <div>
+        <span class="label">CPU time</span><span>{{ (metrics$ | async)?.cpuTime | number: '1.0-3' }}</span>
+    </div>
+    <div>
+        <span class="label">GPU time</span><span>{{ (metrics$ | async)?.gpuTime | number: '1.0-3' }}</span>
+    </div>
+    <div>
+        <span class="label">GPU memory</span><span>{{ (metrics$ | async)?.gpuMemory }}</span>
+    </div>
 </div>
 <div class="map" #deckGlMap>
 </div>
 <div *ngIf="showLoader">
-  <div class="loader">
-  </div>
-  <div class="tile">
-    T: {{ loadedTileId }}
-  </div>
+    <div class="loader">
+    </div>
+    <div class="tile">
+        T: {{ loadedTileId }}
+    </div>
 </div>

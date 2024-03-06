@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import { CAPITOLS_LAYER, CENTER_OF_EUROPE } from './map.constants';
 import { NotificationService } from '../notifications/notification.service';
-import { Layer } from '@deck.gl/core/typed';
+import { Deck, Layer } from '@deck.gl/core/typed';
 import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers/typed';
 import { firstValueFrom } from 'rxjs';
 import { TileLayer } from '@deck.gl/geo-layers/typed';
@@ -19,6 +19,7 @@ export class MapService {
 
   private readonly mapLayer: Promise<TileLayer>;
   private readonly euBordersLayer: Promise<GeoJsonLayer>;
+  private readonly layers: Promise<Layer[]>;
 
   constructor(
     private readonly http: HttpClient,
@@ -27,6 +28,43 @@ export class MapService {
   ) {
     this.mapLayer = this.initMapLayer();
     this.euBordersLayer = this.initEuBordersLayer();
+    this.layers = this.loadAllLayers();
+  }
+
+  getLayers() {
+    return this.layers;
+  }
+
+  async loadAllLayers(): Promise<Layer[]> {
+    return Promise.all([this.getMapLayer(), this.getEuBordersLayer(), this.getCapitolsLayer()]);
+  }
+
+  changeLayerVisibility(map: Deck, layerIndex: number, value: boolean) {
+    this.layers.then(layers => {
+      const clonedLayers = layers.slice();
+      clonedLayers[layerIndex] = layers[layerIndex].clone({ visible: value });
+      map.setProps({ layers: clonedLayers });
+    });
+  }
+
+  async resetMapToEuropeanCenter() {
+    this.log.debug('Reset map');
+    this.resetMap$.emit();
+  }
+
+  async moveMapToMyLocation() {
+    this.log.debug('Move map to my location');
+    this.toMyLocation$.emit();
+  }
+
+  async doShowEuBorders(value: boolean) {
+    this.log.trace('Show EU borders', value);
+    this.showEuBorders$.emit(value);
+  }
+
+  async doShowCapitols(value: boolean) {
+    this.log.trace('Show capitols', value);
+    this.showCapitols$.emit(value);
   }
 
   private async initMapLayer() {
@@ -84,12 +122,13 @@ export class MapService {
   }
 
   // TODO deck.gl: do not forget this method
-  getCenterOfEurope() {
+  private async getCenterOfEurope() {
     return CENTER_OF_EUROPE;
   }
 
-  async loadAllLayers(): Promise<Layer[]> {
-    return Promise.all([this.getMapLayer(), this.getEuBordersLayer(), this.getCapitolsLayer()]);
+  // TODO feature: load capitols via HTTP and add population
+  private async getCapitolsLayer() {
+    return CAPITOLS_LAYER;
   }
 
   private getMapLayer() {
@@ -98,30 +137,5 @@ export class MapService {
 
   private async getEuBordersLayer() {
     return this.euBordersLayer;
-  }
-
-  // TODO feature: load capitols via HTTP and add population
-  private async getCapitolsLayer() {
-    return CAPITOLS_LAYER;
-  }
-
-  async resetMapToEuropeanCenter() {
-    this.log.debug('Reset map');
-    this.resetMap$.emit();
-  }
-
-  async moveMapToMyLocation() {
-    this.log.debug('Move map to my location');
-    this.toMyLocation$.emit();
-  }
-
-  async doShowEuBorders(value: boolean) {
-    this.log.trace('Show EU borders', value);
-    this.showEuBorders$.emit(value);
-  }
-
-  async doShowCapitols(value: boolean) {
-    this.log.trace('Show capitols', value);
-    this.showCapitols$.emit(value);
   }
 }
