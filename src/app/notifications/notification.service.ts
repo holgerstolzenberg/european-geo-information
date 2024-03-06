@@ -27,10 +27,11 @@ export class NotificationService {
     );
   }
 
-  showWarn(message: string) {
-    this.log.warn(message);
-    firstValueFrom(this.i18nService.translate('notifications.warn-title')).then(title =>
-      this.toastrService.warning(message, title, options)
+  showWarnLocalized(messageKey: string) {
+    this.log.warn(messageKey);
+
+    firstValueFrom(this.i18nService.translateMultiple(['notifications.warn-title', messageKey])).then(values =>
+      this.toastrService.warning(values[1], values[0], options)
     );
   }
 }

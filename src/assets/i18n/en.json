@@ -1,4 +1,7 @@
 {
+  "common": {
+    "not-implemented": "Feature not implemented"
+  },
   "header": {
     "title": "Cities of Europe"
   },

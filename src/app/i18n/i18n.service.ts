@@ -13,6 +13,10 @@ export class I18nService {
     return this.translocoService.selectTranslate<string>(key);
   }
 
+  translateMultiple(keys: string[]) {
+    return this.translocoService.selectTranslateObject(keys);
+  }
+
   setActiveLang(languageCode: string) {
     this.translocoService.setActiveLang(languageCode);
   }
