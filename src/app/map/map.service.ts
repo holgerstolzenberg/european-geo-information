@@ -1,25 +1,26 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { ElementRef, EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
-import { CAPITOLS_LAYER, CENTER_OF_EUROPE } from './map.constants';
+import { CAPITOLS_LAYER, CENTER_OF_EUROPE, INITIAL_VIEW_STATE, LayerIndices } from './map.constants';
 import { NotificationService } from '../notifications/notification.service';
 import { Deck, Layer } from '@deck.gl/core/typed';
 import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers/typed';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { TileLayer } from '@deck.gl/geo-layers/typed';
 import { environment } from '../../environments/environment';
+import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 
 @Injectable()
 export class MapService {
   resetMap$ = new EventEmitter<string>();
   toMyLocation$ = new EventEmitter<string>();
-  showEuBorders$ = new EventEmitter<boolean>();
-  showCapitols$ = new EventEmitter<boolean>();
   loading$ = new EventEmitter<string>();
 
   private readonly mapLayer: Promise<TileLayer>;
   private readonly euBordersLayer: Promise<GeoJsonLayer>;
   private readonly layers: Promise<Layer[]>;
+
+  private map?: Deck;
 
   constructor(
     private readonly http: HttpClient,
@@ -31,20 +32,8 @@ export class MapService {
     this.layers = this.loadAllLayers();
   }
 
-  getLayers() {
-    return this.layers;
-  }
-
   async loadAllLayers(): Promise<Layer[]> {
     return Promise.all([this.getMapLayer(), this.getEuBordersLayer(), this.getCapitolsLayer()]);
-  }
-
-  changeLayerVisibility(map: Deck, layerIndex: number, value: boolean) {
-    this.layers.then(layers => {
-      const clonedLayers = layers.slice();
-      clonedLayers[layerIndex] = layers[layerIndex].clone({ visible: value });
-      map.setProps({ layers: clonedLayers });
-    });
   }
 
   async resetMapToEuropeanCenter() {
@@ -58,13 +47,35 @@ export class MapService {
   }
 
   async doShowEuBorders(value: boolean) {
-    this.log.trace('Show EU borders', value);
-    this.showEuBorders$.emit(value);
+    this.changeLayerVisibility(LayerIndices.EU_LAYER_INDEX, value).then(() => this.log.trace('Show EU borders', value));
   }
 
   async doShowCapitols(value: boolean) {
-    this.log.trace('Show capitols', value);
-    this.showCapitols$.emit(value);
+    this.changeLayerVisibility(LayerIndices.CAPITOLS_LAYER_INDEX, value).then(() =>
+      this.log.trace('Show capitols', value)
+    );
+  }
+
+  initDeckGlMap(mapDiv: ElementRef<HTMLDivElement>, metricsRef: Subject<DeckMetrics>) {
+    this.layers.then(layers => {
+      this.map = new Deck({
+        parent: mapDiv.nativeElement,
+        initialViewState: INITIAL_VIEW_STATE,
+        style: { position: 'relative', top: '0', bottom: '0' },
+        controller: true,
+        useDevicePixels: false,
+        layers: [layers],
+
+        onWebGLInitialized: gl => {
+          gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE_MINUS_DST_ALPHA, gl.ONE);
+          gl.blendEquation(gl.FUNC_ADD);
+        },
+
+        _onMetrics: metrics => {
+          metricsRef.next(metrics);
+        }
+      });
+    });
   }
 
   private async initMapLayer() {
@@ -119,6 +130,14 @@ export class MapService {
         this.notificationService.showError('Error loading EU borders geo json', err);
         return new GeoJsonLayer({ id: 'eu-borders-layer' });
       });
+  }
+
+  private async changeLayerVisibility(layerIndex: number, value: boolean) {
+    this.layers.then(layers => {
+      const clonedLayers = layers.slice();
+      clonedLayers[layerIndex] = layers[layerIndex].clone({ visible: value });
+      this.map!.setProps({ layers: clonedLayers });
+    });
   }
 
   // TODO deck.gl: do not forget this method

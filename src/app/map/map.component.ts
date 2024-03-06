@@ -3,8 +3,6 @@ import { MapService } from './map.service';
 import { NGXLogger } from 'ngx-logger';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../notifications/notification.service';
-import { Deck } from '@deck.gl/core/typed';
-import { INITIAL_VIEW_STATE, LayerIndices } from './map.constants';
 import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 
 @Component({
@@ -13,29 +11,30 @@ import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
   styleUrl: './map.component.scss'
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('deckGlMap', { static: false }) private mapDiv?: ElementRef<HTMLDivElement>;
+
   showLoader: boolean = false;
   showMetrics: boolean = true;
   loadedTileId: string = '';
 
-  readonly metrics$?: Subject<DeckMetrics> = new Subject<DeckMetrics>();
+  readonly metrics$: Subject<DeckMetrics> = new Subject<DeckMetrics>();
 
   private readonly onUnsubscribe$: Subject<boolean> = new Subject<boolean>();
-
-  @ViewChild('deckGlMap', { static: false }) private mapDiv?: ElementRef<HTMLDivElement>;
-  private map?: Deck;
 
   constructor(
     private log: NGXLogger,
     private mapService: MapService,
     private notificationService: NotificationService
-  ) {}
+  ) {
+    this.metrics$.pipe(takeUntil(this.onUnsubscribe$));
+  }
 
   ngOnInit(): void {
     this.initAllSubscriptions();
   }
 
   ngAfterViewInit() {
-    this.initDeckGlMap();
+    this.mapService.initDeckGlMap(this.mapDiv!, this.metrics$!);
   }
 
   ngOnDestroy(): void {
@@ -43,33 +42,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.disposeMap();
   }
 
-  initDeckGlMap() {
-    this.mapService.getLayers().then(layers => {
-      this.map = new Deck({
-        parent: this.mapDiv!.nativeElement,
-        initialViewState: INITIAL_VIEW_STATE,
-        style: { position: 'relative', top: '0', bottom: '0' },
-        controller: true,
-        useDevicePixels: false,
-        layers: [layers],
-
-        onWebGLInitialized: gl => {
-          gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE_MINUS_DST_ALPHA, gl.ONE);
-          gl.blendEquation(gl.FUNC_ADD);
-        },
-
-        _onMetrics: metrics => {
-          this.metrics$!.next(metrics);
-        }
-      });
-    });
-  }
-
   private initAllSubscriptions() {
     // prettier-ignore
     this.mapService.loading$
-      .pipe(takeUntil(this.onUnsubscribe$))
-      .subscribe(tileId => this.showHideLoader(tileId));
+        .pipe(takeUntil(this.onUnsubscribe$))
+        .subscribe(tileId => this.showHideLoader(tileId));
 
     // TODO deck.gl: this.resetMap();
     this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
@@ -80,29 +57,18 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
       this.notificationService.showWarnLocalized('common.not-implemented');
     });
-
-    this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
-      this.mapService.changeLayerVisibility(this.map!, LayerIndices.EU_LAYER_INDEX, value);
-    });
-
-    this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
-      this.mapService.changeLayerVisibility(this.map!, LayerIndices.CAPITOLS_LAYER_INDEX, value);
-    });
   }
 
   private showHideLoader(tileId: string) {
     this.loadedTileId = tileId;
     this.showLoader = true;
-    setTimeout(() => (this.showLoader = false), 500);
+    setTimeout(() => (this.showLoader = false), 1000);
   }
 
   private unsubscribeAll() {
     this.onUnsubscribe$.next(true);
     this.onUnsubscribe$.complete();
     this.onUnsubscribe$!.unsubscribe();
-
-    this.metrics$!.complete();
-    this.metrics$!.unsubscribe();
   }
 
   // TODO deck.gl: dispose deck map
