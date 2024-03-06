@@ -1,7 +1,7 @@
 import { ScatterplotLayer } from '@deck.gl/layers/typed';
 
 export const DEFAULT_ZOOM = 3;
-export const DEFAULT_TRANSITION_DURATION_MS= 2000
+export const DEFAULT_TRANSITION_DURATION_MS= 'auto';
 
 export const FLY_TO_ZOOM = 7;
 
@@ -46,7 +46,7 @@ export const CAPITOLS_LAYER = new ScatterplotLayer({
 });
 
 export enum LayerIndices {
-  MAP_LAYER_INDEX = 0,
-  EU_LAYER_INDEX = 1,
-  CAPITOLS_LAYER_INDEX = 2
+  MAP_LAYER = 0,
+  EU_BORDERS_LAYER = 1,
+  CAPITOLS_LAYER = 2
 }

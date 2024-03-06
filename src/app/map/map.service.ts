@@ -5,18 +5,18 @@ import {
   CAPITOLS_LAYER,
   CENTER_OF_EUROPE,
   DEFAULT_TRANSITION_DURATION_MS,
-  DEFAULT_ZOOM,
   FLY_TO_ZOOM,
   INITIAL_VIEW_STATE,
   LayerIndices
 } from './map.constants';
 import { NotificationService } from '../notifications/notification.service';
-import { Deck, FlyToInterpolator, Layer } from '@deck.gl/core/typed';
+import { Deck, FlyToInterpolator, Layer, TRANSITION_EVENTS } from '@deck.gl/core/typed';
 import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers/typed';
 import { firstValueFrom, Subject } from 'rxjs';
 import { TileLayer } from '@deck.gl/geo-layers/typed';
 import { environment } from '../../environments/environment';
 import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
+import { GeoService } from './geo.service';
 
 @Injectable()
 export class MapService {
@@ -26,11 +26,13 @@ export class MapService {
   private readonly euBordersLayer: Promise<GeoJsonLayer>;
   private readonly layers: Promise<Layer[]>;
 
-  private map?: Deck;
+  private theMap?: Deck;
+  private geoPosition?: GeolocationCoordinates;
 
   constructor(
     private readonly http: HttpClient,
     private readonly log: NGXLogger,
+    private readonly geoService: GeoService,
     private readonly notificationService: NotificationService
   ) {
     this.mapLayer = this.initMapLayer();
@@ -39,54 +41,72 @@ export class MapService {
   }
 
   async loadAllLayers(): Promise<Layer[]> {
-    return Promise.all([this.getMapLayer(), this.getEuBordersLayer(), this.getCapitolsLayer()]);
+    return Promise.all([this.getMapLayer(), this.getEuBordersLayer(), this.getCapitolsLayer()]).then(
+      ([map, euBorder, capitols]) => {
+        //doing this for full control over ordering
+        const layers = new Array<Layer>(3);
+        layers[LayerIndices.MAP_LAYER] = map;
+        layers[LayerIndices.EU_BORDERS_LAYER] = euBorder;
+        layers[LayerIndices.CAPITOLS_LAYER] = capitols;
+        return layers;
+      }
+    );
   }
 
   async resetMapToEuropeanCenter() {
-    this.map!.setProps({
+    // FIXME deck.gl - find out why resetting theMap is unreliable
+    console.log('--- Lat', this.theMap!.props.initialViewState.latitude);
+    console.log('--- Lon', this.theMap!.props.initialViewState.longitude);
+    console.log('--- Lat-S', CENTER_OF_EUROPE[0]);
+    console.log('--- Lon-S', CENTER_OF_EUROPE[1]);
+
+    this.theMap!.setProps({
       initialViewState: {
-        latitude: CENTER_OF_EUROPE[0],
-        longitude: CENTER_OF_EUROPE[1],
-        zoom: DEFAULT_ZOOM,
+        ...Object.assign(this, INITIAL_VIEW_STATE),
+        transitionInterpolator: new FlyToInterpolator({ speed: 1.5 }),
+        transitionDuration: DEFAULT_TRANSITION_DURATION_MS,
+        transitionInterruption: TRANSITION_EVENTS.IGNORE
+      }
+    });
+  }
+
+  async moveMapToMyLocation() {
+    if (!this.geoPosition) {
+      firstValueFrom(this.geoService.myCurrentLocation()).then(p => {
+        this.geoPosition = p;
+        this.flyMapTo(p);
+      });
+    } else {
+      this.flyMapTo(this.geoPosition);
+    }
+  }
+
+  private flyMapTo(p: GeolocationCoordinates) {
+    this.theMap!.setProps({
+      initialViewState: {
+        ...Object.assign(this, INITIAL_VIEW_STATE),
+        latitude: p.latitude,
+        longitude: p.longitude,
+        zoom: FLY_TO_ZOOM,
         transitionInterpolator: new FlyToInterpolator(),
         transitionDuration: DEFAULT_TRANSITION_DURATION_MS
       }
     });
   }
 
-  async moveMapToMyLocation() {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.map!.setProps({
-          initialViewState: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            zoom: FLY_TO_ZOOM,
-            transitionInterpolator: new FlyToInterpolator(),
-            transitionDuration: DEFAULT_TRANSITION_DURATION_MS
-          }
-        });
-      },
-      err => this.notificationService.showError('Could not get geolocation', err),
-      {
-        enableHighAccuracy: false
-      }
-    );
-  }
-
   async doShowEuBorders(value: boolean) {
-    this.changeLayerVisibility(LayerIndices.EU_LAYER_INDEX, value).then(() => this.log.trace('Show EU borders', value));
+    this.changeLayerVisibility(LayerIndices.EU_BORDERS_LAYER, value).then(() =>
+      this.log.trace('Show EU borders', value)
+    );
   }
 
   async doShowCapitols(value: boolean) {
-    this.changeLayerVisibility(LayerIndices.CAPITOLS_LAYER_INDEX, value).then(() =>
-      this.log.trace('Show capitols', value)
-    );
+    this.changeLayerVisibility(LayerIndices.CAPITOLS_LAYER, value).then(() => this.log.trace('Show capitols', value));
   }
 
   initDeckGlMap(mapDiv: ElementRef<HTMLDivElement>, metricsRef: Subject<DeckMetrics>) {
     this.layers.then(layers => {
-      this.map = new Deck({
+      this.theMap = new Deck({
         parent: mapDiv.nativeElement,
         initialViewState: INITIAL_VIEW_STATE,
         style: { position: 'relative', top: '0', bottom: '0' },
@@ -108,7 +128,7 @@ export class MapService {
 
   private async initMapLayer() {
     return new TileLayer({
-      id: 'map-layer',
+      id: 'theMap-layer',
       data: environment.tileServerUrls,
       maxRequests: 20,
       pickable: false,
@@ -169,7 +189,7 @@ export class MapService {
     this.layers.then(layers => {
       const clonedLayers = layers.slice();
       clonedLayers[layerIndex] = layers[layerIndex].clone({ visible: value });
-      this.map!.setProps({ layers: clonedLayers });
+      this.theMap!.setProps({ layers: clonedLayers });
     });
   }
 

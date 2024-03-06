@@ -19,6 +19,8 @@ div.metrics {
 
   span.label {
     @include typography.prevent-select;
+    @include typography.default;
+    color: typography.$tertiary;
     display: inline-block;
     width: 70pt;
     padding: 5pt;
@@ -28,7 +30,7 @@ div.metrics {
 
 div.map {
   @include typography.prevent-select;
-  background-color: $accent;
+  background-color: $dark-matter-bg;
   position: absolute;
   top: 0;
   bottom: 0;
