@@ -34,7 +34,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.mapService.initDeckGlMap(this.mapDiv!, this.metrics$!);
+    this.mapService.initDeckGlMap(this.mapDiv!, this.metrics$);
   }
 
   ngOnDestroy(): void {
@@ -68,7 +68,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private unsubscribeAll() {
     this.onUnsubscribe$.next(true);
     this.onUnsubscribe$.complete();
-    this.onUnsubscribe$!.unsubscribe();
+    this.onUnsubscribe$.unsubscribe();
   }
 
   // TODO deck.gl: dispose deck map
