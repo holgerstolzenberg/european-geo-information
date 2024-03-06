@@ -52,11 +52,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
       this.notificationService.showWarnLocalized('common.not-implemented');
     });
-
-    // TODO deck.gl: this.myLocation();
-    this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      this.notificationService.showWarnLocalized('common.not-implemented');
-    });
   }
 
   private showHideLoader(tileId: string) {
@@ -88,18 +83,5 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   // resetMap() {
   //   this.theMap!.flyTo(centerOfEurope, defaultZoom);
   //   // TODO deck.gl: clear my location marker
-  // }
-
-  // TODO deck.gl: implement method
-  // myLocation() {
-  //   navigator.geolocation.getCurrentPosition(
-  //     position =>
-  //       this.theMap!.flyTo(
-  //         latLng(position.coords.latitude, position.coords.longitude),
-  //         defaultZoom + 2,
-  //         defaultZoomPanOptions
-  //       ),
-  //     err => this.notificationService.showError('Could not get geolocation', err)
-  //   );
   // }
 }

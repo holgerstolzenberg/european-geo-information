@@ -1,6 +1,9 @@
 import { ScatterplotLayer } from '@deck.gl/layers/typed';
 
 export const DEFAULT_ZOOM = 3;
+export const DEFAULT_TRANSITION_DURATION_MS= 2000
+
+export const FLY_TO_ZOOM = 7;
 
 export const CENTER_OF_EUROPE = [54.526, 15.2551];
 

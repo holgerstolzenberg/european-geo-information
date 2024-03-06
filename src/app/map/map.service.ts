@@ -1,9 +1,16 @@
 import { ElementRef, EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
-import { CAPITOLS_LAYER, CENTER_OF_EUROPE, INITIAL_VIEW_STATE, LayerIndices } from './map.constants';
+import {
+  CAPITOLS_LAYER,
+  CENTER_OF_EUROPE,
+  DEFAULT_TRANSITION_DURATION_MS,
+  FLY_TO_ZOOM,
+  INITIAL_VIEW_STATE,
+  LayerIndices
+} from './map.constants';
 import { NotificationService } from '../notifications/notification.service';
-import { Deck, Layer } from '@deck.gl/core/typed';
+import { Deck, FlyToInterpolator, Layer } from '@deck.gl/core/typed';
 import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers/typed';
 import { firstValueFrom, Subject } from 'rxjs';
 import { TileLayer } from '@deck.gl/geo-layers/typed';
@@ -13,7 +20,6 @@ import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 @Injectable()
 export class MapService {
   resetMap$ = new EventEmitter<string>();
-  toMyLocation$ = new EventEmitter<string>();
   loading$ = new EventEmitter<string>();
 
   private readonly mapLayer: Promise<TileLayer>;
@@ -36,14 +42,28 @@ export class MapService {
     return Promise.all([this.getMapLayer(), this.getEuBordersLayer(), this.getCapitolsLayer()]);
   }
 
-  async resetMapToEuropeanCenter() {
+  resetMapToEuropeanCenter() {
     this.log.debug('Reset map');
     this.resetMap$.emit();
   }
 
-  async moveMapToMyLocation() {
-    this.log.debug('Move map to my location');
-    this.toMyLocation$.emit();
+  moveMapToMyLocation() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.map!.setProps({
+          initialViewState: {
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude,
+            zoom: FLY_TO_ZOOM,
+            transitionInterpolator: new FlyToInterpolator(),
+            transitionDuration: DEFAULT_TRANSITION_DURATION_MS
+          }
+        });
+
+        this.log.debug('Moved map to my location:', position.coords);
+      },
+      err => this.notificationService.showError('Could not get geolocation', err)
+    );
   }
 
   async doShowEuBorders(value: boolean) {
