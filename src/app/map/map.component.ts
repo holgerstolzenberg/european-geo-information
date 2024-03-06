@@ -2,7 +2,6 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { MapService } from './map.service';
 import { NGXLogger } from 'ngx-logger';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../notifications/notification.service';
 import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 
 @Component({
@@ -23,8 +22,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private log: NGXLogger,
-    private mapService: MapService,
-    private notificationService: NotificationService
+    private mapService: MapService
   ) {
     this.metrics$.pipe(takeUntil(this.onUnsubscribe$));
   }
@@ -47,11 +45,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mapService.loading$
         .pipe(takeUntil(this.onUnsubscribe$))
         .subscribe(tileId => this.showHideLoader(tileId));
-
-    // TODO deck.gl: this.resetMap();
-    this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      this.notificationService.showWarnLocalized('common.not-implemented');
-    });
   }
 
   private showHideLoader(tileId: string) {
@@ -77,11 +70,5 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   //   this.log.info('Leaflet theMap ready');
   //   this.theMap.addControl(control.attribution(attributionOptions));
   //   this.theZoom = map.getZoom();
-  // }
-
-  // TODO deck.gl: implement method
-  // resetMap() {
-  //   this.theMap!.flyTo(centerOfEurope, defaultZoom);
-  //   // TODO deck.gl: clear my location marker
   // }
 }

@@ -5,6 +5,7 @@ import {
   CAPITOLS_LAYER,
   CENTER_OF_EUROPE,
   DEFAULT_TRANSITION_DURATION_MS,
+  DEFAULT_ZOOM,
   FLY_TO_ZOOM,
   INITIAL_VIEW_STATE,
   LayerIndices
@@ -19,7 +20,6 @@ import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 
 @Injectable()
 export class MapService {
-  resetMap$ = new EventEmitter<string>();
   loading$ = new EventEmitter<string>();
 
   private readonly mapLayer: Promise<TileLayer>;
@@ -42,27 +42,35 @@ export class MapService {
     return Promise.all([this.getMapLayer(), this.getEuBordersLayer(), this.getCapitolsLayer()]);
   }
 
-  resetMapToEuropeanCenter() {
-    this.log.debug('Reset map');
-    this.resetMap$.emit();
+  async resetMapToEuropeanCenter() {
+    this.map!.setProps({
+      initialViewState: {
+        latitude: CENTER_OF_EUROPE[0],
+        longitude: CENTER_OF_EUROPE[1],
+        zoom: DEFAULT_ZOOM,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionDuration: DEFAULT_TRANSITION_DURATION_MS
+      }
+    });
   }
 
-  moveMapToMyLocation() {
+  async moveMapToMyLocation() {
     navigator.geolocation.getCurrentPosition(
       position => {
         this.map!.setProps({
           initialViewState: {
-            longitude: position.coords.longitude,
             latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
             zoom: FLY_TO_ZOOM,
             transitionInterpolator: new FlyToInterpolator(),
             transitionDuration: DEFAULT_TRANSITION_DURATION_MS
           }
         });
-
-        this.log.debug('Moved map to my location:', position.coords);
       },
-      err => this.notificationService.showError('Could not get geolocation', err)
+      err => this.notificationService.showError('Could not get geolocation', err),
+      {
+        enableHighAccuracy: false
+      }
     );
   }
 
@@ -152,6 +160,11 @@ export class MapService {
       });
   }
 
+  // TODO feature: load capitols via HTTP and add population
+  private async getCapitolsLayer() {
+    return CAPITOLS_LAYER;
+  }
+
   private async changeLayerVisibility(layerIndex: number, value: boolean) {
     this.layers.then(layers => {
       const clonedLayers = layers.slice();
@@ -160,17 +173,7 @@ export class MapService {
     });
   }
 
-  // TODO deck.gl: do not forget this method
-  private async getCenterOfEurope() {
-    return CENTER_OF_EUROPE;
-  }
-
-  // TODO feature: load capitols via HTTP and add population
-  private async getCapitolsLayer() {
-    return CAPITOLS_LAYER;
-  }
-
-  private getMapLayer() {
+  private async getMapLayer() {
     return this.mapLayer;
   }
 
