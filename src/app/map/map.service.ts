@@ -5,12 +5,13 @@ import {
   CAPITOLS_LAYER,
   CENTER_OF_EUROPE,
   DEFAULT_TRANSITION_DURATION_MS,
+  DEFAULT_ZOOM,
   FLY_TO_ZOOM,
   INITIAL_VIEW_STATE,
   LayerIndices
 } from './map.constants';
 import { NotificationService } from '../notifications/notification.service';
-import { Deck, FlyToInterpolator, Layer, TRANSITION_EVENTS } from '@deck.gl/core/typed';
+import { Deck, FlyToInterpolator, Layer } from '@deck.gl/core/typed';
 import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers/typed';
 import { firstValueFrom, Subject } from 'rxjs';
 import { TileLayer } from '@deck.gl/geo-layers/typed';
@@ -27,7 +28,7 @@ export class MapService {
   private readonly layers: Promise<Layer[]>;
 
   private theMap?: Deck;
-  private geoPosition?: GeolocationCoordinates;
+  private myLocation?: GeolocationCoordinates;
 
   constructor(
     private readonly http: HttpClient,
@@ -54,40 +55,29 @@ export class MapService {
   }
 
   async resetMapToEuropeanCenter() {
-    // FIXME deck.gl - find out why resetting theMap is unreliable
-    console.log('--- Lat', this.theMap!.props.initialViewState.latitude);
-    console.log('--- Lon', this.theMap!.props.initialViewState.longitude);
-    console.log('--- Lat-S', CENTER_OF_EUROPE[0]);
-    console.log('--- Lon-S', CENTER_OF_EUROPE[1]);
-
-    this.theMap!.setProps({
-      initialViewState: {
-        ...Object.assign(this, INITIAL_VIEW_STATE),
-        transitionInterpolator: new FlyToInterpolator({ speed: 1.5 }),
-        transitionDuration: DEFAULT_TRANSITION_DURATION_MS,
-        transitionInterruption: TRANSITION_EVENTS.IGNORE
-      }
-    });
+    this.flyMapTo(CENTER_OF_EUROPE.longitude, CENTER_OF_EUROPE.latitude, DEFAULT_ZOOM);
   }
 
   async moveMapToMyLocation() {
-    if (!this.geoPosition) {
-      firstValueFrom(this.geoService.myCurrentLocation()).then(p => {
-        this.geoPosition = p;
-        this.flyMapTo(p);
+    // TODO refactor: find a more elegant solution
+    if (!this.myLocation) {
+      firstValueFrom(this.geoService.myCurrentLocation()).then(coordinates => {
+        this.myLocation = coordinates;
+        this.flyMapTo(coordinates.longitude, coordinates.latitude, FLY_TO_ZOOM);
       });
     } else {
-      this.flyMapTo(this.geoPosition);
+      this.flyMapTo(this.myLocation.longitude, this.myLocation.latitude, FLY_TO_ZOOM);
     }
   }
 
-  private flyMapTo(p: GeolocationCoordinates) {
+  // FIXME deck.gl - find out why flying is unreliable (problem with initial view state change)
+  private flyMapTo(longitude: number, latitude: number, zoom: number) {
     this.theMap!.setProps({
       initialViewState: {
-        ...Object.assign(this, INITIAL_VIEW_STATE),
-        latitude: p.latitude,
-        longitude: p.longitude,
-        zoom: FLY_TO_ZOOM,
+        ...INITIAL_VIEW_STATE,
+        longitude: longitude,
+        latitude: latitude,
+        zoom: zoom,
         transitionInterpolator: new FlyToInterpolator(),
         transitionDuration: DEFAULT_TRANSITION_DURATION_MS
       }
@@ -121,6 +111,10 @@ export class MapService {
 
         _onMetrics: metrics => {
           metricsRef.next(metrics);
+        },
+
+        onLoad: () => {
+          this.log.debug('Deck GL map is ready');
         }
       });
     });

@@ -37,7 +37,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.unsubscribeAll();
-    this.disposeMap();
   }
 
   private initAllSubscriptions() {
@@ -58,17 +57,4 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.onUnsubscribe$.complete();
     this.onUnsubscribe$.unsubscribe();
   }
-
-  // TODO deck.gl: dispose deck map
-  private disposeMap() {
-    this.log.info('Disposed theMap');
-  }
-
-  // TODO deck.gl: map ready and attribution
-  // onMapReady(map: LeafletMap) {
-  //   this.theMap = map;
-  //   this.log.info('Leaflet theMap ready');
-  //   this.theMap.addControl(control.attribution(attributionOptions));
-  //   this.theZoom = map.getZoom();
-  // }
 }

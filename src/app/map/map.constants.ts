@@ -5,11 +5,14 @@ export const DEFAULT_TRANSITION_DURATION_MS= 'auto';
 
 export const FLY_TO_ZOOM = 7;
 
-export const CENTER_OF_EUROPE = [54.526, 15.2551];
+export const CENTER_OF_EUROPE = {
+  latitude: 54.526,
+  longitude: 15.2551
+}
 
 export const INITIAL_VIEW_STATE = {
-  latitude: CENTER_OF_EUROPE[0],
-  longitude: CENTER_OF_EUROPE[1],
+  latitude: CENTER_OF_EUROPE.latitude,
+  longitude: CENTER_OF_EUROPE.longitude,
   zoom: DEFAULT_ZOOM,
   minZoom: 3,
   maxZoom: 10,
