@@ -1,22 +1,22 @@
 import { ScatterplotLayer } from '@deck.gl/layers/typed';
 
-export const DEFAULT_ZOOM = 3;
+export const DEFAULT_ZOOM = 4;
 export const DEFAULT_TRANSITION_DURATION_MS= 'auto';
 
 export const FLY_TO_ZOOM = 7;
 
-export const CENTER_OF_EUROPE = {
-  latitude: 54.526,
-  longitude: 15.2551
+export const MAP_CENTER = {
+  longitude: 15.2551,
+  latitude: 49
 }
 
-export const INITIAL_VIEW_STATE = {
-  latitude: CENTER_OF_EUROPE.latitude,
-  longitude: CENTER_OF_EUROPE.longitude,
+export const INITIAL_VIEW_STATE: Record<string, number> = {
+  latitude: MAP_CENTER.latitude,
+  longitude: MAP_CENTER.longitude,
   zoom: DEFAULT_ZOOM,
   minZoom: 3,
   maxZoom: 10,
-  pitch: 0,
+  pitch: 40,
   bearing: 0
 };
 
@@ -41,8 +41,9 @@ export const CAPITOLS_LAYER = new ScatterplotLayer({
   filled: true,
   colorFormat: 'RGBA',
   visible: true,
+
   getRadius: () => 2000,
-  getPosition: d => [d.coordinates[1], d.coordinates[0]], // only explicit syntax works
+  getPosition: d => [d.coordinates[1], d.coordinates[0], 9000], // only explicit syntax works, altitude needed for pitch map representation
   getLineColor: () => [255, 214, 23, 255],
   getFillColor: () => [255, 214, 23, 50],
   getLineWidth: () => 3000

@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MapService } from './map.service';
-import { NGXLogger } from 'ngx-logger';
 import { Subject, takeUntil } from 'rxjs';
 import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 
@@ -20,10 +19,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private readonly onUnsubscribe$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(
-    private log: NGXLogger,
-    private mapService: MapService
-  ) {
+  constructor(private mapService: MapService) {
     this.metrics$.pipe(takeUntil(this.onUnsubscribe$));
   }
 

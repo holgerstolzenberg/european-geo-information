@@ -4,6 +4,8 @@ import { NGXLogger } from 'ngx-logger';
 
 @Injectable()
 export class GeoService {
+  private readonly options = { enableHighAccuracy: false, timeout: 5000 };
+
   constructor(private readonly log: NGXLogger) {}
 
   myCurrentLocation() {
@@ -14,7 +16,7 @@ export class GeoService {
           observer.complete();
         },
         err => observer.error(err),
-        { enableHighAccuracy: false, timeout: 5000 }
+        this.options
       );
     }).pipe(
       tap(d => {
@@ -22,7 +24,7 @@ export class GeoService {
       }),
       // it will be invoked if our source observable emits an error.
       catchError(error => {
-        this.log.error('failed to get your location', error);
+        this.log.error('Failed to get your location', error);
         return throwError(() => error);
       })
     );

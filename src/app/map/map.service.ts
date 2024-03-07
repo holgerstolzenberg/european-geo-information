@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { NGXLogger } from 'ngx-logger';
 import {
   CAPITOLS_LAYER,
-  CENTER_OF_EUROPE,
   DEFAULT_TRANSITION_DURATION_MS,
   DEFAULT_ZOOM,
   FLY_TO_ZOOM,
   INITIAL_VIEW_STATE,
-  LayerIndices
+  LayerIndices,
+  MAP_CENTER
 } from './map.constants';
 import { NotificationService } from '../notifications/notification.service';
 import { Deck, FlyToInterpolator, Layer } from '@deck.gl/core/typed';
@@ -26,6 +26,8 @@ export class MapService {
   private readonly mapLayer: Promise<TileLayer>;
   private readonly euBordersLayer: Promise<GeoJsonLayer>;
   private readonly layers: Promise<Layer[]>;
+
+  private currentViewState: Record<string, number> = INITIAL_VIEW_STATE;
 
   private theMap?: Deck;
   private myLocation?: GeolocationCoordinates;
@@ -55,7 +57,7 @@ export class MapService {
   }
 
   async resetMapToEuropeanCenter() {
-    this.flyMapTo(CENTER_OF_EUROPE.longitude, CENTER_OF_EUROPE.latitude, DEFAULT_ZOOM);
+    this.transitionMapAnimated(MAP_CENTER.longitude, MAP_CENTER.latitude, DEFAULT_ZOOM);
   }
 
   async moveMapToMyLocation() {
@@ -63,25 +65,11 @@ export class MapService {
     if (!this.myLocation) {
       firstValueFrom(this.geoService.myCurrentLocation()).then(coordinates => {
         this.myLocation = coordinates;
-        this.flyMapTo(coordinates.longitude, coordinates.latitude, FLY_TO_ZOOM);
+        this.transitionMapAnimated(coordinates.longitude, coordinates.latitude, FLY_TO_ZOOM);
       });
     } else {
-      this.flyMapTo(this.myLocation.longitude, this.myLocation.latitude, FLY_TO_ZOOM);
+      this.transitionMapAnimated(this.myLocation.longitude, this.myLocation.latitude, FLY_TO_ZOOM);
     }
-  }
-
-  // FIXME deck.gl - find out why flying is unreliable (problem with initial view state change)
-  private flyMapTo(longitude: number, latitude: number, zoom: number) {
-    this.theMap!.setProps({
-      initialViewState: {
-        ...INITIAL_VIEW_STATE,
-        longitude: longitude,
-        latitude: latitude,
-        zoom: zoom,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionDuration: DEFAULT_TRANSITION_DURATION_MS
-      }
-    });
   }
 
   async doShowEuBorders(value: boolean) {
@@ -98,15 +86,17 @@ export class MapService {
     this.layers.then(layers => {
       this.theMap = new Deck({
         parent: mapDiv.nativeElement,
-        initialViewState: INITIAL_VIEW_STATE,
+        viewState: this.currentViewState,
         style: { position: 'relative', top: '0', bottom: '0' },
         controller: true,
         useDevicePixels: false,
         layers: [layers],
 
-        onWebGLInitialized: gl => {
-          gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE_MINUS_DST_ALPHA, gl.ONE);
-          gl.blendEquation(gl.FUNC_ADD);
+        // necessary game changer to get transitions working
+        // see: https://github.com/visgl/deck.gl/issues/2102
+        onViewStateChange: ({ viewState }) => {
+          this.currentViewState = viewState;
+          this.theMap!.setProps({ viewState: this.currentViewState });
         },
 
         _onMetrics: metrics => {
@@ -120,9 +110,20 @@ export class MapService {
     });
   }
 
+  private transitionMapAnimated(longitude: number, latitude: number, zoom: number) {
+    this.currentViewState = Object.assign({}, this.currentViewState, {
+      longitude: longitude,
+      latitude: latitude,
+      zoom: zoom,
+      transitionInterpolator: new FlyToInterpolator(),
+      transitionDuration: DEFAULT_TRANSITION_DURATION_MS
+    });
+    this.theMap!.setProps({ viewState: this.currentViewState });
+  }
+
   private async initMapLayer() {
     return new TileLayer({
-      id: 'theMap-layer',
+      id: 'map-layer',
       data: environment.tileServerUrls,
       maxRequests: 20,
       pickable: false,
@@ -179,10 +180,10 @@ export class MapService {
     return CAPITOLS_LAYER;
   }
 
-  private async changeLayerVisibility(layerIndex: number, value: boolean) {
+  private async changeLayerVisibility(index: number, value: boolean) {
     this.layers.then(layers => {
       const clonedLayers = layers.slice();
-      clonedLayers[layerIndex] = layers[layerIndex].clone({ visible: value });
+      clonedLayers[index] = layers[index].clone({ visible: value });
       this.theMap!.setProps({ layers: clonedLayers });
     });
   }
