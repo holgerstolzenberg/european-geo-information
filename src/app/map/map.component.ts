@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { MapService } from './map.service';
 import { Subject, takeUntil } from 'rxjs';
 import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
@@ -8,12 +8,13 @@ import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
-export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('deckGlMap', { static: false }) private mapDiv?: ElementRef<HTMLDivElement>;
 
-  showLoader: boolean = false;
   showMetrics: boolean = true;
   loadedTileId: string = '';
+
+  showLoader$ = new Subject<boolean>();
 
   readonly metrics$: Subject<DeckMetrics> = new Subject<DeckMetrics>();
 
@@ -21,14 +22,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private mapService: MapService) {
     this.metrics$.pipe(takeUntil(this.onUnsubscribe$));
-  }
-
-  ngOnInit(): void {
-    this.initAllSubscriptions();
+    this.mapService.loading$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(tileId => this.showHideLoader(tileId));
+    this.showLoader$.pipe(takeUntil(this.onUnsubscribe$)).subscribe();
   }
 
   ngAfterViewInit() {
-    this.mapService.initDeckGlMap(this.mapDiv!, this.metrics$);
+    this.mapService.initDeckGlMap(this.mapDiv!, this.metrics$, this.showLoader$);
   }
 
   ngOnDestroy(): void {
@@ -37,15 +36,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private initAllSubscriptions() {
     // prettier-ignore
-    this.mapService.loading$
-        .pipe(takeUntil(this.onUnsubscribe$))
-        .subscribe(tileId => this.showHideLoader(tileId));
+
   }
 
   private showHideLoader(tileId: string) {
     this.loadedTileId = tileId;
-    this.showLoader = true;
-    setTimeout(() => (this.showLoader = false), 1000);
+    this.showLoader$.next(true);
+    setTimeout(() => this.showLoader$.next(false), 1000);
   }
 
   private unsubscribeAll() {

@@ -27,10 +27,11 @@ export class MapService {
   private readonly euBordersLayer: Promise<GeoJsonLayer>;
   private readonly layers: Promise<Layer[]>;
 
-  private currentViewState: Record<string, number> = INITIAL_VIEW_STATE;
+  private currentViewState = INITIAL_VIEW_STATE;
 
   private theMap?: Deck;
   private myLocation?: GeolocationCoordinates;
+  private loadingIndicator$?: Subject<boolean>;
 
   constructor(
     private readonly http: HttpClient,
@@ -57,19 +58,20 @@ export class MapService {
   }
 
   async resetMapToEuropeanCenter() {
-    this.transitionMapAnimated(MAP_CENTER.longitude, MAP_CENTER.latitude, DEFAULT_ZOOM);
+    return this.transitionMapAnimated(MAP_CENTER.longitude, MAP_CENTER.latitude, DEFAULT_ZOOM);
   }
 
   async moveMapToMyLocation() {
-    // TODO refactor: find a more elegant solution
-    if (!this.myLocation) {
-      firstValueFrom(this.geoService.myCurrentLocation()).then(coordinates => {
-        this.myLocation = coordinates;
-        this.transitionMapAnimated(coordinates.longitude, coordinates.latitude, FLY_TO_ZOOM);
-      });
-    } else {
-      this.transitionMapAnimated(this.myLocation.longitude, this.myLocation.latitude, FLY_TO_ZOOM);
+    if (this.myLocation) {
+      return this.transitionMapAnimated(this.myLocation.longitude, this.myLocation.latitude, FLY_TO_ZOOM);
     }
+
+    this.loadingIndicator$?.next(true);
+
+    return firstValueFrom(this.geoService.myCurrentLocation()).then(coordinates => {
+      this.myLocation = coordinates;
+      this.transitionMapAnimated(coordinates.longitude, coordinates.latitude, FLY_TO_ZOOM);
+    });
   }
 
   async doShowEuBorders(value: boolean) {
@@ -82,7 +84,9 @@ export class MapService {
     this.changeLayerVisibility(LayerIndices.CAPITOLS_LAYER, value).then(() => this.log.trace('Show capitols', value));
   }
 
-  initDeckGlMap(mapDiv: ElementRef<HTMLDivElement>, metricsRef: Subject<DeckMetrics>) {
+  initDeckGlMap(mapDiv: ElementRef<HTMLDivElement>, metricsRef: Subject<DeckMetrics>, showLoader$: Subject<boolean>) {
+    this.loadingIndicator$ = showLoader$;
+
     this.layers.then(layers => {
       this.theMap = new Deck({
         parent: mapDiv.nativeElement,
@@ -110,15 +114,21 @@ export class MapService {
     });
   }
 
-  private transitionMapAnimated(longitude: number, latitude: number, zoom: number) {
-    this.currentViewState = Object.assign({}, this.currentViewState, {
-      longitude: longitude,
-      latitude: latitude,
-      zoom: zoom,
-      transitionInterpolator: new FlyToInterpolator(),
-      transitionDuration: DEFAULT_TRANSITION_DURATION_MS
+  private async transitionMapAnimated(longitude: number, latitude: number, zoom: number) {
+    return new Promise(() => {
+      this.loadingIndicator$?.next(true);
+
+      this.currentViewState = Object.assign({}, this.currentViewState, {
+        longitude: longitude,
+        latitude: latitude,
+        zoom: zoom,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionDuration: DEFAULT_TRANSITION_DURATION_MS
+      });
+
+      this.theMap!.setProps({ viewState: this.currentViewState });
+      this.loadingIndicator$?.next(true);
     });
-    this.theMap!.setProps({ viewState: this.currentViewState });
   }
 
   private async initMapLayer() {

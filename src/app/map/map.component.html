@@ -14,7 +14,7 @@
 </div>
 <div class="map" #deckGlMap>
 </div>
-<div *ngIf="showLoader">
+<div *ngIf="showLoader$ | async">
     <div class="loader">
     </div>
     <div class="tile">

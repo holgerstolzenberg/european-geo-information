@@ -43,7 +43,7 @@ export const CAPITOLS_LAYER = new ScatterplotLayer({
   visible: true,
 
   getRadius: () => 2000,
-  getPosition: d => [d.coordinates[1], d.coordinates[0], 9000], // only explicit syntax works, altitude needed for pitch map representation
+  getPosition: d => [d.coordinates[1], d.coordinates[0]],
   getLineColor: () => [255, 214, 23, 255],
   getFillColor: () => [255, 214, 23, 50],
   getLineWidth: () => 3000
