@@ -35,6 +35,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 - Weather or other overlays, distance to cities
 - ☑️Smoother map animation (only mac chrome so far, retina)
 - ☑️Add loading indicator
+- Slider for map pitch angle
 
 ## Development
 
