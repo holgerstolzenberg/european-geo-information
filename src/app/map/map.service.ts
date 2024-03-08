@@ -127,7 +127,7 @@ export class MapService {
       });
 
       this.theMap!.setProps({ viewState: this.currentViewState });
-      this.loadingIndicator$?.next(true);
+      this.loadingIndicator$?.next(false);
     });
   }
 
