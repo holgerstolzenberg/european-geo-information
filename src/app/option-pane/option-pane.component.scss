@@ -3,6 +3,8 @@
 
 @import "variables";
 
+$row_height: 40pt;
+
 div.option-pane {
   @include typography.default;
   position: absolute;
@@ -78,9 +80,34 @@ div.option-pane {
     width: calc($option-pane-width-expanded - $option-pane-width - 20pt);
     display: inline-block;
 
+    div.subtitle {
+      color: typography.$tertiary;
+      text-transform: uppercase;
+      font-size: 15pt;
+    }
+
+    div.last {
+      margin-top: $row_height;
+    }
+
     div.row {
-      border: 0;
-      margin: 20pt 0 25pt 0;
+      height: $row_height;
+      padding: 0;
+      vertical-align: middle;
+
+      .mat-mdc-slide-toggle {
+        line-height: $row_height;
+      }
+
+      .mat-mdc-slider {
+        width: 120pt;
+        margin: 0 0 0 10pt;
+      }
+
+      span {
+        line-height: $row_height;
+        color: typography.$tertiary;
+      }
     }
   }
 }

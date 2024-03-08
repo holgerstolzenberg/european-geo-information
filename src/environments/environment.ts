@@ -7,5 +7,10 @@ export const environment = {
     'https://2.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
     'https://3.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png'
   ],
-  logLevel: 4 // warn
+
+  logLevel: 4, // warn
+
+  mapProperties: {
+    initialPitch: 40
+  }
 };

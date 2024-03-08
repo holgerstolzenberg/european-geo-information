@@ -114,6 +114,19 @@ export class MapService {
     });
   }
 
+  async doPitchMap(mapPitch: number) {
+    return new Promise(() => {
+      this.loadingIndicator$?.next(true);
+
+      this.currentViewState = Object.assign({}, this.currentViewState, {
+        pitch: mapPitch
+      });
+
+      this.theMap!.setProps({ viewState: this.currentViewState });
+      this.loadingIndicator$?.next(false);
+    });
+  }
+
   private async transitionMapAnimated(longitude: number, latitude: number, zoom: number) {
     return new Promise(() => {
       this.loadingIndicator$?.next(true);

@@ -11,7 +11,10 @@
   },
   "option-pane": {
     "show-eu-borders": "European borders",
-    "show-capitols": "Show capitols"
+    "show-capitols": "Show capitols",
+    "map-data": "Map data",
+    "map-props": "Map properties",
+    "map-pitch": "Pitch"
   },
   "notifications": {
     "error-title": "Error",

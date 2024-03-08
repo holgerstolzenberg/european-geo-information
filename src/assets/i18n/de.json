@@ -11,7 +11,10 @@
   },
   "option-pane": {
     "show-eu-borders": "EU Grenzen",
-    "show-capitols": "Hauptstädte anzeigen"
+    "show-capitols": "Hauptstädte anzeigen",
+    "map-data": "Kartendaten",
+    "map-props": "Karteneigenschaften",
+    "map-pitch": "Neigung"
   },
   "notifications": {
     "error-title": "Fehler",
