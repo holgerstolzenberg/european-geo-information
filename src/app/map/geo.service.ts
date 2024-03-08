@@ -20,9 +20,12 @@ export class GeoService {
       );
     }).pipe(
       tap(coords => {
+        const longitude = this.degreesMinutes(coords.longitude);
+        const latitude = this.degreesMinutes(coords.latitude);
+
         this.notificationService.showInfoLocalized(
           'map.got-geo-location',
-          String('[' + coords.longitude + ', ' + coords.latitude + ']')
+          String(this.formatDegreesMinutes(longitude) + ', ' + this.formatDegreesMinutes(latitude))
         );
       }),
       catchError(error => {
@@ -30,5 +33,25 @@ export class GeoService {
         return throwError(() => error);
       })
     );
+  }
+
+  // TODO calculation: make sure this algo is valid
+  degreesMinutes(value: number) {
+    let sec = Math.round(value * 3600);
+    const deg = sec / 3600;
+    sec = Math.abs(sec % 3600);
+    const min = sec / 60;
+    sec %= 60;
+
+    return new DegreeMinute(Math.round(deg), Math.round(min), Math.round(sec));
+  }
+
+  formatDegreesMinutes(value: DegreeMinute) {
+    return value.degrees + '°' + value.minutes + '"' + value.seconds + "'";
+  }
+}
+
+class DegreeMinute {
+  constructor(readonly degrees: number,readonly minutes: number,readonly seconds: number) {
   }
 }
