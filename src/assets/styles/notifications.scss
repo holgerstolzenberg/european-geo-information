@@ -22,6 +22,10 @@
     }
   }
 
+  &.toast-info {
+    background-color: $secondary;
+  }
+
   &.toast-error {
     background-image: url('/assets/styles/icons/octagon-xmark.png') !important;
   }

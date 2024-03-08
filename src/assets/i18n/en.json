@@ -15,6 +15,10 @@
   },
   "notifications": {
     "error-title": "Error",
-    "warn-title": "Warning"
+    "info-title": "Information"
+  },
+  "map": {
+    "got-geo-location": "Geo position has been detected",
+    "error-on-geo-location": "Geo position could not be determined"
   }
 }
