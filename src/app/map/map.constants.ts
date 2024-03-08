@@ -1,14 +1,14 @@
 import { ScatterplotLayer } from '@deck.gl/layers/typed';
 
 export const DEFAULT_ZOOM = 4;
-export const DEFAULT_TRANSITION_DURATION_MS= 'auto';
+export const DEFAULT_TRANSITION_DURATION_MS = 'auto';
 
 export const FLY_TO_ZOOM = 7;
 
 export const MAP_CENTER = {
   longitude: 15.2551,
   latitude: 49
-}
+};
 
 export const INITIAL_VIEW_STATE: Record<string, number> = {
   latitude: MAP_CENTER.latitude,
@@ -43,7 +43,7 @@ export const CAPITOLS_LAYER = new ScatterplotLayer({
   visible: true,
 
   getRadius: () => 2000,
-  getPosition: d => [d.coordinates[1], d.coordinates[0]],
+  getPosition: d => [d.coordinates[1], d.coordinates[0], 50], // need a bit of altitude for proper rendering
   getLineColor: () => [255, 214, 23, 255],
   getFillColor: () => [255, 214, 23, 50],
   getLineWidth: () => 3000
