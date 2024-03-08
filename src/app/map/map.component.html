@@ -14,7 +14,10 @@
 </div>
 <div class="map" #deckGlMap>
 </div>
-<div *ngIf="showLoader$ | async">
+<div class="attribution">
+  <span>&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors // &copy; <a href="https://carto.com/attributions">CARTO</a></span>
+</div>
+<div *ngIf="showLoader$ | async" class="loaderContainer">
     <div class="loader">
     </div>
     <div class="tile">

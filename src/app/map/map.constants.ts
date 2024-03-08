@@ -1,6 +1,7 @@
 import { ScatterplotLayer } from '@deck.gl/layers/typed';
 
 export const DEFAULT_ZOOM = 4;
+export const DEFAULT_PITCH = 40;
 export const DEFAULT_TRANSITION_DURATION_MS = 'auto';
 
 export const FLY_TO_ZOOM = 7;
@@ -16,15 +17,9 @@ export const INITIAL_VIEW_STATE: Record<string, number> = {
   zoom: DEFAULT_ZOOM,
   minZoom: 3,
   maxZoom: 10,
-  pitch: 40,
+  pitch: DEFAULT_PITCH,
   bearing: 0
 };
-
-// TODO deck.gl: attribution
-// export const darkMatterNoLabelsLayer = new TileLayer(environment.tileServerUrl, {
-//   attribution:
-//     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-// });
 
 export const BERLIN = [52.52, 13.405];
 

@@ -28,6 +28,32 @@ div.metrics {
   }
 }
 
+div.attribution {
+  position: fixed;
+  left:20pt;
+  bottom: 20pt;
+  margin: 0;
+  border: 1px solid blue;
+  z-index: 1;
+  background-color: typography.$primary;
+  color: typography.$accent;
+  font-size: 10pt;
+  padding: 5pt;
+  text-align: center;
+  border-radius: 1pt;
+
+  span {
+    a {
+      color: typography.$accent-bright;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
 div.map {
   @include typography.prevent-select;
   background-color: $dark-matter-bg;
@@ -42,6 +68,14 @@ div.map {
   overflow: hidden;
 }
 
+div.loaderContainer {
+  position: absolute;
+  bottom: 20pt;
+  width: 100pt;
+  height: 20pt;
+  left: 230pt;
+}
+
 .loader,
 .loader:after {
   border-radius: 50%;
@@ -49,8 +83,7 @@ div.map {
   height: 10pt;
   display: block;
   position: absolute;
-  left: 10pt;
-  bottom: 10pt;
+  top: 2pt;
 }
 
 .loader {
@@ -73,8 +106,8 @@ div.tile {
   @include typography.prevent-select;
   position: absolute;
   display: inline-block;
-  bottom: 10pt;
-  left: 30pt;
+  top: 3pt;
+  left: 20pt;
   z-index: 3;
   color: typography.$accent-bright;
   font-size: 10pt;

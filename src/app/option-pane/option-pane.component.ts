@@ -10,7 +10,7 @@ import { NGXLogger } from 'ngx-logger';
   styleUrl: 'option-pane.component.scss'
 })
 export class OptionPaneComponent {
-  expanded: boolean = true;
+  expanded: boolean = false;
 
   @Input() showEuBorders: boolean = true;
   @Input() showCapitols: boolean = true;

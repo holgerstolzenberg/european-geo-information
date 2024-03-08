@@ -186,7 +186,7 @@ export class MapService {
           stroked: true,
           filled: true,
           lineWidthMinPixels: 1,
-          getFillColor: [255, 214, 23, 5],
+          getFillColor: [255, 214, 23, 10],
           getLineColor: [255, 214, 23, 50],
           getElevation: 0,
           visible: true
