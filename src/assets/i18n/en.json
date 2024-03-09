@@ -21,7 +21,9 @@
     "info-title": "Information"
   },
   "map": {
+    "awaiting": "Preparing map...",
+    "error-on-geo-location": "Geo position could not be determined",
     "got-geo-location": "Geo position has been detected",
-    "error-on-geo-location": "Geo position could not be determined"
+    "tile": "Loading tile"
   }
 }

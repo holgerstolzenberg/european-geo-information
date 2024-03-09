@@ -23,7 +23,7 @@ export const INITIAL_VIEW_STATE: Record<string, number> = {
 
 export const BERLIN = [52.52, 13.405];
 
-// TODO deck.gl: popup
+// TODO feature: capitol names, population
 export const CAPITOLS_LAYER = new ScatterplotLayer({
   id: 'capitols-layer',
   data: [{ coordinates: BERLIN, radius: 30 }],

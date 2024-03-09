@@ -2,6 +2,28 @@
 
 @import "variables";
 
+div.is-hidden {
+  visibility: hidden;
+}
+
+div.await-map {
+  @include typography.prevent-select;
+  position: relative;
+  left: auto;
+  top: 30%;
+  z-index: 1;
+  text-align: center;
+  overflow: hidden;
+
+  span {
+    @include typography.prevent-select;
+    display: inline-block;
+    color: typography.$accent-bright;
+    background-color: typography.$dark-matter-bg;
+    padding: 20pt;
+  }
+}
+
 div.metrics {
   @include typography.prevent-select;
   position: absolute;
@@ -71,7 +93,7 @@ div.map {
 div.loaderContainer {
   position: absolute;
   bottom: 20pt;
-  width: 100pt;
+  width: 120pt;
   height: 20pt;
   left: 230pt;
 }

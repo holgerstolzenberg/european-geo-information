@@ -1,4 +1,4 @@
-<div class="metrics" *ngIf="showMetrics">
+<div class="metrics" *ngIf="showMetrics"  [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
     <div>
         <span class="label">FPS</span><span>{{ (metrics$ | async)?.fps | number: '1.0-3' }}</span>
     </div>
@@ -12,15 +12,18 @@
         <span class="label">GPU memory</span><span>{{ (metrics$ | async)?.gpuMemory }}</span>
     </div>
 </div>
-<div class="map" #deckGlMap>
+<div class="await-map" [ngClass]="{'is-hidden': (mapHidden$ | async) === false}" *transloco="let t">
+    <span>{{ t('map.awaiting') }}</span>
 </div>
-<div class="attribution">
+<div class="map" #deckGlMap [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
+</div>
+<div class="attribution"  [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
   <span>&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors // &copy; <a href="https://carto.com/attributions">CARTO</a></span>
 </div>
-<div *ngIf="showLoader$ | async" class="loaderContainer">
+<div *ngIf="showLoader$ | async" class="loaderContainer" [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
     <div class="loader">
     </div>
     <div class="tile">
-        T: {{ loadedTileId }}
+        {{ 'map.tile' | transloco }}: {{ loadedTileId }}
     </div>
 </div>

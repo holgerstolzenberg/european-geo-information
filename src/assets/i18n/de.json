@@ -21,7 +21,9 @@
     "info-title": "Information"
   },
   "map": {
+    "awaiting": "Karte wird bereit gestellt...",
+    "error-on-geo-location": "Geo-Position konnte nicht ermittelt werden.",
     "got-geo-location": "Geo-Position wurde ermittelt",
-    "error-on-geo-location": "Geo-Position konnte nicht ermittelt werden."
+    "tile": "Lade Kachel"
   }
 }

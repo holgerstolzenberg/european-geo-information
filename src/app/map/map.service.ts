@@ -29,9 +29,10 @@ export class MapService {
 
   private currentViewState = INITIAL_VIEW_STATE;
 
-  private theMap?: Deck;
   private myLocation?: GeolocationCoordinates;
   private loadingIndicator$?: Subject<boolean>;
+
+  private theMap?: Deck;
 
   constructor(
     private readonly http: HttpClient,
@@ -84,7 +85,12 @@ export class MapService {
     this.changeLayerVisibility(LayerIndices.CAPITOLS_LAYER, value).then(() => this.log.trace('Show capitols', value));
   }
 
-  initDeckGlMap(mapDiv: ElementRef<HTMLDivElement>, metricsRef: Subject<DeckMetrics>, showLoader$: Subject<boolean>) {
+  initDeckGlMap(
+    mapDiv: ElementRef<HTMLDivElement>,
+    metricsRef: Subject<DeckMetrics>,
+    showLoader$: Subject<boolean>,
+    mapHidden: Subject<boolean>
+  ) {
     this.loadingIndicator$ = showLoader$;
 
     this.layers.then(layers => {
@@ -109,6 +115,7 @@ export class MapService {
 
         onLoad: () => {
           this.log.debug('Deck GL map is ready');
+          setTimeout(() => mapHidden.next(false), 1000);
         }
       });
     });
