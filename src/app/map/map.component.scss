@@ -2,15 +2,100 @@
 
 @import "variables";
 
+div.is-hidden {
+  visibility: hidden;
+}
+
+div.await-map {
+  @include typography.prevent-select;
+  position: relative;
+  left: auto;
+  top: 30%;
+  z-index: 1;
+  text-align: center;
+  overflow: hidden;
+
+  span {
+    @include typography.prevent-select;
+    display: inline-block;
+    color: typography.$accent-bright;
+    background-color: typography.$dark-matter-bg;
+    padding: 20pt;
+  }
+}
+
+div.metrics {
+  @include typography.prevent-select;
+  position: absolute;
+  font-size: 10pt;
+  font-family: "Courier New", serif;
+  padding: 5pt;
+  top: 20pt;
+  left: 20pt;
+  background-color: typography.$primary;
+  z-index: 1;
+  border: 2px solid typography.$secondary;
+  width: 140pt;
+  opacity: .9;
+  overflow: hidden;
+
+  span.label {
+    @include typography.prevent-select;
+    @include typography.default;
+    color: typography.$tertiary;
+    display: inline-block;
+    width: 70pt;
+    padding: 5pt;
+    font-weight: bold;
+  }
+}
+
+div.attribution {
+  position: fixed;
+  left:20pt;
+  bottom: 20pt;
+  margin: 0;
+  border: 1px solid blue;
+  z-index: 1;
+  background-color: typography.$primary;
+  color: typography.$accent;
+  font-size: 10pt;
+  padding: 5pt;
+  text-align: center;
+  border-radius: 1pt;
+
+  span {
+    a {
+      color: typography.$accent-bright;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
 div.map {
   @include typography.prevent-select;
-  background-color: $accent;
-  tab-index: -1;
+  background-color: $dark-matter-bg;
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+div.loaderContainer {
+  position: absolute;
+  bottom: 20pt;
+  width: 120pt;
+  height: 20pt;
+  left: 230pt;
 }
 
 .loader,
@@ -20,8 +105,7 @@ div.map {
   height: 10pt;
   display: block;
   position: absolute;
-  left: 10pt;
-  bottom: 10pt;
+  top: 2pt;
 }
 
 .loader {
@@ -38,6 +122,17 @@ div.map {
   -webkit-animation: load8 1.1s infinite linear;
   animation: load8 1.1s infinite linear;
   z-index: 99;
+}
+
+div.tile {
+  @include typography.prevent-select;
+  position: absolute;
+  display: inline-block;
+  top: 3pt;
+  left: 20pt;
+  z-index: 3;
+  color: typography.$accent-bright;
+  font-size: 10pt;
 }
 
 @-webkit-keyframes load8 {

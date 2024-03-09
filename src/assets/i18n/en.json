@@ -1,4 +1,7 @@
 {
+  "common": {
+    "not-implemented": "Feature not implemented"
+  },
   "header": {
     "title": "Cities of Europe"
   },
@@ -7,10 +10,20 @@
     "my-location": "My location"
   },
   "option-pane": {
-    "show-eu-borders": "European borders (UN)",
-    "show-capitols": "Show capitols"
+    "show-eu-borders": "European borders",
+    "show-capitols": "Show capitols",
+    "map-data": "Map data",
+    "map-props": "Map properties",
+    "map-pitch": "Pitch"
   },
   "notifications": {
-    "error-title": "Error"
+    "error-title": "Error",
+    "info-title": "Information"
+  },
+  "map": {
+    "awaiting": "Preparing map...",
+    "error-on-geo-location": "Geo position could not be determined",
+    "got-geo-location": "Geo position has been detected",
+    "tile": "Loading tile"
   }
 }

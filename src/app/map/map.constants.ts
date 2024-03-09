@@ -1,65 +1,51 @@
-import {
-  CircleMarker,
-  circleMarker,
-  Control,
-  latLng,
-  LayerGroup,
-  layerGroup,
-  tileLayer,
-  ZoomPanOptions
-} from 'leaflet';
-import { environment } from '../../environments/environment';
-import AttributionOptions = Control.AttributionOptions;
+import { ScatterplotLayer } from '@deck.gl/layers/typed';
 
-export const attributionOptions: AttributionOptions = {
-  position: 'bottomleft',
-  prefix: ''
+export const DEFAULT_ZOOM = 4;
+export const DEFAULT_PITCH = 40;
+export const DEFAULT_TRANSITION_DURATION_MS = 'auto';
+
+export const FLY_TO_ZOOM = 7;
+
+export const MAP_CENTER = {
+  longitude: 15.2551,
+  latitude: 49
 };
 
-export const defaultZoomPanOptions: ZoomPanOptions = {
-  animate: true,
-  duration: 1
+export const INITIAL_VIEW_STATE: Record<string, number> = {
+  latitude: MAP_CENTER.latitude,
+  longitude: MAP_CENTER.longitude,
+  zoom: DEFAULT_ZOOM,
+  minZoom: 3,
+  maxZoom: 10,
+  pitch: DEFAULT_PITCH,
+  bearing: 0
 };
 
-export const noDrawStyle = { radius: 0, opacity: 0, fill: false, stroke: false, popup: false };
+export const BERLIN = [52.52, 13.405];
 
-// TODO find a way to configure color
-export const euBorderStyle = {
-  color: '#fff',
-  fillColor: '#fff',
-  opacity: 0.4,
-  weight: 0.6,
-  fillOpacity: 0.06,
-  fill: true,
-  stroke: true
-};
+// TODO feature: capitol names, population
+export const CAPITOLS_LAYER = new ScatterplotLayer({
+  id: 'capitols-layer',
+  data: [{ coordinates: BERLIN, radius: 30 }],
+  pickable: false,
+  radiusScale: 6,
+  radiusMinPixels: 1,
+  radiusMaxPixels: 1000,
+  lineWidthMinPixels: 1,
+  stroked: true,
+  filled: true,
+  colorFormat: 'RGBA',
+  visible: true,
 
-export const darkMatterNoLabelsLayer = tileLayer(environment.tileServerUrl, {
-  attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+  getRadius: () => 2000,
+  getPosition: d => [d.coordinates[1], d.coordinates[0], 50], // need a bit of altitude for proper rendering
+  getLineColor: () => [255, 214, 23, 255],
+  getFillColor: () => [255, 214, 23, 50],
+  getLineWidth: () => 3000
 });
 
-export const centerOfEurope = latLng(54.526, 15.2551);
-
-// TODO find a way to configure color
-export const defaultCapitolsStyle = {
-  radius: 8,
-  weight: 2,
-  color: '#ffd617',
-  opacity: 1.0,
-  fill: true,
-  stroke: true,
-  popup: true
-};
-
-const berlin = circleMarker([52.52, 13.405], defaultCapitolsStyle).bindPopup('Berlin', { closeButton: false });
-
-export const capitols: LayerGroup<CircleMarker> = layerGroup([berlin]);
-
-export const defaultZoom = 5;
-
 export enum LayerIndices {
-  BASE_LAYER_INDEX = 0,
-  EU_LAYER_INDEX = 1,
-  CAPITOLS_LAYER_INDEX = 2
+  MAP_LAYER = 0,
+  EU_BORDERS_LAYER = 1,
+  CAPITOLS_LAYER = 2
 }

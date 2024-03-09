@@ -16,6 +16,8 @@ import { CommonModule } from '@angular/common';
 import { I18nModule } from './i18n/i18n.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { MapModule } from './map/map.module';
+import { MatSlider, MatSliderModule, MatSliderThumb } from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [HeaderComponent, ToolbarComponent, MapComponent, AppComponent, OptionPaneComponent],
@@ -23,6 +25,9 @@ import { MapModule } from './map/map.module';
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
+    MatSliderModule,
+    MatSlider,
+    MatSliderThumb,
     MatIcon,
     MatButton,
     MatSlideToggle,
@@ -31,7 +36,8 @@ import { MapModule } from './map/map.module';
     }),
     I18nModule,
     NotificationsModule,
-    MapModule
+    MapModule,
+    FormsModule
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent]

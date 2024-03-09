@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { MapService } from './map.service';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { GeoService } from './geo.service';
 
 @NgModule({
-  exports: [LeafletModule],
-  providers: [MapService]
+  providers: [GeoService, MapService]
 })
 export class MapModule {}

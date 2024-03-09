@@ -1,3 +1,5 @@
+@import "variables";
+
 .toast-container .ngx-toastr {
   box-shadow: none;
   font-size: 10pt;
@@ -5,4 +7,27 @@
   &:hover {
     box-shadow: none;
   }
+
+  & > .toast-title {
+    margin-bottom: 5pt;
+    font-size: 13pt;
+  }
+
+  &.toast-warning {
+    background-color: $accent-bright;
+    background-image: url('/assets/styles/icons/triangle-warning.png') !important;
+
+    * {
+      color: $primary
+    }
+  }
+
+  &.toast-info {
+    background-color: $secondary;
+  }
+
+  &.toast-error {
+    background-image: url('/assets/styles/icons/octagon-xmark.png') !important;
+  }
 }
+

@@ -33,7 +33,7 @@ div.header {
     background-color: $primary;
     color: $secondary;
 
-    // TODO find better way for vertical align
+    // TODO scss: find better way for vertical align
     a.switch-button {
       @include typography.default;
       display: inline-block;
@@ -42,6 +42,7 @@ div.header {
       margin: 11pt 5pt 0 0;
       cursor: pointer;
       border: 2pt solid $primary;
+      border-radius: 1pt;
 
       &.double-right-margin {
         margin-right: 10pt

@@ -14,3 +14,10 @@ $dark-app-theme: mat.define-dark-theme(
 );
 
 @include mat.slide-toggle-theme($dark-app-theme);
+@include mat.slider-theme($dark-app-theme);
+
+.mat-mdc-slide-toggle {
+  label.mdc-label {
+    margin-left: 10pt;
+  }
+}

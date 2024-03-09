@@ -1,4 +1,7 @@
 {
+  "common": {
+    "not-implemented": "Feature nicht implementiert"
+  },
   "header": {
     "title": "Europas Städte"
   },
@@ -7,10 +10,20 @@
     "my-location": "Wo bin ich"
   },
   "option-pane": {
-    "show-eu-borders": "EU Grenzen (UN)",
-    "show-capitols": "Hauptstädte anzeigen"
+    "show-eu-borders": "EU Grenzen",
+    "show-capitols": "Hauptstädte anzeigen",
+    "map-data": "Kartendaten",
+    "map-props": "Karteneigenschaften",
+    "map-pitch": "Neigung"
   },
   "notifications": {
-    "error-title": "Fehler"
+    "error-title": "Fehler",
+    "info-title": "Information"
+  },
+  "map": {
+    "awaiting": "Karte wird bereit gestellt...",
+    "error-on-geo-location": "Geo-Position konnte nicht ermittelt werden.",
+    "got-geo-location": "Geo-Position wurde ermittelt",
+    "tile": "Lade Kachel"
   }
 }

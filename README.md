@@ -4,7 +4,7 @@
 
 ## 🚀 Introduction
 
-This is just a small sample project to get up to date with Angular and learn some Leaflet stuff.
+This is just a small sample project to get up to date with Angular and learn some [deck.gl](https://deck.gl) stuff.
 
 ## 🫡 Commands
 
@@ -32,10 +32,12 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 - ☑️Add user interactions for layer control
 - ☑️Expandable toolbar
 - ☑️Own location finder
-- Discover Leaflet plugins
-- Weather overlays
-- Smoother map animation (only mac chrome so far, retina)
+- ☑️Smoother map animation (only mac chrome so far, retina)
 - ☑️Add loading indicator
+- ☑️Slider for map pitch angle
+- Cross-hair on own location
+- Map initializing indicator
+- Weather or other overlays, distance to cities
 
 ## Development
 
@@ -43,7 +45,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 - Better SCSS structure and cleanup
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
 - ☑️Pin package.json versions
-- Glitching focus frame around map
+- ☑️Glitching focus frame around map
 
 ## Packaging
 

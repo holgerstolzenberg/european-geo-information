@@ -51,15 +51,9 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              {
-                "glob": "**/*",
-                "input": "node_modules/leaflet/dist/images/",
-                "output": "./assets/leaflet"
-              }
+              "src/assets"
             ],
             "styles": [
-              "node_modules/leaflet/dist/leaflet.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/assets/styles/main.scss"
             ],
@@ -75,8 +69,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1500kb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",

@@ -1,164 +1,50 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-  CircleMarker,
-  control,
-  GeoJSON,
-  latLng,
-  Layer,
-  LayerGroup,
-  LeafletEvent,
-  Map as LeafletMap,
-  MapOptions
-} from 'leaflet';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { MapService } from './map.service';
-import { NGXLogger } from 'ngx-logger';
-import {
-  attributionOptions,
-  centerOfEurope,
-  defaultCapitolsStyle,
-  defaultZoom,
-  defaultZoomPanOptions,
-  euBorderStyle,
-  LayerIndices,
-  noDrawStyle
-} from './map.constants';
-import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../notifications/notification.service';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
-export class MapComponent implements OnInit, OnDestroy {
-  @Input() options: MapOptions = {
-    zoom: defaultZoom,
-    minZoom: 4,
-    maxZoom: 20,
-    center: this.mapService.getCenterOfEurope(),
-    fadeAnimation: true,
-    zoomAnimation: true,
-    markerZoomAnimation: true,
-    zoomSnap: 0.5,
-    zoomDelta: 0.5,
-    attributionControl: false
-  };
+export class MapComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('deckGlMap', { static: false }) private mapDiv?: ElementRef<HTMLDivElement>;
 
-  layers: Promise<Layer[]>;
-  showLoader: boolean = false;
+  showMetrics: boolean = true;
+  loadedTileId: string = '';
 
-  private theMap?: LeafletMap;
-  private theZoom?: number;
+  showLoader$ = new Subject<boolean>();
+  mapHidden$ = new BehaviorSubject<boolean>(true);
 
-  private onUnsubscribe$: Subject<boolean> = new Subject<boolean>();
+  readonly metrics$: Subject<DeckMetrics> = new Subject<DeckMetrics>();
 
-  constructor(
-    private log: NGXLogger,
-    private mapService: MapService,
-    private notificationService: NotificationService
-  ) {
-    this.layers = this.loadAllLayers();
+  private readonly onUnsubscribe$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(private mapService: MapService) {
+    this.metrics$.pipe(takeUntil(this.onUnsubscribe$));
+    this.mapService.loading$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(tileId => this.showHideLoader(tileId));
+    this.showLoader$.pipe(takeUntil(this.onUnsubscribe$)).subscribe();
+    this.mapHidden$.pipe(takeUntil(this.onUnsubscribe$)).subscribe();
   }
 
-  ngOnInit(): void {
-    this.mapService.resetMap$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      this.resetMap();
-    });
-
-    this.mapService.toMyLocation$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(() => {
-      this.myLocation();
-    });
-
-    this.mapService.showEuBorders$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
-      this.showEuBorders(value);
-    });
-
-    this.mapService.showCapitols$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(value => {
-      this.showCapitols(value);
-    });
+  ngAfterViewInit() {
+    this.mapService.initDeckGlMap(this.mapDiv!, this.metrics$, this.showLoader$, this.mapHidden$);
   }
 
   ngOnDestroy(): void {
     this.unsubscribeAll();
-    this.disposeMap();
+  }
+
+  private showHideLoader(tileId: string) {
+    this.loadedTileId = tileId;
+    this.showLoader$.next(true);
+    setTimeout(() => this.showLoader$.next(false), 1000);
   }
 
   private unsubscribeAll() {
     this.onUnsubscribe$.next(true);
     this.onUnsubscribe$.complete();
-  }
-
-  private disposeMap() {
-    this.theMap!.clearAllEventListeners();
-    this.theMap!.remove();
-    this.log.info('Disposed theMap');
-  }
-
-  onMapReady(map: LeafletMap) {
-    this.theMap = map;
-    this.log.info('Leaflet theMap ready');
-    this.theMap.addControl(control.attribution(attributionOptions));
-    this.theZoom = map.getZoom();
-  }
-
-  private async loadAllLayers() {
-    return this.mapService.loadAllLayers().then(([baseLayer, euBorderLayer, capitolsLayer]) => {
-      const layers = new Array<Layer>(3);
-      layers[LayerIndices.BASE_LAYER_INDEX] = baseLayer;
-      layers[LayerIndices.EU_LAYER_INDEX] = euBorderLayer;
-      layers[LayerIndices.CAPITOLS_LAYER_INDEX] = capitolsLayer;
-
-      return layers;
-    });
-  }
-
-  onMapZoomStart() {
-    this.log.debug('MapZoomStart: zoom set to', this.theZoom);
-    this.showLoader = true;
-  }
-
-  onMapZoomEnd(event: LeafletEvent) {
-    this.theZoom = event.target.getZoom();
-    this.log.debug('MapZoomEnd: zoom set to', this.theZoom);
-    this.showLoader = false;
-  }
-
-  resetMap() {
-    this.theMap!.flyTo(centerOfEurope, defaultZoom);
-    // TODO clear my location marker
-  }
-
-  myLocation() {
-    navigator.geolocation.getCurrentPosition(
-      position =>
-        this.theMap!.flyTo(
-          latLng(position.coords.latitude, position.coords.longitude),
-          defaultZoom + 2,
-          defaultZoomPanOptions
-        ),
-      err => this.notificationService.showError('Could not get geolocation', err)
-    );
-  }
-
-  private showEuBorders(value: boolean) {
-    this.layers
-      .then(layer => {
-        return layer[LayerIndices.EU_LAYER_INDEX] as GeoJSON;
-      })
-      .then(l => l.setStyle(value ? euBorderStyle : noDrawStyle));
-  }
-
-  private showCapitols(value: boolean) {
-    this.theMap!.closePopup();
-
-    this.layers
-      .then(layer => {
-        return layer[LayerIndices.CAPITOLS_LAYER_INDEX] as LayerGroup;
-      })
-      .then(capitols => capitols.getLayers().forEach(capitol => this.markerVisible(capitol, value)));
-  }
-
-  private markerVisible(layer: Layer, visible: boolean) {
-    (layer as CircleMarker).setStyle(visible ? defaultCapitolsStyle : noDrawStyle);
+    this.onUnsubscribe$.unsubscribe();
   }
 }
