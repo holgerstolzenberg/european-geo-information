@@ -41,6 +41,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 
 ## Development
 
+- Scoped translation files
 - Investigate 404 on app start
 - Better SCSS structure and cleanup
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
