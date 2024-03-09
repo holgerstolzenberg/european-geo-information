@@ -1,4 +1,6 @@
 [![build-main-branch](https://github.com/holgerstolzenberg/european-geo-information/actions/workflows/main-branch-build.yml/badge.svg?branch=main)](https://github.com/holgerstolzenberg/european-geo-information/actions/workflows/main-branch-build.yml)
+[![Build feature](https://github.com/holgerstolzenberg/european-geo-information/actions/workflows/feature-branch-build.yml/badge.svg)](https://github.com/holgerstolzenberg/european-geo-information/actions/workflows/feature-branch-build.yml)
+
 
 # European Geo Information
 
