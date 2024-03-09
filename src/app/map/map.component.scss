@@ -30,8 +30,8 @@ div.metrics {
   font-size: 10pt;
   font-family: "Courier New", serif;
   padding: 5pt;
-  top: 20pt;
-  left: 20pt;
+  top: 10pt;
+  left: 10pt;
   background-color: typography.$primary;
   z-index: 1;
   border: 2px solid typography.$secondary;
@@ -52,8 +52,8 @@ div.metrics {
 
 div.attribution {
   position: fixed;
-  left:20pt;
-  bottom: 20pt;
+  left: 10pt;
+  bottom: 10pt;
   margin: 0;
   border: 1px solid blue;
   z-index: 1;
@@ -92,10 +92,10 @@ div.map {
 
 div.loaderContainer {
   position: absolute;
-  bottom: 20pt;
+  bottom: 10pt;
   width: 120pt;
   height: 20pt;
-  left: 230pt;
+  left: 220pt;
 }
 
 .loader,
