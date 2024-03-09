@@ -20,7 +20,7 @@
 }
 
 (proxy) {
-  header_down X-Powered-By "Cities of Europe"
+  header_down X-Powered-By "European Geo Information"
   header_down Server "Caddy httpd"
 }
 

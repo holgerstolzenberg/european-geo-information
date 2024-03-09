@@ -34,4 +34,4 @@ jobs:
       # TODO ci: find a way to configure URL at runtime
       - name: Build
         run: |
-          npm run build -- --configuration=production --base-href=/cities-of-europe/
+          npm run build -- --configuration=production --base-href=/european-geo-information/

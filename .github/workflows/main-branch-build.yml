@@ -34,13 +34,13 @@ jobs:
       # TODO ci: find a way to configure URL at runtime
       - name: Build
         run: |
-          npm run build -- --configuration=production --base-href=/cities-of-europe/
+          npm run build -- --configuration=production --base-href=/european-geo-information/
 
       - name: Store dist folder
         uses: actions/upload-artifact@v4
         with:
           name: dist_folder
-          path: ./dist/cities-of-europe/browser
+          path: ./dist/european-geo-information/browser
 
   deploy-gh-pages:
     needs: build-dist
@@ -112,7 +112,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          tags: holgerstolzenberg/cities-of-europe:latest
+          tags: holgerstolzenberg/european-geo-information:latest
           platforms: linux/amd64,linux/arm64
           push: true
           sbom: true

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cities-of-europe": {
+    "european-geo-information": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -41,7 +41,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/cities-of-europe",
+            "outputPath": "dist/european-geo-information",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -101,10 +101,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "cities-of-europe:build:production"
+              "buildTarget": "european-geo-information:build:production"
             },
             "dev": {
-              "buildTarget": "cities-of-europe:build:dev"
+              "buildTarget": "european-geo-information:build:dev"
             }
           },
           "defaultConfiguration": "production"
@@ -112,7 +112,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "cities-of-europe:build"
+            "buildTarget": "european-geo-information:build"
           }
         },
         "lint": {

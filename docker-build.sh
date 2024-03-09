@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build -t holgerstolzenberg/cities-of-europe .
+docker build -t holgerstolzenberg/european-geo-information .

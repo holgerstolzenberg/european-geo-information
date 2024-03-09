@@ -1,6 +1,6 @@
-[![build-main-branch](https://github.com/holgerstolzenberg/cities-of-europe/actions/workflows/main-branch-build.yml/badge.svg?branch=main)](https://github.com/holgerstolzenberg/cities-of-europe/actions/workflows/main-branch-build.yml)
+[![build-main-branch](https://github.com/holgerstolzenberg/european-geo-information/actions/workflows/main-branch-build.yml/badge.svg?branch=main)](https://github.com/holgerstolzenberg/european-geo-information/actions/workflows/main-branch-build.yml)
 
-# Cities of Europe
+# European Geo Information
 
 ## 🚀 Introduction
 
@@ -22,7 +22,7 @@ ng lint
 ./docker-build.sh
 
 # Run docker image locally
-docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
+docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-information
 ```
 
 ## ✅ Open points
@@ -37,7 +37,8 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/cities-of-europe
 - ☑️Slider for map pitch angle
 - Cross-hair on own location
 - Map initializing indicator
-- Weather or other overlays, distance to cities
+- Weather or other overlays
+- Distance to capitols
 
 ## Development
 
