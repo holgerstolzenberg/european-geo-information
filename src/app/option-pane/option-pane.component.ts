@@ -43,4 +43,6 @@ export class OptionPaneComponent {
       this.log.trace('Map pitched to: ', this.mapPitch);
     });
   }
+
+  protected readonly onclick = onclick;
 }

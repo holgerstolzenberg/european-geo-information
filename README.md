@@ -1,4 +1,6 @@
 [![build-main-branch](https://github.com/holgerstolzenberg/european-geo-information/actions/workflows/main-branch-build.yml/badge.svg?branch=main)](https://github.com/holgerstolzenberg/european-geo-information/actions/workflows/main-branch-build.yml)
+[![Build feature](https://github.com/holgerstolzenberg/european-geo-information/actions/workflows/feature-branch-build.yml/badge.svg)](https://github.com/holgerstolzenberg/european-geo-information/actions/workflows/feature-branch-build.yml)
+
 
 # European Geo Information
 
@@ -35,8 +37,9 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-informat
 - ☑️Smoother map animation (only mac chrome so far, retina)
 - ☑️Add loading indicator
 - ☑️Slider for map pitch angle
+- ☑️Map initializing indicator
 - Cross-hair on own location
-- Map initializing indicator
+- Also reset map pitch
 - Weather or other overlays
 - Distance to capitols
 
@@ -51,7 +54,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-informat
 
 ## Packaging
 
-- Make Docker image configurable at runtime -> let run at specific context (env.js)
+- Make Docker image configurable at runtime -> let run at specific context (? env.js)
 - ☑️Caddy based Docker image
 - ☑️Make Caddy proxy requests to tile server
 
