@@ -7,8 +7,8 @@ export const DEFAULT_TRANSITION_DURATION_MS = 'auto';
 export const FLY_TO_ZOOM = 7;
 
 export const MAP_CENTER = {
-  longitude: 15.2551,
-  latitude: 49
+  latitude: 49,
+  longitude: 15.2551
 };
 
 export const INITIAL_VIEW_STATE: Record<string, number> = {
@@ -21,12 +21,15 @@ export const INITIAL_VIEW_STATE: Record<string, number> = {
   bearing: 0
 };
 
-export const BERLIN = [52.52, 13.405];
+export const BERLIN = {
+  latitude: 52.52,
+  longitude: 13.405
+};
 
 // TODO feature: capitol names, population
 export const CAPITOLS_LAYER = new ScatterplotLayer({
   id: 'capitols-layer',
-  data: [{ coordinates: BERLIN, radius: 30 }],
+  data: [{ latitude: BERLIN.latitude, longitude: BERLIN.longitude, radius: 30 }],
   pickable: false,
   radiusScale: 6,
   radiusMinPixels: 1,
@@ -38,7 +41,7 @@ export const CAPITOLS_LAYER = new ScatterplotLayer({
   visible: true,
 
   getRadius: () => 2000,
-  getPosition: d => [d.coordinates[1], d.coordinates[0], 50], // need a bit of altitude for proper rendering
+  getPosition: d => [d.longitude, d.latitude, 50], // need a bit of altitude for proper rendering
   getLineColor: () => [255, 214, 23, 255],
   getFillColor: () => [255, 214, 23, 50],
   getLineWidth: () => 3000
@@ -47,5 +50,6 @@ export const CAPITOLS_LAYER = new ScatterplotLayer({
 export enum LayerIndices {
   MAP_LAYER = 0,
   EU_BORDERS_LAYER = 1,
-  CAPITOLS_LAYER = 2
+  CAPITOLS_LAYER = 2,
+  MY_LOCATION_LAYER = 3
 }
