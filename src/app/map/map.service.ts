@@ -14,7 +14,7 @@ import { NotificationService } from '../notifications/notification.service';
 import { Deck, FlyToInterpolator, Layer } from '@deck.gl/core/typed';
 import { BitmapLayer, GeoJsonLayer, ScatterplotLayer } from '@deck.gl/layers/typed';
 import { catchError, delay, firstValueFrom, forkJoin, map, Observable, of, Subject } from 'rxjs';
-import { TileLayer } from '@deck.gl/geo-layers/typed';
+import { GeoBoundingBox, TileLayer } from '@deck.gl/geo-layers/typed';
 import { environment } from '../../environments/environment';
 import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 import { GeoService } from './geo.service';
@@ -46,21 +46,18 @@ export class MapService {
   }
 
   loadAllLayers(): Observable<Layer[]> {
-    return forkJoin(
-      {
-        mapLayer: this.initMapLayer(),
-        euGeoJsonData: this.loadEuGeoJson(),
-        capitolsLayer: this.initCapitolsLayer()
-      }
-    ).pipe(
-      map(
-        data => {
-          const layers = new Array<Layer>(3);
-          layers[LayerIndices.MAP_LAYER] = data.mapLayer;
-          layers[LayerIndices.EU_BORDERS_LAYER] = this.initEuBordersLayer(data.euGeoJsonData);
-          layers[LayerIndices.CAPITOLS_LAYER] = data.capitolsLayer;
-          return layers;
-        }),
+    return forkJoin({
+      mapLayer: this.initMapLayer(),
+      euGeoJsonData: this.loadEuGeoJson(),
+      capitolsLayer: this.initCapitolsLayer()
+    }).pipe(
+      map(data => {
+        const layers = new Array<Layer>(3);
+        layers[LayerIndices.MAP_LAYER] = data.mapLayer;
+        layers[LayerIndices.EU_BORDERS_LAYER] = this.initEuBordersLayer(data.euGeoJsonData);
+        layers[LayerIndices.CAPITOLS_LAYER] = data.capitolsLayer;
+        return layers;
+      }),
       catchError(err => {
         this.notificationService.showError('Error loading EU borders geo json', err);
         throw err;
@@ -69,7 +66,9 @@ export class MapService {
   }
 
   async resetMapToEuropeanCenter() {
-    return this.hideMyLocation().then(() => this.transitionMapAnimated(MAP_CENTER.latitude, MAP_CENTER.longitude, DEFAULT_ZOOM));
+    return this.hideMyLocation().then(() =>
+      this.transitionMapAnimated(MAP_CENTER.latitude, MAP_CENTER.longitude, DEFAULT_ZOOM)
+    );
   }
 
   async moveMapToMyLocation() {
@@ -128,12 +127,12 @@ export class MapService {
         },
 
         onLoad: () => {
-          of([]).pipe(
-            delay(1000)
-          ).subscribe(() => {
-            this.log.debug('Deck GL map is ready');
-            mapHidden$.next(false);
-          });
+          of([])
+            .pipe(delay(1000))
+            .subscribe(() => {
+              this.log.debug('Deck GL map is ready');
+              mapHidden$.next(false);
+            });
         }
       });
     });
@@ -180,17 +179,13 @@ export class MapService {
         this.loading$.emit(d.id);
       },
 
-      // using 'never' in next two lines is just a hack for typescript
-      // see: https://github.com/visgl/deck.gl/issues/8467
       renderSubLayers: props => {
-        const {
-          bbox: { west, south, east, north }
-        } = props.tile as never;
-
-        const what = { ...props, data: undefined };
+        // see: https://github.com/visgl/deck.gl/issues/8467
+        const { west, north, east, south } = props.tile.bbox as GeoBoundingBox;
 
         return [
-          new BitmapLayer(what as never, {
+          new BitmapLayer({
+            data: undefined,
             image: props.data,
             bounds: [west, south, east, north]
           })
@@ -233,27 +228,29 @@ export class MapService {
     if (this.layers.length == 4) {
       return this.changeLayerVisibility(LayerIndices.MY_LOCATION_LAYER, true);
     }
-    console.log('---', latitude, longitude);
-    const updated = this.layers.slice();
-    updated.push(new ScatterplotLayer({
-      id: 'my-location-layer',
-      data: [{ latitude: latitude, longitude: longitude, radius: 30 }],
-      pickable: false,
-      radiusScale: 6,
-      radiusMinPixels: 1,
-      radiusMaxPixels: 1000,
-      lineWidthMinPixels: 1,
-      stroked: true,
-      filled: true,
-      colorFormat: 'RGBA',
-      visible: true,
 
-      getRadius: () => 2000,
-      getPosition: d => [d.longitude, d.latitude, 50], // need a bit of altitude for proper rendering
-      getLineColor: () => [38, 38, 185, 255],
-      getFillColor: () => [38, 38, 185, 50],
-      getLineWidth: () => 3000
-    }));
+    const updated = this.layers.slice();
+    updated.push(
+      new ScatterplotLayer({
+        id: 'my-location-layer',
+        data: [{ latitude: latitude, longitude: longitude, radius: 30 }],
+        pickable: false,
+        radiusScale: 6,
+        radiusMinPixels: 1,
+        radiusMaxPixels: 1000,
+        lineWidthMinPixels: 1,
+        stroked: true,
+        filled: true,
+        colorFormat: 'RGBA',
+        visible: true,
+
+        getRadius: () => 2000,
+        getPosition: d => [d.longitude, d.latitude, 50], // need a bit of altitude for proper rendering
+        getLineColor: () => [38, 38, 185, 255],
+        getFillColor: () => [38, 38, 185, 50],
+        getLineWidth: () => 3000
+      })
+    );
 
     this.layers = updated;
     this.theMap!.setProps({ layers: updated });
