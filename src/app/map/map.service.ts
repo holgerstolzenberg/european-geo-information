@@ -13,7 +13,7 @@ import {
 import { NotificationService } from '../notifications/notification.service';
 import { Deck, FlyToInterpolator, Layer } from '@deck.gl/core/typed';
 import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers/typed';
-import { firstValueFrom, Subject } from 'rxjs';
+import { catchError, delay, firstValueFrom, forkJoin, map, Observable, of, Subject } from 'rxjs';
 import { TileLayer } from '@deck.gl/geo-layers/typed';
 import { environment } from '../../environments/environment';
 import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
@@ -23,15 +23,13 @@ import { GeoService } from './geo.service';
 export class MapService {
   loading$ = new EventEmitter<string>();
 
-  private readonly mapLayer: Promise<TileLayer>;
-  private readonly euBordersLayer: Promise<GeoJsonLayer>;
-  private readonly layers: Promise<Layer[]>;
-
   private currentViewState = INITIAL_VIEW_STATE;
+
+  private layers$ = new Observable<Layer[]>();
+  private layers = new Array<Layer>(3);
 
   private myLocation?: GeolocationCoordinates;
   private loadingIndicator$?: Subject<boolean>;
-
   private theMap?: Deck;
 
   constructor(
@@ -40,21 +38,33 @@ export class MapService {
     private readonly geoService: GeoService,
     private readonly notificationService: NotificationService
   ) {
-    this.mapLayer = this.initMapLayer();
-    this.euBordersLayer = this.initEuBordersLayer();
-    this.layers = this.loadAllLayers();
+    this.layers$ = this.loadAllLayers();
   }
 
-  async loadAllLayers(): Promise<Layer[]> {
-    return Promise.all([this.getMapLayer(), this.getEuBordersLayer(), this.getCapitolsLayer()]).then(
-      ([map, euBorder, capitols]) => {
-        //doing this for full control over ordering
-        const layers = new Array<Layer>(3);
-        layers[LayerIndices.MAP_LAYER] = map;
-        layers[LayerIndices.EU_BORDERS_LAYER] = euBorder;
-        layers[LayerIndices.CAPITOLS_LAYER] = capitols;
-        return layers;
+  private loadEuGeoJson() {
+    return this.http.get<JSON>('./assets/geo-data/eu-borders.json');
+  }
+
+  loadAllLayers(): Observable<Layer[]> {
+    return forkJoin(
+      {
+        mapLayer: this.initMapLayer(),
+        euGeoJsonData: this.loadEuGeoJson(),
+        capitolsLayer: this.initCapitolsLayer()
       }
+    ).pipe(
+      map(
+        data => {
+          const layers = new Array<Layer>(3);
+          layers[LayerIndices.MAP_LAYER] = data.mapLayer;
+          layers[LayerIndices.EU_BORDERS_LAYER] = this.initEuBordersLayer(data.euGeoJsonData);
+          layers[LayerIndices.CAPITOLS_LAYER] = data.capitolsLayer;
+          return layers;
+        }),
+      catchError(err => {
+        this.notificationService.showError('Error loading EU borders geo json', err);
+        throw err;
+      })
     );
   }
 
@@ -89,11 +99,13 @@ export class MapService {
     mapDiv: ElementRef<HTMLDivElement>,
     metricsRef: Subject<DeckMetrics>,
     showLoader$: Subject<boolean>,
-    mapHidden: Subject<boolean>
+    mapHidden$: Subject<boolean>
   ) {
     this.loadingIndicator$ = showLoader$;
 
-    this.layers.then(layers => {
+    this.layers$.subscribe(layers => {
+      this.layers = layers;
+
       this.theMap = new Deck({
         parent: mapDiv.nativeElement,
         viewState: this.currentViewState,
@@ -114,8 +126,12 @@ export class MapService {
         },
 
         onLoad: () => {
-          this.log.debug('Deck GL map is ready');
-          setTimeout(() => mapHidden.next(false), 1000);
+          of([]).pipe(
+            delay(1000)
+          ).subscribe(() => {
+            this.log.debug('Deck GL map is ready');
+            mapHidden$.next(false);
+          });
         }
       });
     });
@@ -151,8 +167,8 @@ export class MapService {
     });
   }
 
-  private async initMapLayer() {
-    return new TileLayer({
+  private initMapLayer() {
+    const mapLayer = new TileLayer({
       id: 'map-layer',
       data: environment.tileServerUrls,
       maxRequests: 20,
@@ -179,50 +195,35 @@ export class MapService {
         ];
       }
     });
+
+    return of(mapLayer);
   }
 
-  private async initEuBordersLayer() {
-    return firstValueFrom(this.http.get<JSON>('./assets/geo-data/eu-borders.json'))
-      .then(geoJson => {
-        this.log.info('Loaded borders json', geoJson);
-
-        return new GeoJsonLayer({
-          id: 'eu-borders-layer',
-          data: geoJson,
-          pickable: false,
-          stroked: true,
-          filled: true,
-          lineWidthMinPixels: 1,
-          getFillColor: [255, 214, 23, 10],
-          getLineColor: [255, 214, 23, 50],
-          getElevation: 0,
-          visible: true
-        });
-      })
-      .catch(err => {
-        this.notificationService.showError('Error loading EU borders geo json', err);
-        return new GeoJsonLayer({ id: 'eu-borders-layer' });
-      });
-  }
-
-  // TODO feature: load capitols via HTTP and add population
-  private async getCapitolsLayer() {
-    return CAPITOLS_LAYER;
-  }
-
-  private async changeLayerVisibility(index: number, value: boolean) {
-    this.layers.then(layers => {
-      const clonedLayers = layers.slice();
-      clonedLayers[index] = layers[index].clone({ visible: value });
-      this.theMap!.setProps({ layers: clonedLayers });
+  private initEuBordersLayer(geoJson: JSON) {
+    return new GeoJsonLayer({
+      id: 'eu-borders-layer',
+      data: geoJson,
+      pickable: false,
+      stroked: true,
+      filled: true,
+      lineWidthMinPixels: 1,
+      getFillColor: [255, 214, 23, 10],
+      getLineColor: [255, 214, 23, 50],
+      getElevation: 0,
+      visible: true
     });
   }
 
-  private async getMapLayer() {
-    return this.mapLayer;
+  // TODO feature: load capitols via HTTP and add population
+  private initCapitolsLayer() {
+    return of(CAPITOLS_LAYER);
   }
 
-  private async getEuBordersLayer() {
-    return this.euBordersLayer;
+  private async changeLayerVisibility(index: number, value: boolean) {
+    const clonedLayers = this.layers.slice();
+    clonedLayers[index] = this.layers[index].clone({ visible: value });
+
+    this.theMap!.setProps({ layers: clonedLayers });
+    this.layers = clonedLayers;
   }
 }

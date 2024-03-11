@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { MapService } from './map.service';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, delay, of, Subject, take, takeUntil } from 'rxjs';
 import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 
 @Component({
@@ -39,7 +39,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private showHideLoader(tileId: string) {
     this.loadedTileId = tileId;
     this.showLoader$.next(true);
-    setTimeout(() => this.showLoader$.next(false), 1000);
+
+    of([]).pipe(
+      delay(1000),
+      take(1)
+    ).subscribe(() => {
+      this.showLoader$.next(false);
+    });
   }
 
   private unsubscribeAll() {
