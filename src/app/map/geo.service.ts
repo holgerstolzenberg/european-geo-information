@@ -6,7 +6,8 @@ import { NotificationService } from '../notifications/notification.service';
 export class GeoService {
   private readonly options = { enableHighAccuracy: false, timeout: 5000 };
 
-  constructor(private readonly notificationService: NotificationService) {}
+  constructor(private readonly notificationService: NotificationService) {
+  }
 
   myCurrentLocation() {
     return new Observable<GeolocationCoordinates>(observer => {
@@ -20,8 +21,8 @@ export class GeoService {
       );
     }).pipe(
       tap(coords => {
-        const longitude = this.degreesMinutes(coords.longitude);
         const latitude = this.degreesMinutes(coords.latitude);
+        const longitude = this.degreesMinutes(coords.longitude);
 
         this.notificationService.showInfoLocalized(
           'map.got-geo-location',
@@ -47,11 +48,11 @@ export class GeoService {
   }
 
   formatDegreesMinutes(value: DegreeMinute) {
-    return value.degrees + '°' + value.minutes + '"' + value.seconds + "'";
+    return value.degrees + '°' + value.minutes + '"' + value.seconds + '\'';
   }
 }
 
 class DegreeMinute {
-  constructor(readonly degrees: number,readonly minutes: number,readonly seconds: number) {
+  constructor(readonly degrees: number, readonly minutes: number, readonly seconds: number) {
   }
 }

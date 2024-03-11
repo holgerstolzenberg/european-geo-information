@@ -12,7 +12,7 @@ import {
 } from './map.constants';
 import { NotificationService } from '../notifications/notification.service';
 import { Deck, FlyToInterpolator, Layer } from '@deck.gl/core/typed';
-import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers/typed';
+import { BitmapLayer, GeoJsonLayer, ScatterplotLayer } from '@deck.gl/layers/typed';
 import { catchError, delay, firstValueFrom, forkJoin, map, Observable, of, Subject } from 'rxjs';
 import { TileLayer } from '@deck.gl/geo-layers/typed';
 import { environment } from '../../environments/environment';
@@ -69,19 +69,21 @@ export class MapService {
   }
 
   async resetMapToEuropeanCenter() {
-    return this.transitionMapAnimated(MAP_CENTER.longitude, MAP_CENTER.latitude, DEFAULT_ZOOM);
+    return this.hideMyLocation().then(() => this.transitionMapAnimated(MAP_CENTER.latitude, MAP_CENTER.longitude, DEFAULT_ZOOM));
   }
 
   async moveMapToMyLocation() {
-    if (this.myLocation) {
-      return this.transitionMapAnimated(this.myLocation.longitude, this.myLocation.latitude, FLY_TO_ZOOM);
-    }
-
     this.loadingIndicator$?.next(true);
+
+    if (this.myLocation) {
+      await this.addMyLocation(this.myLocation.latitude, this.myLocation.longitude);
+      return this.transitionMapAnimated(this.myLocation.latitude, this.myLocation.longitude, FLY_TO_ZOOM);
+    }
 
     return firstValueFrom(this.geoService.myCurrentLocation()).then(coordinates => {
       this.myLocation = coordinates;
-      this.transitionMapAnimated(coordinates.longitude, coordinates.latitude, FLY_TO_ZOOM);
+      this.addMyLocation(this.myLocation.latitude, this.myLocation.longitude);
+      this.transitionMapAnimated(coordinates.latitude, coordinates.longitude, FLY_TO_ZOOM);
     });
   }
 
@@ -150,7 +152,7 @@ export class MapService {
     });
   }
 
-  private async transitionMapAnimated(longitude: number, latitude: number, zoom: number) {
+  private async transitionMapAnimated(latitude: number, longitude: number, zoom: number) {
     return new Promise(() => {
       this.loadingIndicator$?.next(true);
 
@@ -223,7 +225,43 @@ export class MapService {
     const clonedLayers = this.layers.slice();
     clonedLayers[index] = this.layers[index].clone({ visible: value });
 
-    this.theMap!.setProps({ layers: clonedLayers });
     this.layers = clonedLayers;
+    this.theMap!.setProps({ layers: clonedLayers });
+  }
+
+  private async addMyLocation(latitude: number, longitude: number) {
+    if (this.layers.length == 4) {
+      return this.changeLayerVisibility(LayerIndices.MY_LOCATION_LAYER, true);
+    }
+    console.log('---', latitude, longitude);
+    const updated = this.layers.slice();
+    updated.push(new ScatterplotLayer({
+      id: 'my-location-layer',
+      data: [{ latitude: latitude, longitude: longitude, radius: 30 }],
+      pickable: false,
+      radiusScale: 6,
+      radiusMinPixels: 1,
+      radiusMaxPixels: 1000,
+      lineWidthMinPixels: 1,
+      stroked: true,
+      filled: true,
+      colorFormat: 'RGBA',
+      visible: true,
+
+      getRadius: () => 2000,
+      getPosition: d => [d.longitude, d.latitude, 50], // need a bit of altitude for proper rendering
+      getLineColor: () => [38, 38, 185, 255],
+      getFillColor: () => [38, 38, 185, 50],
+      getLineWidth: () => 3000
+    }));
+
+    this.layers = updated;
+    this.theMap!.setProps({ layers: updated });
+  }
+
+  private async hideMyLocation() {
+    if (this.layers.length == 4) {
+      return this.changeLayerVisibility(LayerIndices.MY_LOCATION_LAYER, false);
+    }
   }
 }
