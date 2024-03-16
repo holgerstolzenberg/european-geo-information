@@ -61,7 +61,6 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-informat
 
 ## CI
 
-- GitHub CI pipeline
-  - [x] docker build
-  - [x] publish
-  - [x] GitHub pages
+- [x] docker build
+- [x] publish
+- [x] GitHub pages
