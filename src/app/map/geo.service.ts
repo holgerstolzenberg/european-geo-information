@@ -4,7 +4,7 @@ import { NotificationService } from '../notifications/notification.service';
 
 @Injectable()
 export class GeoService {
-  private readonly options = { enableHighAccuracy: false, timeout: 5000 };
+  private readonly options = { enableHighAccuracy: false, timeout: 8000 };
 
   constructor(private readonly notificationService: NotificationService) {
   }
