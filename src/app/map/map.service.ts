@@ -181,11 +181,12 @@ export class MapService {
 
       renderSubLayers: props => {
         // see: https://github.com/visgl/deck.gl/issues/8467
+        // tslint:disable-next-line
         const { west, north, east, south } = props.tile.bbox as GeoBoundingBox;
+        const what = { ...props, data: undefined };
 
         return [
-          new BitmapLayer({
-            data: undefined,
+          new BitmapLayer(what, {
             image: props.data,
             bounds: [west, south, east, north]
           })
