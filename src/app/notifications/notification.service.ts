@@ -18,7 +18,8 @@ export class NotificationService {
     private readonly toastrService: ToastrService,
     private readonly i18nService: I18nService,
     private readonly log: NGXLogger
-  ) {}
+  ) {
+  }
 
   showError(message: string, error: HttpErrorResponse | GeolocationPositionError) {
     this.log.error(message, error);
@@ -28,10 +29,10 @@ export class NotificationService {
   }
 
   showErrorLocalized(messageKey: string, ...additional: unknown[]) {
-    this.log.error(messageKey, additional);
-
-    firstValueFrom(this.i18nService.translateMultiple(['notifications.error-title', messageKey])).then(values =>
-      this.toastrService.error(values[1] + ' ' + additional, values[0], options)
+    firstValueFrom(this.i18nService.translateMultiple(['notifications.error-title', messageKey])).then(values => {
+        this.log.error(values[1], additional);
+        this.toastrService.error(values[1] + ' ' + additional, values[0], options);
+      }
     );
   }
 
