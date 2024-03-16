@@ -27,17 +27,17 @@ ng lint
 docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-information
 ```
 
-## ✅ Open points
+## 📥 Open points
 
 ## Features
 
-- ☑️Add user interactions for layer control
-- ☑️Expandable toolbar
-- ☑️Own location finder
-- ☑️Smoother map animation (only mac chrome so far, retina)
-- ☑️Add loading indicator
-- ☑️Slider for map pitch angle
-- ☑️Map initializing indicator
+- ✅️Add user interactions for layer control
+- ✅️Expandable toolbar
+- ✅️Own location finder
+- ✅️Smoother map animation (only mac chrome so far, retina)
+- ✅️Add loading indicator
+- ✅️Slider for map pitch angle
+- ✅️Map initializing indicator
 - Cross-hair on own location
 - Also reset map pitch
 - Weather or other overlays
@@ -49,18 +49,19 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-informat
 - Investigate 404 on app start
 - Better SCSS structure and cleanup
 - Cleanup of .whatever configurations (Prettier, ESLint, etc.)
-- ☑️Pin package.json versions
-- ☑️Glitching focus frame around map
+- ✅️Logging service abstraction
+- ✅️Pin package.json versions
+- ✅️Glitching focus frame around map
 
 ## Packaging
 
 - Make Docker image configurable at runtime -> let run at specific context (? env.js)
-- ☑️Caddy based Docker image
-- ☑️Make Caddy proxy requests to tile server
+- ✅️Caddy based Docker image
+- ✅️Make Caddy proxy requests to tile server
 
 ## CI
 
 - GitHub CI pipeline
-  - ☑️docker build
-  - ☑️publish
-  - ☑️GitHub pages
+  - ✅️docker build
+  - ✅️publish
+  - ✅️GitHub pages
