@@ -83,6 +83,8 @@ export class MapService {
       this.myLocation = coordinates;
       this.addMyLocation(this.myLocation.latitude, this.myLocation.longitude);
       this.transitionMapAnimated(coordinates.latitude, coordinates.longitude, FLY_TO_ZOOM);
+    }, () => {
+      this.loadingIndicator$?.next(false);
     });
   }
 
