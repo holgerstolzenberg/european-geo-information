@@ -37,10 +37,10 @@ export class NotificationService {
   }
 
   showInfoLocalized(messageKey: string, ...additional: unknown[]) {
-    this.log.info(messageKey, additional);
-
-    firstValueFrom(this.i18nService.translateMultiple(['notifications.info-title', messageKey])).then(values =>
-      this.toastrService.info(values[1] + ' ' + additional, values[0], options)
+    firstValueFrom(this.i18nService.translateMultiple(['notifications.info-title', messageKey])).then(values => {
+        this.log.info(values[1], additional);
+        this.toastrService.info(values[1] + ' ' + additional, values[0], options);
+      }
     );
   }
 }

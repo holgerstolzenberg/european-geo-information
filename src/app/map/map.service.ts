@@ -1,6 +1,5 @@
 import { ElementRef, EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { NGXLogger } from 'ngx-logger';
 import {
   CAPITOLS_LAYER,
   DEFAULT_TRANSITION_DURATION_MS,
@@ -18,6 +17,7 @@ import { GeoBoundingBox, TileLayer } from '@deck.gl/geo-layers/typed';
 import { environment } from '../../environments/environment';
 import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 import { GeoService } from './geo.service';
+import { LoggingService } from '../logging/logging.service';
 
 @Injectable()
 export class MapService {
@@ -34,7 +34,7 @@ export class MapService {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly log: NGXLogger,
+    private readonly log: LoggingService,
     private readonly geoService: GeoService,
     private readonly notificationService: NotificationService
   ) {
