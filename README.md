@@ -31,37 +31,37 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-informat
 
 ## Features
 
-- ✅️Add user interactions for layer control
-- ✅️Expandable toolbar
-- ✅️Own location finder
-- ✅️Smoother map animation (only mac chrome so far, retina)
-- ✅️Add loading indicator
-- ✅️Slider for map pitch angle
-- ✅️Map initializing indicator
-- Cross-hair on own location
-- Also reset map pitch
-- Weather or other overlays
-- Distance to capitols
+- [x] Add user interactions for layer control
+- [x] Expandable toolbar
+- [x] Own location finder
+- [x] Smoother map animation (only mac chrome so far, retina)
+- [x] Add loading indicator
+- [x] Slider for map pitch angle
+- [x] Map initializing indicator
+- [ ] Cross-hair on own location
+- [ ] Also reset map pitch
+- [ ] Weather or other overlays
+- [ ] Distance to capitols
 
 ## Development
 
-- Scoped translation files
-- Investigate 404 on app start
-- Better SCSS structure and cleanup
-- Cleanup of .whatever configurations (Prettier, ESLint, etc.)
-- ✅️Logging service abstraction
-- ✅️Pin package.json versions
-- ✅️Glitching focus frame around map
+- [ ] Scoped translation files
+- [ ] Investigate 404 on app start
+- [ ] Better SCSS structure and cleanup
+- [ ] Cleanup of .whatever configurations (Prettier, ESLint, etc.)
+- [x] Logging service abstraction
+- [x] Pin package.json versions
+- [x] Glitching focus frame around map
 
 ## Packaging
 
-- Make Docker image configurable at runtime -> let run at specific context (? env.js)
-- ✅️Caddy based Docker image
-- ✅️Make Caddy proxy requests to tile server
+- [ ] Make Docker image configurable at runtime -> let run at specific context (? env.js)
+- [x] Caddy based Docker image
+- [x] Make Caddy proxy requests to tile server
 
 ## CI
 
 - GitHub CI pipeline
-  - ✅️docker build
-  - ✅️publish
-  - ✅️GitHub pages
+  - [x] docker build
+  - [x] publish
+  - [x] GitHub pages
