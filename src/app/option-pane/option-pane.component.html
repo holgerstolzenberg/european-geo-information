@@ -48,7 +48,8 @@
           [discrete]="false"
           [showTickMarks]="false"
           (mousemove)="doPitchMap()"
-          (click)="doPitchMap()">
+          (click)="doPitchMap()"
+          (touchmove)="doPitchMap()">
         <input matSliderThumb [(ngModel)]="mapPitch">
       </mat-slider>
     </div>
