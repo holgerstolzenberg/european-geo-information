@@ -8,13 +8,17 @@ div.is-hidden {
 
 div.await-map {
   @include typography.prevent-select;
-  position: relative;
-  left: auto;
-  top: 30%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 1;
   text-align: center;
-  overflow: hidden;
+  align-content: center;
+  padding: 0;
 
+  // TODO vertical align does not work in Safari
   span {
     @include typography.prevent-select;
     display: inline-block;
