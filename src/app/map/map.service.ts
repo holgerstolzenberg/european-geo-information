@@ -133,7 +133,7 @@ export class MapService {
             .pipe(delay(1000))
             .subscribe(() => {
               this.log.debug('Deck GL map is ready');
-              //mapHidden$.next(false);
+              mapHidden$.next(false);
             });
         }
       });
