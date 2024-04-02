@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { MapService } from './map.service';
 import { BehaviorSubject, delay, of, Subject, take, takeUntil } from 'rxjs';
-import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
+import { DeckMetrics } from '@deck.gl/core/dist/lib/deck';
 
 @Component({
   selector: 'app-map',

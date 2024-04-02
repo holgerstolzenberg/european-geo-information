@@ -1,4 +1,6 @@
-import { ScatterplotLayer } from '@deck.gl/layers/typed';
+import { ScatterplotLayer } from '@deck.gl/layers';
+import { MapViewState } from '@deck.gl/core';
+import { TransitionProps } from '@deck.gl/core/dist/controllers/transition-manager';
 
 export const DEFAULT_ZOOM = 4;
 export const DEFAULT_PITCH = 40;
@@ -11,7 +13,7 @@ export const MAP_CENTER = {
   longitude: 15.2551
 };
 
-export const INITIAL_VIEW_STATE: Record<string, number> = {
+export const INITIAL_VIEW_STATE: MapViewState = {
   latitude: MAP_CENTER.latitude,
   longitude: MAP_CENTER.longitude,
   zoom: DEFAULT_ZOOM,

@@ -10,14 +10,15 @@ import {
   MAP_CENTER
 } from './map.constants';
 import { NotificationService } from '../notifications/notification.service';
-import { Deck, FlyToInterpolator, Layer } from '@deck.gl/core/typed';
-import { BitmapLayer, GeoJsonLayer, ScatterplotLayer } from '@deck.gl/layers/typed';
+import { Deck, FlyToInterpolator, Layer, MapViewState } from '@deck.gl/core';
+import { BitmapLayer, GeoJsonLayer, ScatterplotLayer } from '@deck.gl/layers';
 import { catchError, delay, firstValueFrom, forkJoin, map, Observable, of, Subject } from 'rxjs';
-import { GeoBoundingBox, TileLayer } from '@deck.gl/geo-layers/typed';
+import { GeoBoundingBox, TileLayer } from '@deck.gl/geo-layers';
 import { environment } from '../../environments/environment';
-import { DeckMetrics } from '@deck.gl/core/typed/lib/deck';
 import { GeoService } from './geo.service';
 import { LoggingService } from '../logging/logging.service';
+import { DeckMetrics } from '@deck.gl/core/dist/lib/deck';
+import type { GeoJSON } from 'geojson';
 
 @Injectable()
 export class MapService {
@@ -42,7 +43,7 @@ export class MapService {
   }
 
   private loadEuGeoJson() {
-    return this.http.get<JSON>('./assets/geo-data/eu-borders.json');
+    return this.http.get<GeoJSON>('./assets/geo-data/eu-borders.json');
   }
 
   loadAllLayers(): Observable<Layer[]> {
@@ -120,7 +121,7 @@ export class MapService {
         // necessary game changer to get transitions working
         // see: https://github.com/visgl/deck.gl/issues/2102
         onViewStateChange: ({ viewState }) => {
-          this.currentViewState = viewState;
+          this.currentViewState = viewState as MapViewState;
           this.theMap!.setProps({ viewState: this.currentViewState });
         },
 
@@ -199,7 +200,7 @@ export class MapService {
     return of(mapLayer);
   }
 
-  private initEuBordersLayer(geoJson: JSON) {
+  private initEuBordersLayer(geoJson: GeoJSON) {
     return new GeoJsonLayer({
       id: 'eu-borders-layer',
       data: geoJson,
