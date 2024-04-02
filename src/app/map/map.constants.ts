@@ -1,6 +1,5 @@
 import { ScatterplotLayer } from '@deck.gl/layers';
 import { MapViewState } from '@deck.gl/core';
-import { TransitionProps } from '@deck.gl/core/dist/controllers/transition-manager';
 
 export const DEFAULT_ZOOM = 4;
 export const DEFAULT_PITCH = 40;
