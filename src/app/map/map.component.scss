@@ -98,8 +98,8 @@ div.loaderContainer {
   position: absolute;
   bottom: 10pt;
   width: 140pt;
-  height: 20pt;
-  left: 220pt;
+  height: 21pt;
+  left: 230pt;
 }
 
 .loader,
@@ -132,7 +132,7 @@ div.tile {
   @include typography.prevent-select;
   position: absolute;
   display: inline-block;
-  top: 3pt;
+  top: 2pt;
   left: 20pt;
   z-index: 3;
   color: typography.$accent-bright;
