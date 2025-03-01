@@ -1,6 +1,5 @@
-@use "mixins/typography";
-
-@import "variables";
+@use "mixins/typography" as typography;
+@use "variables" as vars;
 
 div.is-hidden {
   visibility: hidden;
@@ -82,7 +81,7 @@ div.attribution {
 
 div.map {
   @include typography.prevent-select;
-  background-color: $dark-matter-bg;
+  background-color: vars.$dark-matter-bg;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -116,10 +115,10 @@ div.loaderContainer {
   margin: 0;
   font-size: 0;
   text-indent: -9999pt;
-  border-top: 1.5pt solid $accent-dark;
-  border-right: 1.5pt solid $accent-dark;
-  border-bottom: 1.5pt solid $accent-dark;
-  border-left: 1.5pt solid $accent-bright;
+  border-top: 1.5pt solid vars.$accent-dark;
+  border-right: 1.5pt solid vars.$accent-dark;
+  border-bottom: 1.5pt solid vars.$accent-dark;
+  border-left: 1.5pt solid vars.$accent-bright;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);

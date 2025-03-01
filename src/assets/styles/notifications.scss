@@ -1,4 +1,4 @@
-@import "variables";
+@use "variables" as vars;
 
 .toast-container .ngx-toastr {
   box-shadow: none;
@@ -14,16 +14,16 @@
   }
 
   &.toast-warning {
-    background-color: $accent-bright;
+    background-color: vars.$accent-bright;
     background-image: url('/assets/styles/icons/triangle-warning.png') !important;
 
     * {
-      color: $primary
+      color: vars.$primary
     }
   }
 
   &.toast-info {
-    background-color: $secondary;
+    background-color: vars.$secondary;
   }
 
   &.toast-error {

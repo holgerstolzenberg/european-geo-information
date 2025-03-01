@@ -1,12 +1,12 @@
 @use "mixins/typography";
+@use 'variables' as vars;
 
-@import "variables";
 
 div.app {
   @include typography.default;
   margin: 0;
   padding: 0;
-  background-color: $accent;
+  background-color: vars.$accent;
   display: block;
   top: 0;
   bottom: 0;
@@ -16,10 +16,10 @@ div.app {
 
   div.content {
     position: absolute;
-    top: calc($header-height + $toolbar-height);
+    top: calc(#{vars.$header-height} + #{vars.$toolbar-height});
     right: 0;
     left: 0;
     bottom: 0;
-    color: $tertiary;
+    color: vars.$tertiary;
   }
 }

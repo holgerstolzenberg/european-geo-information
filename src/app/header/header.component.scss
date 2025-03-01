@@ -1,6 +1,5 @@
-@use "mixins/typography";
-
-@import "variables";
+@use "mixins/typography" as typography;
+@use "variables" as vars;
 
 div.header {
   @include typography.prevent-select;
@@ -12,16 +11,16 @@ div.header {
   top: 0;
   left: 0;
   right: 0;
-  height: $header-height;
-  background-color: $primary;
+  height: vars.$header-height;
+  background-color: vars.$primary;
   cursor: default;
 
   h1 {
     @include typography.default;
-    color: $tertiary;
-    line-height: $header-height;
-    height: $header-height;
-    font-size: calc($header-height / 4);
+    color: vars.$tertiary;
+    line-height: vars.$header-height;
+    height: vars.$header-height;
+    font-size: calc(#{vars.$header-height} / 4);
     display: inline-block;
     text-transform: uppercase;
     padding-left: 10pt;
@@ -30,18 +29,18 @@ div.header {
   div.lang-switch {
     @include typography.default;
     display: inline-block;
-    background-color: $primary;
-    color: $secondary;
+    background-color: vars.$primary;
+    color: vars.$secondary;
 
     // TODO scss: find better way for vertical align
     a.switch-button {
       @include typography.default;
       display: inline-block;
-      color: $secondary;
+      color: vars.$secondary;
       padding: 5pt;
       margin: 11pt 5pt 0 0;
       cursor: pointer;
-      border: 2pt solid $primary;
+      border: 2pt solid vars.$primary;
       border-radius: 1pt;
 
       &.double-right-margin {
@@ -49,19 +48,19 @@ div.header {
       }
 
       &:hover {
-        color: $tertiary;
-        border: 2pt solid $secondary;
+        color: vars.$tertiary;
+        border: 2pt solid vars.$secondary;
       }
 
       &:active {
-        color: $tertiary
+        color: vars.$tertiary
       }
 
       &.activeLang {
-        color: $tertiary;
+        color: vars.$tertiary;
         cursor: default;
-        background-color: $secondary;
-        border: 2pt solid $secondary;
+        background-color: vars.$secondary;
+        border: 2pt solid vars.$secondary;
       }
     }
   }

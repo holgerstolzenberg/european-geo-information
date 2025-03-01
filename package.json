@@ -20,6 +20,8 @@
     "@angular/platform-browser": "19.2.0",
     "@angular/platform-browser-dynamic": "19.2.0",
     "@deck.gl/core": "9.1.4",
+    "@deck.gl/geo-layers": "9.1.4",
+    "@deck.gl/layers": "9.1.4",
     "@ngneat/transloco": "6.0.4",
     "@ngneat/transloco-preload-langs": "5.0.1",
     "ngx-logger": "5.0.12",

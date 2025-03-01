@@ -1,10 +1,9 @@
 @use "theme";
-
-@import "variables";
-@import "notifications";
+@use "notifications";
+@use "variables" as vars;
 
 .tertiary {
-  color: $tertiary;
+  color: vars.$tertiary;
 }
 
 html,
