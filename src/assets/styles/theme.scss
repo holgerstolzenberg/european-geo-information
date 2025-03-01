@@ -2,7 +2,8 @@
 
 @import "@angular/material/prebuilt-themes/deeppurple-amber.css";
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 $dark-app-theme: mat.define-dark-theme(
   (
