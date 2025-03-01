@@ -3,9 +3,10 @@ import { NGXLogger } from 'ngx-logger';
 import { I18nService } from '../i18n/i18n.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: 'header.component.html',
-  styleUrl: 'header.component.scss'
+    selector: 'app-header',
+    templateUrl: 'header.component.html',
+    styleUrl: 'header.component.scss',
+    standalone: false
 })
 export class HeaderComponent {
   constructor(

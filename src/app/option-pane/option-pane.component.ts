@@ -5,9 +5,10 @@ import { environment } from '../../environments/environment';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
-  selector: 'app-option-pane',
-  templateUrl: 'option-pane.component.html',
-  styleUrl: 'option-pane.component.scss'
+    selector: 'app-option-pane',
+    templateUrl: 'option-pane.component.html',
+    styleUrl: 'option-pane.component.scss',
+    standalone: false
 })
 export class OptionPaneComponent {
   expanded: boolean = false;

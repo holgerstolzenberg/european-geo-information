@@ -3,9 +3,10 @@ import { MapService } from '../map/map.service';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
-  selector: 'app-toolbar',
-  templateUrl: 'toolbar.component.html',
-  styleUrl: 'toolbar.component.scss'
+    selector: 'app-toolbar',
+    templateUrl: 'toolbar.component.html',
+    styleUrl: 'toolbar.component.scss',
+    standalone: false
 })
 export class ToolbarComponent {
   constructor(

@@ -4,9 +4,10 @@ import { BehaviorSubject, delay, of, Subject, take, takeUntil } from 'rxjs';
 import { DeckMetrics } from '@deck.gl/core/dist/lib/deck';
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrl: './map.component.scss'
+    selector: 'app-map',
+    templateUrl: './map.component.html',
+    styleUrl: './map.component.scss',
+    standalone: false
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('deckGlMap', { static: false }) private mapDiv?: ElementRef<HTMLDivElement>;

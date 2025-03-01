@@ -5,9 +5,10 @@ import { I18nService } from './i18n/i18n.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrl: 'app.component.scss'
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrl: 'app.component.scss',
+    standalone: false
 })
 export class AppComponent implements OnInit {
   constructor(
