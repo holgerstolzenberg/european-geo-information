@@ -9,14 +9,14 @@ import {
   LayerIndices,
   MAP_CENTER
 } from './map.constants';
-import { NotificationService } from '../notifications/notification.service';
+import { NotificationService } from '../core/notifications/notification.service';
 import { Deck, FlyToInterpolator, Layer, MapViewState } from '@deck.gl/core';
 import { BitmapLayer, GeoJsonLayer, ScatterplotLayer } from '@deck.gl/layers';
 import { catchError, delay, firstValueFrom, forkJoin, map, Observable, of, Subject } from 'rxjs';
 import { GeoBoundingBox, TileLayer } from '@deck.gl/geo-layers';
 import { environment } from '../../environments/environment';
 import { GeoService } from './geo.service';
-import { LoggingService } from '../logging/logging.service';
+import { LoggingService } from '../core/logging/logging.service';
 import { DeckMetrics } from '@deck.gl/core/dist/lib/deck';
 import type { GeoJSON } from 'geojson';
 

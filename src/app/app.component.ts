@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Title } from '@angular/platform-browser';
-import { I18nService } from './i18n/i18n.service';
+import { I18nService } from './core/i18n/i18n.service';
 import { firstValueFrom } from 'rxjs';
 import { HeaderComponent } from './header/header.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';

@@ -10,14 +10,14 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideTransloco } from '@jsverse/transloco';
 import { provideHttpClient } from '@angular/common/http';
-import { I18nHttpLoaderService } from './app/i18n/i18n-http-loader.service';
-import { LoggingService } from './app/logging/logging.service';
+import { I18nHttpLoaderService } from './app/core/i18n/i18n-http-loader.service';
+import { LoggingService } from './app/core/logging/logging.service';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { MapService } from './app/map/map.service';
 import { GeoService } from './app/map/geo.service';
-import { NotificationService } from './app/notifications/notification.service';
+import { NotificationService } from './app/core/notifications/notification.service';
 import { ToastrModule } from 'ngx-toastr';
-import { I18nService } from './app/i18n/i18n.service';
+import { I18nService } from './app/core/i18n/i18n.service';
 
 if (environment.prodMode) {
   enableProdMode();

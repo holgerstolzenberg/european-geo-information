@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { NotificationService } from '../notifications/notification.service';
+import { NotificationService } from '../core/notifications/notification.service';
 
 @Injectable()
 export class GeoService {

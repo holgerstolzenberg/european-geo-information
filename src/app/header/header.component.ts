@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
-import { I18nService } from '../i18n/i18n.service';
+import { I18nService } from '../core/i18n/i18n.service';
 import { NgClass } from '@angular/common';
 import { TranslocoPipe } from '@jsverse/transloco';
 
