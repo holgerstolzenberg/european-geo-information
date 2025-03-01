@@ -1,45 +1,49 @@
 <div class="option-pane" [ngClass]="{'expanded': expanded}">
   <div class="expando">
     <div class="vertical-align">
-      <div class="button open" *ngIf="!expanded" (click)="expand()" (keydown)="compress()"
-           tabindex={0}>
-        <div class="triangle t-open"></div>
-        <div class="triangle t-open"></div>
-        <div class="triangle t-open"></div>
-      </div>
-      <div class="button close" *ngIf="expanded" (click)="compress()" (keydown)="compress()"
-           tabindex={1}>
-        <div class="triangle t-close"></div>
-        <div class="triangle t-close"></div>
-        <div class="triangle t-close"></div>
-      </div>
+      @if (expanded) {
+        <div class="button close" (click)="compress()" (keydown)="compress()"
+             tabindex={1}>
+          <div class="triangle t-close"></div>
+          <div class="triangle t-close"></div>
+          <div class="triangle t-close"></div>
+        </div>
+      } @else {
+        <div class="button open" (click)="expand()" (keydown)="compress()"
+             tabindex={0}>
+          <div class="triangle t-open"></div>
+          <div class="triangle t-open"></div>
+          <div class="triangle t-open"></div>
+        </div>
+      }
     </div>
   </div>
-  <div class="options" *ngIf="expanded">
-    <div class="row subtitle">
-      <span>{{ 'option-pane.map-data' | transloco }}</span>
-    </div>
-    <div class="row">
-      <mat-slide-toggle
+  @if (expanded) {
+    <div class="options">
+      <div class="row subtitle">
+        <span>{{ 'option-pane.map-data' | transloco }}</span>
+      </div>
+      <div class="row">
+        <mat-slide-toggle
           class="label-distance"
           [checked]="showEuBorders"
           (change)="euBordersChanged($event)">
-        {{ 'option-pane.show-eu-borders' | transloco }}
-      </mat-slide-toggle>
-    </div>
-    <div class="row">
-      <mat-slide-toggle
+          {{ 'option-pane.show-eu-borders' | transloco }}
+        </mat-slide-toggle>
+      </div>
+      <div class="row">
+        <mat-slide-toggle
           [checked]="showCapitols"
           (change)="capitolsChanged($event)">
-        {{ 'option-pane.show-capitols' | transloco }}
-      </mat-slide-toggle>
-    </div>
-    <div class="row subtitle last">
-      <span>{{ 'option-pane.map-props' | transloco }}</span>
-    </div>
-    <div class="row">
-      <span>{{ 'option-pane.map-pitch' | transloco }}</span>
-      <mat-slider
+          {{ 'option-pane.show-capitols' | transloco }}
+        </mat-slide-toggle>
+      </div>
+      <div class="row subtitle last">
+        <span>{{ 'option-pane.map-props' | transloco }}</span>
+      </div>
+      <div class="row">
+        <span>{{ 'option-pane.map-pitch' | transloco }}</span>
+        <mat-slider
           class="example-margin"
           [disabled]="false"
           [max]="70"
@@ -50,8 +54,9 @@
           (mousemove)="doPitchMap()"
           (click)="doPitchMap()"
           (touchmove)="doPitchMap()">
-        <input matSliderThumb [(ngModel)]="mapPitch">
-      </mat-slider>
+          <input matSliderThumb [(ngModel)]="mapPitch">
+        </mat-slider>
+      </div>
     </div>
-  </div>
+  }
 </div>

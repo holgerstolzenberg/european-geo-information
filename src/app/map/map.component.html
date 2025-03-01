@@ -1,29 +1,38 @@
-<div class="metrics" *ngIf="showMetrics"  [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
+@if (showMetrics) {
+  <div class="metrics" [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
     <div>
-        <span class="label">FPS</span><span>{{ (metrics$ | async)?.fps | number: '1.0-3' }}</span>
+      <span class="label">FPS</span><span>{{ (metrics$ | async)?.fps | number: '1.0-3' }}</span>
     </div>
     <div>
-        <span class="label">CPU time</span><span>{{ (metrics$ | async)?.cpuTime | number: '1.0-3' }}</span>
+      <span class="label">CPU time</span><span>{{ (metrics$ | async)?.cpuTime | number: '1.0-3' }}</span>
     </div>
     <div>
-        <span class="label">GPU time</span><span>{{ (metrics$ | async)?.gpuTime | number: '1.0-3' }}</span>
+      <span class="label">GPU time</span><span>{{ (metrics$ | async)?.gpuTime | number: '1.0-3' }}</span>
     </div>
     <div>
-        <span class="label">GPU memory</span><span>{{ (metrics$ | async)?.gpuMemory }}</span>
+      <span class="label">GPU memory</span><span>{{ (metrics$ | async)?.gpuMemory }}</span>
     </div>
-</div>
+  </div>
+}
+
 <div class="await-map" [ngClass]="{'is-hidden': (mapHidden$ | async) === false}" *transloco="let t">
-    <span>{{ t('map.awaiting') }}</span>
+  <span>{{ t('map.awaiting') }}</span>
 </div>
+
 <div class="map" #deckGlMap [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
 </div>
-<div class="attribution"  [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
-  <span>&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors // &copy; <a href="https://carto.com/attributions">CARTO</a></span>
+
+<div class="attribution" [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
+  <span>&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors // &copy; <a
+    href="https://carto.com/attributions">CARTO</a></span>
 </div>
-<div *ngIf="showLoader$ | async" class="loaderContainer" [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
+
+@if (showLoader$ | async) {
+  <div class="loaderContainer" [ngClass]="{'is-hidden': (mapHidden$ | async) === true}">
     <div class="loader">
     </div>
     <div class="tile">
-        {{ 'map.tile' | transloco }}: {{ loadedTileId }}
+      {{ 'map.tile' | transloco }}: {{ loadedTileId }}
     </div>
-</div>
+  </div>
+}
