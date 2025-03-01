@@ -1,14 +1,25 @@
 import { Component, Input } from '@angular/core';
 import { MapService } from '../map/map.service';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { environment } from '../../environments/environment';
 import { NGXLogger } from 'ngx-logger';
+import { NgClass } from '@angular/common';
+import { MatSlider, MatSliderThumb } from '@angular/material/slider';
+import { TranslocoPipe } from '@jsverse/transloco';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-option-pane',
-    templateUrl: 'option-pane.component.html',
-    styleUrl: 'option-pane.component.scss',
-    standalone: false
+  selector: 'app-option-pane',
+  templateUrl: 'option-pane.component.html',
+  styleUrl: 'option-pane.component.scss',
+  imports: [
+    NgClass,
+    MatSlideToggle,
+    MatSlider,
+    TranslocoPipe,
+    FormsModule,
+    MatSliderThumb
+  ]
 })
 export class OptionPaneComponent {
   expanded: boolean = false;

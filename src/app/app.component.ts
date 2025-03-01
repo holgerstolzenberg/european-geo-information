@@ -3,12 +3,22 @@ import { NGXLogger } from 'ngx-logger';
 import { Title } from '@angular/platform-browser';
 import { I18nService } from './i18n/i18n.service';
 import { firstValueFrom } from 'rxjs';
+import { HeaderComponent } from './header/header.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { MapComponent } from './map/map.component';
+import { OptionPaneComponent } from './option-pane/option-pane.component';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: 'app.component.html',
-    styleUrl: 'app.component.scss',
-    standalone: false
+  selector: 'app-root',
+  imports: [
+    HeaderComponent,
+    ToolbarComponent,
+    MapComponent,
+    OptionPaneComponent
+  ],
+  providers:[I18nService],
+  templateUrl: 'app.component.html',
+  styleUrl: 'app.component.scss'
 })
 export class AppComponent implements OnInit {
   constructor(

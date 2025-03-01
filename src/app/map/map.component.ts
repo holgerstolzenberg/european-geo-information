@@ -2,12 +2,20 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@ang
 import { MapService } from './map.service';
 import { BehaviorSubject, delay, of, Subject, take, takeUntil } from 'rxjs';
 import { DeckMetrics } from '@deck.gl/core/dist/lib/deck';
+import { AsyncPipe, DecimalPipe, NgClass } from '@angular/common';
+import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
-    selector: 'app-map',
-    templateUrl: './map.component.html',
-    styleUrl: './map.component.scss',
-    standalone: false
+  selector: 'app-map',
+  templateUrl: './map.component.html',
+  styleUrl: './map.component.scss',
+  imports: [
+    NgClass,
+    AsyncPipe,
+    TranslocoPipe,
+    DecimalPipe,
+    TranslocoDirective
+  ]
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('deckGlMap', { static: false }) private mapDiv?: ElementRef<HTMLDivElement>;

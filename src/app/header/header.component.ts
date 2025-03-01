@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { I18nService } from '../i18n/i18n.service';
+import { NgClass } from '@angular/common';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: 'header.component.html',
-    styleUrl: 'header.component.scss',
-    standalone: false
+  selector: 'app-header',
+  templateUrl: 'header.component.html',
+  styleUrl: 'header.component.scss',
+  imports: [
+    NgClass,
+    TranslocoPipe
+  ]
 })
 export class HeaderComponent {
   constructor(
