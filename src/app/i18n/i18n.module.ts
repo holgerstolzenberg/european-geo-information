@@ -1,8 +1,8 @@
-import { provideTransloco, TranslocoModule } from '@ngneat/transloco';
+import { provideTransloco, TranslocoModule } from '@jsverse/transloco';
 import { isDevMode, NgModule } from '@angular/core';
 import { I18nHttpLoaderService } from './i18n-http-loader.service';
 import { provideHttpClient } from '@angular/common/http';
-import { provideTranslocoPreloadLangs } from '@ngneat/transloco-preload-langs';
+import { provideTranslocoPreloadLangs } from '@jsverse/transloco-preload-langs';
 import { I18nService } from './i18n.service';
 
 @NgModule({
