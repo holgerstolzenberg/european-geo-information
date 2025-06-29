@@ -1,4 +1,4 @@
-import { ElementRef, EventEmitter, Injectable } from '@angular/core';
+import { ElementRef, EventEmitter, Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
   CAPITOLS_LAYER,
@@ -22,6 +22,11 @@ import type { GeoJSON } from 'geojson';
 
 @Injectable()
 export class MapService {
+  private readonly http = inject(HttpClient);
+  private readonly log = inject(LoggingService);
+  private readonly geoService = inject(GeoService);
+  private readonly notificationService = inject(NotificationService);
+
   loading$ = new EventEmitter<string>();
 
   private currentViewState = INITIAL_VIEW_STATE;
@@ -33,12 +38,7 @@ export class MapService {
   private loadingIndicator$?: Subject<boolean>;
   private theMap?: Deck;
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly log: LoggingService,
-    private readonly geoService: GeoService,
-    private readonly notificationService: NotificationService
-  ) {
+  constructor() {
     this.layers$ = this.loadAllLayers();
   }
 

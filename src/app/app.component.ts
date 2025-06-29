@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { Title } from '@angular/platform-browser';
 import { I18nService } from './core/i18n/i18n.service';
@@ -16,16 +16,16 @@ import { OptionPaneComponent } from './option-pane/option-pane.component';
     MapComponent,
     OptionPaneComponent
   ],
-  providers:[I18nService],
+  providers: [I18nService],
   templateUrl: 'app.component.html',
   styleUrl: 'app.component.scss'
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private i18nService: I18nService,
-    private logger: NGXLogger,
-    private title: Title
-  ) {
+  private i18nService = inject(I18nService);
+  private logger = inject(NGXLogger);
+  private title = inject(Title);
+
+  constructor() {
     this.logger.info('Active lang: ' + this.i18nService.getActiveLang());
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { I18nService } from '../core/i18n/i18n.service';
 import { NgClass } from '@angular/common';
@@ -14,10 +14,10 @@ import { TranslocoPipe } from '@jsverse/transloco';
   ]
 })
 export class HeaderComponent {
-  constructor(
-    private i18nService: I18nService,
-    private logger: NGXLogger
-  ) {}
+  private i18nService = inject(I18nService);
+  private logger = inject(NGXLogger);
+
+  constructor() {}
 
   switchLanguageTo(languageCode: string) {
     if (!languageCode) {

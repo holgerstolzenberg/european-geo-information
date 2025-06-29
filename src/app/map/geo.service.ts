@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { NotificationService } from '../core/notifications/notification.service';
 
 @Injectable()
 export class GeoService {
+  private readonly notificationService = inject(NotificationService);
+
   private readonly options = { enableHighAccuracy: false, timeout: 8000 };
 
-  constructor(private readonly notificationService: NotificationService) {
+  constructor() {
   }
 
   myCurrentLocation() {

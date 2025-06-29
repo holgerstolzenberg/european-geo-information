@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NGXLogger } from 'ngx-logger';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -14,11 +14,11 @@ export const options = {
 
 @Injectable()
 export class NotificationService {
-  constructor(
-    private readonly toastrService: ToastrService,
-    private readonly i18nService: I18nService,
-    private readonly log: NGXLogger
-  ) {
+  private readonly toastrService = inject(ToastrService);
+  private readonly i18nService = inject(I18nService);
+  private readonly log = inject(NGXLogger);
+
+  constructor() {
   }
 
   showError(message: string, error: HttpErrorResponse | GeolocationPositionError) {

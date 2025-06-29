@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MapService } from '../map/map.service';
 import { NGXLogger } from 'ngx-logger';
 import { MatIcon } from '@angular/material/icon';
@@ -16,10 +16,10 @@ import { MatButton } from '@angular/material/button';
   ]
 })
 export class ToolbarComponent {
-  constructor(
-    private log: NGXLogger,
-    private mapService: MapService
-  ) {}
+  private log = inject(NGXLogger);
+  private mapService = inject(MapService);
+
+  constructor() {}
 
   resetMap() {
     this.mapService.resetMapToEuropeanCenter().then(() => this.log.debug('Map has been reset'));

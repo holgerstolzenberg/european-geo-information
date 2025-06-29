@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MapService } from '../map/map.service';
 import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { environment } from '../../environments/environment';
@@ -22,6 +22,9 @@ import { FormsModule } from '@angular/forms';
   ]
 })
 export class OptionPaneComponent {
+  private log = inject(NGXLogger);
+  private mapService = inject(MapService);
+
   expanded: boolean = false;
 
   @Input() showEuBorders: boolean = true;
@@ -29,10 +32,7 @@ export class OptionPaneComponent {
 
   @Input() mapPitch = environment.mapProperties.initialPitch;
 
-  constructor(
-    private log: NGXLogger,
-    private mapService: MapService
-  ) {}
+  constructor() {}
 
   protected expand() {
     this.expanded = true;

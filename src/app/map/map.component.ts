@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, inject } from '@angular/core';
 import { MapService } from './map.service';
 import { BehaviorSubject, delay, of, Subject, take, takeUntil } from 'rxjs';
 import { DeckMetrics } from '@deck.gl/core/dist/lib/deck';
@@ -18,6 +18,8 @@ import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
   ]
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
+  private mapService = inject(MapService);
+
   @ViewChild('deckGlMap', { static: false }) private mapDiv?: ElementRef<HTMLDivElement>;
 
   showMetrics: boolean = true;
@@ -30,7 +32,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   private readonly onUnsubscribe$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private mapService: MapService) {
+  constructor() {
     this.metrics$.pipe(takeUntil(this.onUnsubscribe$));
     this.mapService.loading$.pipe(takeUntil(this.onUnsubscribe$)).subscribe(tileId => this.showHideLoader(tileId));
     this.showLoader$.pipe(takeUntil(this.onUnsubscribe$)).subscribe();

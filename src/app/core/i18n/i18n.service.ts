@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 
 @Injectable()
 export class I18nService {
-  constructor(private readonly translocoService: TranslocoService) {}
+  private readonly translocoService = inject(TranslocoService);
+
+  constructor() {}
 
   getActiveLang() {
     return this.translocoService.getActiveLang();
