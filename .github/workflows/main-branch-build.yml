@@ -13,7 +13,7 @@ jobs:
         node-version: [22.14.0]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: jessehouwing/actions-semver-checker@v1
         with:
@@ -87,7 +87,7 @@ jobs:
     needs: build-dist
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Download dist
         uses: actions/download-artifact@v4
