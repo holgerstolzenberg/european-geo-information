@@ -18,7 +18,6 @@ import { GeoService } from './app/map/geo.service';
 import { NotificationService } from './app/core/notifications/notification.service';
 import { ToastrModule } from 'ngx-toastr';
 import { I18nService } from './app/core/i18n/i18n.service';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 if (environment.prodMode) {
   enableProdMode();
@@ -30,7 +29,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(LoggerModule.forRoot({
       level: environment.prodMode ? NgxLoggerLevel.WARN : NgxLoggerLevel.DEBUG
     })),
-    provideAnimationsAsync(),
     importProvidersFrom(ToastrModule.forRoot({ preventDuplicates: true, disableTimeOut: false })),
     LoggingService,
     I18nService,
@@ -40,7 +38,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideTransloco({
       config: {
-        availableLangs: ['en', 'es'],
+        availableLangs: ['en', 'de'],
         defaultLang: 'en',
         // Remove this option if your application doesn't support changing language in runtime.
         reRenderOnLangChange: true,
