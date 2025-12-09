@@ -38,7 +38,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-informat
 - [x] Add loading indicator
 - [x] Slider for map pitch angle
 - [x] Map initializing indicator
-- [ ] Cross-hair on own location
+- [x] Cross-hair on own location
 - [ ] Also reset map pitch
 - [ ] Weather or other overlays
 - [ ] Distance to capitols
@@ -48,7 +48,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-informat
 - [ ] Scoped translation files
 - [ ] Investigate 404 on app start
 - [ ] Better SCSS structure and cleanup
-- [ ] Cleanup of .whatever configurations (Prettier, ESLint, etc.)
+- [x] Cleanup of .whatever configurations (Prettier, ESLint, etc.)
 - [x] Logging service abstraction
 - [x] Pin package.json versions
 - [x] Glitching focus frame around map
