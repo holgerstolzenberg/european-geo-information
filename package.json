@@ -37,7 +37,7 @@
     "@angular-eslint/schematics": "20.3.0",
     "@angular-eslint/template-parser": "20.3.0",
     "@angular/build": "20.3.13",
-    "@angular/cli": "20.3.13",
+    "@angular/cli": "21.1.0",
     "@angular/compiler-cli": "20.3.13",
     "@eslint/js": "9.39.1",
     "@typescript-eslint/eslint-plugin": "8.35.0",
