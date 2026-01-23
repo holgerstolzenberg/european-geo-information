@@ -9,7 +9,6 @@ import { environment } from './environments/environment';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideTransloco } from '@jsverse/transloco';
-import { provideHttpClient } from '@angular/common/http';
 import { I18nHttpLoaderService } from './app/core/i18n/i18n-http-loader.service';
 import { LoggingService } from './app/core/logging/logging.service';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
@@ -18,6 +17,7 @@ import { GeoService } from './app/map/geo.service';
 import { NotificationService } from './app/core/notifications/notification.service';
 import { ToastrModule } from 'ngx-toastr';
 import { I18nService } from './app/core/i18n/i18n.service';
+import { provideHttpClient } from '@angular/common/http';
 
 if (environment.prodMode) {
   enableProdMode();

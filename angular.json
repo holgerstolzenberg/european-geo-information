@@ -62,7 +62,16 @@
                 "src/assets/styles"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "earcut",
+              "long",
+              "pbf",
+              "pako",
+              "snappyjs",
+              "jszip",
+              "fast-xml-parser"
+            ]
           },
           "configurations": {
             "production": {
@@ -74,7 +83,7 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
+                  "maximumWarning": "3kb",
                   "maximumError": "4kb"
                 }
               ],

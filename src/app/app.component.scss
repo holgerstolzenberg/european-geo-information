@@ -1,7 +1,6 @@
 @use "mixins/typography";
 @use 'variables' as vars;
 
-
 div.app {
   @include typography.default;
   margin: 0;

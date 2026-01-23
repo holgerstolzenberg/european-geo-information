@@ -17,8 +17,24 @@ import { GeoBoundingBox, TileLayer } from '@deck.gl/geo-layers';
 import { environment } from '../../environments/environment';
 import { GeoService } from './geo.service';
 import { LoggingService } from '../core/logging/logging.service';
-import { DeckMetrics } from '@deck.gl/core/dist/lib/deck';
 import type { GeoJSON } from 'geojson';
+
+export type DeckMetrics = {
+  fps: number;
+  setPropsTime: number;
+  updateAttributesTime: number;
+  framesRedrawn: number;
+  pickTime: number;
+  pickCount: number;
+  gpuTime: number;
+  gpuTimePerFrame: number;
+  cpuTime: number;
+  cpuTimePerFrame: number;
+  bufferMemory: number;
+  textureMemory: number;
+  renderbufferMemory: number;
+  gpuMemory: number;
+};
 
 @Injectable()
 export class MapService {

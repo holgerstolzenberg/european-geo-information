@@ -34,7 +34,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-informat
 - [x] Add user interactions for layer control
 - [x] Expandable toolbar
 - [x] Own location finder
-- [x] Smoother map animation (only mac chrome so far, retina)
+- [x] Smoother map animation (only Mac Chrome so far, retina)
 - [x] Add loading indicator
 - [x] Slider for map pitch angle
 - [x] Map initializing indicator
@@ -46,7 +46,7 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-informat
 ## Development
 
 - [ ] Scoped translation files
-- [ ] Investigate 404 on app start
+- [x] Investigate 404 on app start
 - [ ] Better SCSS structure and cleanup
 - [x] Cleanup of .whatever configurations (Prettier, ESLint, etc.)
 - [x] Logging service abstraction
@@ -55,8 +55,8 @@ docker run [-it] -p8080:8080 -p2019:2019 holgerstolzenberg/european-geo-informat
 
 ## Packaging
 
-- [ ] Make Docker image configurable at runtime -> let run at specific context (? env.js)
-- [x] Caddy based Docker image
+- [ ] Make Docker image configurable at runtime => let it run at a specific context (? env.js)
+- [x] Caddy-based Docker image
 - [x] Make Caddy proxy requests to tile server
 
 ## CI
