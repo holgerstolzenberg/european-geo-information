@@ -24,6 +24,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           check-minor-version: true
+          check-marketplace: none
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
