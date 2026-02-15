@@ -17,7 +17,6 @@ jobs:
 
       - uses: jessehouwing/actions-semver-checker@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           check-minor-version: true
           check-marketplace: none
 
