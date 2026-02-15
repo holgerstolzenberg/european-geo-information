@@ -17,7 +17,7 @@ jobs:
 
       - uses: jessehouwing/actions-semver-checker@v2
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           check-minor-version: true
 
       - name: Use Node.js ${{ matrix.node-version }}
