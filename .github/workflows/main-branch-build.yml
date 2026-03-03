@@ -39,7 +39,7 @@ jobs:
           npm run build -- --configuration=production --base-href=/european-geo-information/
 
       - name: Store dist folder
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: dist_folder
           path: ./dist/european-geo-information/browser
