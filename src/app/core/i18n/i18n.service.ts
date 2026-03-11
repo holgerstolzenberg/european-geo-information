@@ -5,8 +5,6 @@ import { TranslocoService } from '@jsverse/transloco';
 export class I18nService {
   private readonly translocoService = inject(TranslocoService);
 
-  constructor() {}
-
   getActiveLang() {
     return this.translocoService.getActiveLang();
   }

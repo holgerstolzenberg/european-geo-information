@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { NotificationService } from '../core/notifications/notification.service';
 
@@ -8,12 +8,9 @@ export class GeoService {
 
   private readonly options = { enableHighAccuracy: false, timeout: 8000 };
 
-  constructor() {
-  }
-
   myCurrentLocation() {
     return new Observable<GeolocationCoordinates>(observer => {
-      window.navigator.geolocation.getCurrentPosition(
+      globalThis.navigator.geolocation.getCurrentPosition(
         position => {
           observer.next(position.coords);
           observer.complete();
@@ -50,11 +47,14 @@ export class GeoService {
   }
 
   formatDegreesMinutes(value: DegreeMinute) {
-    return value.degrees + '°' + value.minutes + '"' + value.seconds + '\'';
+    return value.degrees + '°' + value.minutes + '"' + value.seconds + "'";
   }
 }
 
 class DegreeMinute {
-  constructor(readonly degrees: number, readonly minutes: number, readonly seconds: number) {
-  }
+  constructor(
+    readonly degrees: number,
+    readonly minutes: number,
+    readonly seconds: number
+  ) {}
 }

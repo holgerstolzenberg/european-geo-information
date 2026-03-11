@@ -14,10 +14,8 @@ import { TranslocoPipe } from '@jsverse/transloco';
   ]
 })
 export class HeaderComponent {
-  private i18nService = inject(I18nService);
-  private logger = inject(NGXLogger);
-
-  constructor() {}
+  private readonly i18nService = inject(I18nService);
+  private readonly logger = inject(NGXLogger);
 
   switchLanguageTo(languageCode: string) {
     if (!languageCode) {

@@ -9,17 +9,11 @@ import { MatButton } from '@angular/material/button';
   selector: 'app-toolbar',
   templateUrl: 'toolbar.component.html',
   styleUrl: 'toolbar.component.scss',
-  imports: [
-    MatIcon,
-    TranslocoPipe,
-    MatButton
-  ]
+  imports: [MatIcon, TranslocoPipe, MatButton]
 })
 export class ToolbarComponent {
-  private log = inject(NGXLogger);
-  private mapService = inject(MapService);
-
-  constructor() {}
+  private readonly log = inject(NGXLogger);
+  private readonly mapService = inject(MapService);
 
   resetMap() {
     this.mapService.resetMapToEuropeanCenter().then(() => this.log.debug('Map has been reset'));

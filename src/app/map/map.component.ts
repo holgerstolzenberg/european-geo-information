@@ -8,21 +8,15 @@ import { TranslocoDirective, TranslocoPipe } from '@jsverse/transloco';
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
-  imports: [
-    NgClass,
-    AsyncPipe,
-    TranslocoPipe,
-    DecimalPipe,
-    TranslocoDirective
-  ]
+  imports: [NgClass, AsyncPipe, TranslocoPipe, DecimalPipe, TranslocoDirective]
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
-  private mapService = inject(MapService);
+  private readonly mapService = inject(MapService);
 
   @ViewChild('deckGlMap', { static: false }) private mapDiv?: ElementRef<HTMLDivElement>;
 
-  showMetrics: boolean = true;
-  loadedTileId: string = '';
+  showMetrics = true;
+  loadedTileId = '';
 
   showLoader$ = new Subject<boolean>();
   mapHidden$ = new BehaviorSubject<boolean>(true);
@@ -49,12 +43,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.loadedTileId = tileId;
     this.showLoader$.next(true);
 
-    of([]).pipe(
-      delay(1000),
-      take(1)
-    ).subscribe(() => {
-      this.showLoader$.next(false);
-    });
+    of([])
+      .pipe(delay(1000), take(1))
+      .subscribe(() => {
+        this.showLoader$.next(false);
+      });
   }
 
   private unsubscribeAll() {

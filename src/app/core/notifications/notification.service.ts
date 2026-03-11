@@ -18,9 +18,6 @@ export class NotificationService {
   private readonly i18nService = inject(I18nService);
   private readonly log = inject(NGXLogger);
 
-  constructor() {
-  }
-
   showError(message: string, error: HttpErrorResponse | GeolocationPositionError) {
     this.log.error(message, error);
     firstValueFrom(this.i18nService.translate('notifications.error-title')).then(title =>

@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { MapService } from '../map/map.service';
 import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { environment } from '../../environments/environment';
@@ -12,27 +12,18 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-option-pane',
   templateUrl: 'option-pane.component.html',
   styleUrl: 'option-pane.component.scss',
-  imports: [
-    NgClass,
-    MatSlideToggle,
-    MatSlider,
-    TranslocoPipe,
-    FormsModule,
-    MatSliderThumb
-  ]
+  imports: [NgClass, MatSlideToggle, MatSlider, TranslocoPipe, FormsModule, MatSliderThumb]
 })
 export class OptionPaneComponent {
-  private log = inject(NGXLogger);
-  private mapService = inject(MapService);
+  private readonly log = inject(NGXLogger);
+  private readonly mapService = inject(MapService);
 
-  expanded: boolean = false;
+  expanded = false;
 
-  @Input() showEuBorders: boolean = true;
-  @Input() showCapitols: boolean = true;
+  @Input() showEuBorders = true;
+  @Input() showCapitols = true;
 
   @Input() mapPitch = environment.mapProperties.initialPitch;
-
-  constructor() {}
 
   protected expand() {
     this.expanded = true;
@@ -55,6 +46,4 @@ export class OptionPaneComponent {
       this.log.trace('Map pitched to: ', this.mapPitch);
     });
   }
-
-  protected readonly onclick = onclick;
 }

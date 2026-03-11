@@ -1,4 +1,4 @@
-import { ElementRef, EventEmitter, Injectable, inject } from '@angular/core';
+import { ElementRef, EventEmitter, inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
   CAPITOLS_LAYER,
@@ -19,7 +19,7 @@ import { GeoService } from './geo.service';
 import { LoggingService } from '../core/logging/logging.service';
 import type { GeoJSON } from 'geojson';
 
-export type DeckMetrics = {
+export interface DeckMetrics {
   fps: number;
   setPropsTime: number;
   updateAttributesTime: number;
@@ -34,7 +34,7 @@ export type DeckMetrics = {
   textureMemory: number;
   renderbufferMemory: number;
   gpuMemory: number;
-};
+}
 
 @Injectable()
 export class MapService {
@@ -42,12 +42,11 @@ export class MapService {
   private readonly log = inject(LoggingService);
   private readonly geoService = inject(GeoService);
   private readonly notificationService = inject(NotificationService);
+  private readonly layers$ = new Observable<Layer[]>();
 
   loading$ = new EventEmitter<string>();
 
   private currentViewState = INITIAL_VIEW_STATE;
-
-  private layers$ = new Observable<Layer[]>();
   private layers = new Array<Layer>(3);
 
   private myLocation?: GeolocationCoordinates;
@@ -96,13 +95,16 @@ export class MapService {
       return this.transitionMapAnimated(this.myLocation.latitude, this.myLocation.longitude, FLY_TO_ZOOM);
     }
 
-    return firstValueFrom(this.geoService.myCurrentLocation()).then(coordinates => {
-      this.myLocation = coordinates;
-      this.addMyLocation(this.myLocation.latitude, this.myLocation.longitude);
-      this.transitionMapAnimated(coordinates.latitude, coordinates.longitude, FLY_TO_ZOOM);
-    }, () => {
-      this.loadingIndicator$?.next(false);
-    });
+    return firstValueFrom(this.geoService.myCurrentLocation()).then(
+      coordinates => {
+        this.myLocation = coordinates;
+        this.addMyLocation(this.myLocation.latitude, this.myLocation.longitude);
+        this.transitionMapAnimated(coordinates.latitude, coordinates.longitude, FLY_TO_ZOOM);
+      },
+      () => {
+        this.loadingIndicator$?.next(false);
+      }
+    );
   }
 
   async doShowEuBorders(value: boolean) {
@@ -200,7 +202,6 @@ export class MapService {
 
       renderSubLayers: props => {
         // see: https://github.com/visgl/deck.gl/issues/8467
-        // tslint:disable-next-line
         const { west, north, east, south } = props.tile.bbox as GeoBoundingBox;
         const what = { ...props, data: undefined };
 

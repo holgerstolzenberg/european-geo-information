@@ -5,9 +5,6 @@ import { NGXLogger } from 'ngx-logger';
 export class LoggingService {
   private readonly log = inject(NGXLogger);
 
-  constructor() {
-  }
-
   trace(message?: string, ...additions: unknown[]) {
     this.log.trace(message, additions);
   }
