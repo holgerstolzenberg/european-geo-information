@@ -14,7 +14,6 @@
     X-Frame-Options "SAMEORIGIN"
     Referrer-Policy "strict-origin-when-cross-origin"
     X-Xss-Protection "1; mode=block"
-    Expect-CT "max-age=604800"
     -Server
   }
 }
