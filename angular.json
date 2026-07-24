@@ -54,7 +54,6 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/ngx-toastr/toastr.css",
               "src/assets/styles/main.scss"
             ],
             "stylePreprocessorOptions": {

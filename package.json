@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "22.0.6",
     "@angular/cdk": "22.0.6",
     "@angular/common": "22.0.6",
     "@angular/compiler": "22.0.6",
@@ -27,7 +28,7 @@
     "@jsverse/transloco": "8.4.0",
     "@jsverse/transloco-preload-langs": "8.4.0",
     "ngx-logger": "5.0.12",
-    "ngx-toastr": "20.0.5",
+    "ngx-toastr-notifier": "22.0.0",
     "rxjs": "7.8.2",
     "tslib": "2.8.1",
     "zone.js": "0.16.2"

@@ -1,20 +1,20 @@
 import { Injectable, inject } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { ToastService } from 'ngx-toastr-notifier';
 import { NGXLogger } from 'ngx-logger';
 import { HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
 
 export const options = {
-  timeOut: 3000,
+  duration: 3000,
   progressBar: true,
-  positionClass: 'toast-bottom-right',
-  newestOnTop: true
+  horizontalPosition: 'right' as const,
+  verticalPosition: 'bottom' as const
 };
 
 @Injectable()
 export class NotificationService {
-  private readonly toastrService = inject(ToastrService);
+  private readonly toastrService = inject(ToastService);
   private readonly i18nService = inject(I18nService);
   private readonly log = inject(NGXLogger);
 

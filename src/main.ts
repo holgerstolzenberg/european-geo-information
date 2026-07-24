@@ -15,8 +15,8 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { MapService } from './app/map/map.service';
 import { GeoService } from './app/map/geo.service';
 import { NotificationService } from './app/core/notifications/notification.service';
-import { ToastrModule } from 'ngx-toastr';
 import { I18nService } from './app/core/i18n/i18n.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { provideHttpClient } from '@angular/common/http';
 
 if (environment.prodMode) {
@@ -26,10 +26,12 @@ if (environment.prodMode) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    importProvidersFrom(LoggerModule.forRoot({
-      level: environment.prodMode ? NgxLoggerLevel.WARN : NgxLoggerLevel.DEBUG
-    })),
-    importProvidersFrom(ToastrModule.forRoot({ preventDuplicates: true, disableTimeOut: false })),
+    importProvidersFrom(
+      LoggerModule.forRoot({
+        level: environment.prodMode ? NgxLoggerLevel.WARN : NgxLoggerLevel.DEBUG
+      })
+    ),
+    importProvidersFrom(MatSnackBarModule),
     LoggingService,
     I18nService,
     NotificationService,
@@ -49,5 +51,4 @@ export const appConfig: ApplicationConfig = {
   ]
 };
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, appConfig).catch(err => console.error(err));
