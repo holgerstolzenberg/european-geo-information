@@ -5,4 +5,53 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
     versioning-strategy: increase
+    groups:
+      angular:
+        patterns:
+          - "@angular*"
+          - "angular-eslint"
+          - "@angular-eslint*"
+
+      deck-gl:
+        patterns:
+          - "@deck.gl*"
+
+      eslint:
+        patterns:
+          - "eslint"
+          - "@eslint*"
+          - "typescript-eslint"
+          - "@typescript-eslint*"
+
+      transloco:
+        patterns:
+          - "@jsverse/transloco*"
+
+      typescript:
+        patterns:
+          - "typescript"
+          - "tslib"
+
+      rxjs-zone:
+        patterns:
+          - "rxjs"
+          - "zone.js"
+
+      dev-formatting:
+        patterns:
+          - "prettier"
+
+      utilities:
+        patterns:
+          - "ngx-logger"
+          - "ngx-toastr-notifier"
